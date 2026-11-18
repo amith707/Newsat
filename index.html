@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Newsat.space - Modern News Portal</title>
+    <title>Newsat.space - News Portal</title>
     <style>
         :root {
             --bg-body: #f8fafc;
@@ -11,339 +11,52 @@
             --text-main: #1e293b;
             --text-muted: #64748b;
             --primary: #2563eb;
-            --primary-hover: #1d4ed8;
             --accent: #f43f5e;
             --border: #e2e8f0;
             --header-bg: #0f172a;
         }
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        body {
-            background-color: var(--bg-body);
-            color: var(--text-main);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
-        header {
-            background: var(--header-bg);
-            color: white;
-            padding: 15px 30px;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            align-items: center;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-        }
-        @media(min-width: 768px) {
-            header {
-                flex-direction: row;
-                justify-content: space-between;
-            }
-        }
-        .logo {
-            font-size: 24px;
-            font-weight: bold;
-            color: #38bdf8;
-            cursor: pointer;
-            letter-spacing: 0.5px;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, sans-serif; }
+        body { background-color: var(--bg-body); color: var(--text-main); min-height: 100vh; display: flex; flex-direction: column; }
+        header { background: var(--header-bg); color: white; padding: 15px 20px; display: flex; flex-direction: column; gap: 12px; align-items: center; position: sticky; top: 0; z-index: 1000; }
+        @media(min-width: 768px) { header { flex-direction: row; justify-content: space-between; padding: 15px 30px; } }
+        .logo { font-size: 22px; font-weight: bold; color: #38bdf8; cursor: pointer; }
         .logo span { color: var(--accent); }
-        
-        .header-controls {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-        .lang-select {
-            background: #1e293b;
-            color: white;
-            border: 1px solid #334155;
-            padding: 6px 12px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 13px;
-            outline: none;
-        }
-        nav {
-            display: flex;
-            gap: 8px;
-        }
-        nav button {
-            background: transparent;
-            border: 1px solid #334155;
-            color: #cbd5e1;
-            padding: 8px 16px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 14px;
-            transition: all 0.3s ease;
-        }
-        nav button:hover, nav button.active {
-            background: var(--primary);
-            color: white;
-            border-color: var(--primary);
-            font-weight: 600;
-        }
-
-        .container {
-            max-width: 1100px;
-            margin: 30px auto;
-            padding: 0 20px;
-            width: 100%;
-            flex: 1;
-        }
+        .header-controls { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; justify-content: center; }
+        .lang-select { background: #1e293b; color: white; border: 1px solid #334155; padding: 6px 10px; border-radius: 6px; font-size: 13px; }
+        nav { display: flex; gap: 6px; }
+        nav button { background: transparent; border: 1px solid #334155; color: #cbd5e1; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 13px; }
+        nav button.active { background: var(--primary); color: white; border-color: var(--primary); }
+        .container { max-width: 1000px; margin: 20px auto; padding: 0 15px; width: 100%; flex: 1; }
         .section { display: none; }
         .section.active { display: block; }
-
-        .search-container {
-            margin-bottom: 25px;
-        }
-        .search-bar {
-            width: 100%;
-            padding: 14px 20px;
-            background: white;
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            font-size: 15px;
-            outline: none;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.02);
-            transition: border-color 0.3s;
-        }
-        .search-bar:focus { border-color: var(--primary); }
-
-        .news-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 25px;
-        }
-        .news-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
-        }
-        .news-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.08);
-        }
-        .news-content {
-            padding: 22px;
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-        .news-title {
-            font-size: 18px;
-            font-weight: 700;
-            color: #0f172a;
-            margin-bottom: 10px;
-            line-height: 1.4;
-        }
-        .news-desc {
-            font-size: 14px;
-            color: var(--text-muted);
-            margin-bottom: 15px;
-            line-height: 1.6;
-            display: -webkit-box;
-            -webkit-line-clamp: 3;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-        }
-        .news-meta {
-            font-size: 12px;
-            color: var(--text-muted);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-top: 1px solid var(--border);
-            padding-top: 12px;
-        }
-        .read-more-link {
-            color: var(--primary);
-            font-weight: 600;
-            text-decoration: none;
-        }
-
-        .card {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
-            margin-bottom: 25px;
-        }
-        h3 { margin-bottom: 15px; color: #0f172a; font-size: 20px; }
-        label { font-size: 13px; font-weight: 600; color: var(--text-muted); display: block; margin-top: 12px; margin-bottom: 6px; }
-        input[type="text"], input[type="email"], input[type="password"], select {
-            width: 100%;
-            padding: 12px 15px;
-            background: #f8fafc;
-            border: 1px solid var(--border);
-            color: var(--text-main);
-            border-radius: 6px;
-            font-size: 14px;
-            outline: none;
-            transition: border-color 0.2s;
-        }
-        input:focus, select:focus { border-color: var(--primary); background: #fff; }
-
-        button.btn {
-            background: var(--primary);
-            color: white;
-            border: none;
-            padding: 12px 20px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: 600;
-            width: 100%;
-            font-size: 15px;
-            margin-top: 15px;
-            transition: background 0.2s;
-        }
-        button.btn:hover { background: var(--primary-hover); }
-
-        .ms-word-container {
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            background: #ffffff;
-            margin-top: 5px;
-            margin-bottom: 18px;
-            overflow: hidden;
-            box-shadow: inset 0 1px 3px rgba(0,0,0,0.02);
-        }
-        .ms-ribbon-tab {
-            background: #f1f5f9;
-            padding: 8px 15px;
-            display: flex;
-            gap: 15px;
-            border-bottom: 1px solid var(--border);
-            font-size: 13px;
-            color: var(--text-muted);
-            font-weight: 500;
-        }
-        .ms-ribbon-tab span.active-tab {
-            color: var(--primary);
-            font-weight: 600;
-            border-bottom: 2px solid var(--primary);
-            padding-bottom: 2px;
-        }
-        .editor-toolbar {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 6px;
-            background: #f8fafc;
-            padding: 10px;
-            border-bottom: 1px solid var(--border);
-            align-items: center;
-        }
-        .editor-toolbar button {
-            background: white;
-            color: var(--text-main);
-            border: 1px solid var(--border);
-            padding: 6px 12px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 13px;
-            font-weight: 600;
-            transition: background 0.2s;
-        }
-        .editor-toolbar button:hover { background: #e2e8f0; }
-        .editor-area {
-            width: 100%;
-            min-height: 280px;
-            padding: 20px;
-            background: white;
-            color: var(--text-main);
-            font-size: 15px;
-            line-height: 1.8;
-            outline: none;
-            overflow-y: auto;
-        }
-        .editor-area:empty:before {
-            content: attr(data-placeholder);
-            color: #94a3b8;
-        }
-        .ms-status-bar {
-            background: #f1f5f9;
-            padding: 6px 15px;
-            font-size: 12px;
-            color: var(--text-muted);
-            border-top: 1px solid var(--border);
-            display: flex;
-            justify-content: space-between;
-        }
-
-        .article-body {
-            line-height: 1.9;
-            font-size: 16px;
-            color: #334155;
-            margin-top: 20px;
-        }
-        .article-body h2, .article-body h3 { margin: 20px 0 10px 0; color: #0f172a; }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 15px;
-        }
-        th, td {
-            padding: 14px;
-            text-align: left;
-            border-bottom: 1px solid var(--border);
-            font-size: 14px;
-        }
-        th { color: #0f172a; background: #f8fafc; font-weight: 600; }
-        .action-btn {
-            padding: 6px 12px;
-            border-radius: 4px;
-            border: none;
-            cursor: pointer;
-            font-size: 12px;
-            font-weight: 600;
-            margin-right: 5px;
-        }
+        .search-bar { width: 100%; padding: 12px 15px; background: white; border: 1px solid var(--border); border-radius: 8px; font-size: 14px; margin-bottom: 20px; outline: none; }
+        .news-grid { display: grid; grid-template-columns: 1fr; gap: 20px; }
+        @media(min-width: 640px) { .news-grid { grid-template-columns: repeat(2, 1fr); } }
+        .news-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; display: flex; flex-direction: column; cursor: pointer; }
+        .news-content { padding: 18px; flex: 1; display: flex; flex-direction: column; justify-content: space-between; }
+        .news-title { font-size: 17px; font-weight: 700; color: #0f172a; margin-bottom: 8px; }
+        .news-desc { font-size: 13px; color: var(--text-muted); margin-bottom: 12px; line-height: 1.5; }
+        .news-meta { font-size: 12px; color: var(--text-muted); display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border); padding-top: 10px; }
+        .read-more-link { color: var(--primary); font-weight: 600; }
+        .card { background: var(--bg-card); border: 1px solid var(--border); padding: 20px; border-radius: 10px; margin-bottom: 20px; }
+        h3 { margin-bottom: 12px; color: #0f172a; font-size: 18px; }
+        label { font-size: 12px; font-weight: 600; color: var(--text-muted); display: block; margin-top: 10px; margin-bottom: 4px; }
+        input[type="text"], input[type="email"], input[type="password"], select { width: 100%; padding: 10px 12px; background: #f8fafc; border: 1px solid var(--border); color: var(--text-main); border-radius: 6px; font-size: 14px; outline: none; }
+        button.btn { background: var(--primary); color: white; border: none; padding: 10px 15px; border-radius: 6px; cursor: pointer; font-weight: 600; width: 100%; font-size: 14px; margin-top: 12px; }
+        .ms-word-container { border: 1px solid var(--border); border-radius: 6px; background: #ffffff; margin-top: 5px; margin-bottom: 15px; overflow: hidden; }
+        .editor-toolbar { display: flex; flex-wrap: wrap; gap: 4px; background: #f8fafc; padding: 8px; border-bottom: 1px solid var(--border); }
+        .editor-toolbar button { background: white; color: var(--text-main); border: 1px solid var(--border); padding: 5px 10px; border-radius: 4px; font-size: 12px; font-weight: 600; }
+        .editor-area { width: 100%; min-height: 220px; padding: 15px; background: white; color: var(--text-main); font-size: 14px; line-height: 1.6; outline: none; overflow-y: auto; }
+        .editor-area:empty:before { content: attr(data-placeholder); color: #94a3b8; }
+        .ms-status-bar { background: #f1f5f9; padding: 5px 12px; font-size: 11px; color: var(--text-muted); border-top: 1px solid var(--border); display: flex; justify-content: space-between; }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 13px; }
+        th, td { padding: 10px; text-align: left; border-bottom: 1px solid var(--border); }
+        th { background: #f8fafc; color: #0f172a; }
+        .action-btn { padding: 5px 10px; border-radius: 4px; border: none; cursor: pointer; font-size: 11px; font-weight: 600; margin-right: 4px; }
         .btn-approve { background: #10b981; color: white; }
         .btn-delete { background: var(--accent); color: white; }
-
-        .user-info {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: #eff6ff;
-            padding: 12px 18px;
-            border-radius: 6px;
-            border: 1px solid #bfdbfe;
-            margin-bottom: 20px;
-            color: #1e40af;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-
-        footer {
-            text-align: center;
-            padding: 20px;
-            border-top: 1px solid var(--border);
-            color: var(--text-muted);
-            font-size: 14px;
-            background: white;
-            margin-top: auto;
-        }
+        .user-info { display: flex; justify-content: space-between; align-items: center; background: #eff6ff; padding: 10px 15px; border-radius: 6px; border: 1px solid #bfdbfe; margin-bottom: 15px; color: #1e40af; font-size: 13px; }
+        footer { text-align: center; padding: 15px; border-top: 1px solid var(--border); color: var(--text-muted); font-size: 13px; background: white; margin-top: auto; }
     </style>
 </head>
 <body>
@@ -358,47 +71,44 @@
             </select>
             <nav>
                 <button onclick="switchTab('home')" class="active" id="nav-home">ප්‍රධාන පිටුව</button>
-                <button onclick="switchTab('user')" id="nav-user">ගිණුම / ලියාපදිංචිය</button>
+                <button onclick="switchTab('user')" id="nav-user">ගිණුම</button>
             </nav>
         </div>
     </header>
 
     <div class="container">
 
-        <!-- 1. HOME / NEWS FEED SECTION -->
+        <!-- 1. HOME -->
         <div id="home" class="section active">
-            <div style="margin-bottom: 25px;">
-                <h2 id="txt-latest" style="font-size: 26px; color: #0f172a; margin-bottom: 5px;">🔥 නවතම පුවත්</h2>
-                <p id="txt-sub-latest" style="color: var(--text-muted);">අපගේ නවතම ලිපි සහ පුවත් මෙහි ප්‍රදර්ශනය වේ.</p>
+            <div style="margin-bottom: 20px;">
+                <h2 id="txt-latest" style="font-size: 22px; color: #0f172a; margin-bottom: 4px;">🔥 නවතම පුවත්</h2>
+                <p id="txt-sub-latest" style="font-size: 13px; color: var(--text-muted);">අපගේ නවතම ලිපි සහ පුවත් මෙහි ප්‍රදර්ශනය වේ.</p>
             </div>
             
-            <div class="search-container">
-                <input type="text" id="search-input" class="search-bar" placeholder="🔍 පුවත් සෙවීම සඳහා මෙහි ලියන්න..." onkeyup="filterNews()">
-            </div>
-
+            <input type="text" id="search-input" class="search-bar" placeholder="🔍 පුවත් සෙවීම සඳහා මෙහි ලියන්න..." onkeyup="filterNews()">
             <div class="news-grid" id="public-news-container"></div>
         </div>
 
-        <!-- 1.5 FULL NEWS VIEW SECTION -->
+        <!-- 1.5 FULL ARTICLE -->
         <div id="article-view" class="section">
-            <button onclick="switchTab('home')" class="btn" style="width: auto; padding: 8px 16px; margin-bottom: 20px; background: #64748b;">⬅️ <span id="txt-back">ආපසු ප්‍රධාන පිටුවට</span></button>
+            <button onclick="switchTab('home')" class="btn" style="width: auto; padding: 6px 12px; margin-bottom: 15px; background: #64748b; font-size: 13px;">⬅️ <span id="txt-back">ආපසු ප්‍රධාන පිටුවට</span></button>
             <div class="card" id="full-article-content"></div>
         </div>
 
-        <!-- 2. USER DASHBOARD / REGISTRATION SECTION -->
+        <!-- 2. USER REGISTRATION / PROFILE -->
         <div id="user" class="section">
-            <div class="card" id="auth-card" style="max-width: 500px; margin: 40px auto;">
-                <h3 id="txt-login-title">👤 නව ගිණුමක් තැනීම / පිවිසීම</h3>
+            <div class="card" id="auth-card" style="max-width: 450px; margin: 20px auto;">
+                <h3 id="txt-login-title">👤 ලියාපදිංචිය / පිවිසීම</h3>
                 <label>සම්පූර්ණ නම (Full Name)</label>
                 <input type="text" id="reg-name" placeholder="ඔබේ නම මෙහි ලියන්න...">
-                <label>ඊමේල් ලිපිනය (Email Address)</label>
+                <label>ඊමේල් ලිපිනය (Email)</label>
                 <input type="email" id="reg-email" placeholder="example@gmail.com">
-                <label>දුරකථන අංකය (Phone Number)</label>
+                <label>දුරකථන අංකය (Phone)</label>
                 <input type="text" id="reg-phone" placeholder="07XXXXXXXX">
                 <label>කාර්යභාරය (Role)</label>
                 <select id="reg-role">
                     <option value="Writer">သတင်း රචක / News Writer</option>
-                    <option value="Editor">ಸංಸ್කාරක / Editor</option>
+                    <option value="Editor">ಸංಸ್කාරಕ / Editor</option>
                 </select>
                 <button class="btn" id="txt-login-btn" onclick="registerUser()">ගිණුම සාදා ඇතුළු වන්න</button>
             </div>
@@ -407,69 +117,60 @@
                 <div class="user-info">
                     <div>
                         <span>👤 පරිශීලකයා: <strong id="logged-user-name"></strong></span><br>
-                        <small style="color: var(--text-muted);" id="logged-user-details"></small>
+                        <small id="logged-user-details" style="font-size: 11px;"></small>
                     </div>
-                    <button onclick="logoutUser()" style="background: var(--accent); color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 12px;">Logout</button>
+                    <button onclick="logoutUser()" style="background: var(--accent); color: white; border: none; padding: 5px 10px; border-radius: 4px; font-size: 11px;">Logout</button>
                 </div>
                 
                 <h3 id="txt-add-title">✍️ නව පුවතක් සකසන්න</h3>
-                <label id="txt-lbl-title">පුවතේ ප්‍රධාන සිරස්තලය (Title)</label>
+                <label id="txt-lbl-title">පුවතේ මාතෘකාව (Title)</label>
                 <input type="text" id="news-title" placeholder="පුවතේ මාතෘකාව මෙහි ලියන්න...">
                 
-                <label id="txt-lbl-content">පුවතේ සම්පූර්ණ විස්තරය (MS Word ආකාරයට සකසන්න)</label>
+                <label id="txt-lbl-content">පුවතේ විස්තරය (MS Word Editor)</label>
                 <div class="ms-word-container">
-                    <div class="ms-ribbon-tab">
-                        <span class="active-tab">Home</span>
-                        <span>Insert</span>
-                        <span>Design</span>
-                        <span>Layout</span>
-                    </div>
                     <div class="editor-toolbar">
-                        <button type="button" onclick="formatDoc('bold')" title="Bold"><b>B</b></button>
-                        <button type="button" onclick="formatDoc('italic')" title="Italic"><i>I</i></button>
-                        <button type="button" onclick="formatDoc('underline')" title="Underline"><u>U</u></button>
-                        <button type="button" onclick="formatDoc('formatBlock', 'H3')" title="Heading">H3</button>
-                        <button type="button" onclick="formatDoc('insertUnorderedList')" title="Bullet List">• List</button>
+                        <button type="button" onclick="formatDoc('bold')"><b>B</b></button>
+                        <button type="button" onclick="formatDoc('italic')"><i>I</i></button>
+                        <button type="button" onclick="formatDoc('underline')"><u>U</u></button>
+                        <button type="button" onclick="formatDoc('formatBlock', 'H3')">H3</button>
+                        <button type="button" onclick="formatDoc('insertUnorderedList')">• List</button>
                     </div>
                     <div id="news-editor" class="editor-area" contenteditable="true" data-placeholder="මෙහි ඔබේ පුවත ලියන්න..."></div>
                     <div class="ms-status-bar">
                         <span id="word-count">0 words</span>
-                        <span>English (United States)</span>
                         <span>100%</span>
                     </div>
                 </div>
 
                 <button class="btn" id="submit-btn" onclick="submitNews()">පුවත Publish කිරීමට යොමු කරන්න</button>
 
-                <!-- User Profile News Section -->
-                <div style="margin-top: 40px; border-top: 2px solid var(--border); padding-top: 25px;">
-                    <h3 style="margin-bottom: 15px;">📂 ඔබ විසින් ප්‍රකාශයට පත් කරන ලද පුවත් (My Profile)</h3>
+                <div style="margin-top: 30px; border-top: 1px solid var(--border); padding-top: 20px;">
+                    <h3 style="font-size: 16px; margin-bottom: 12px;">📂 ඔබ විසින් දමන ලද පුවත් (My Profile)</h3>
                     <div id="user-profile-news-list"></div>
                 </div>
             </div>
         </div>
 
-        <!-- 3. HIDDEN ADMIN PANEL SECTION -->
+        <!-- 3. HIDDEN ADMIN PANEL -->
         <div id="admin" class="section">
-            <div class="card" id="admin-login-card" style="max-width: 450px; margin: 40px auto;">
-                <h3 id="txt-admin-login">🔐 ඇඩ්මින් පිවිසුම (Admin Login)</h3>
+            <div class="card" id="admin-login-card" style="max-width: 400px; margin: 20px auto;">
+                <h3>🔐 ඇඩ්මින් පිවිසුම</h3>
                 <input type="password" id="admin-password" placeholder="මුරපදය ඇතුළත් කරන්න" onkeypress="if(event.key === 'Enter') verifyAdmin()">
-                <button class="btn" id="txt-admin-btn" onclick="verifyAdmin()">ඇතුළු වන්න</button>
+                <button class="btn" onclick="verifyAdmin()">ඇතුළු වන්න</button>
             </div>
 
             <div class="card" id="admin-dashboard-card" style="display: none;">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                    <h3 id="txt-admin-dash" style="margin-bottom: 0;">⚙️ ඇඩ්මින් පාලක මණ්ඩලය</h3>
-                    <button onclick="logoutAdmin()" style="background: var(--accent); color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 12px;">Admin Logout</button>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                    <h3 style="margin-bottom: 0; font-size: 16px;">⚙️ ඇඩ්මින් පාලක මණ්ඩලය</h3>
+                    <button onclick="logoutAdmin()" style="background: var(--accent); color: white; border: none; padding: 5px 10px; border-radius: 4px; font-size: 11px;">Admin Logout</button>
                 </div>
                 <div style="overflow-x: auto;">
                     <table>
                         <thead>
                             <tr>
-                                <th id="th-title">මාතෘකාව</th>
-                                <th id="th-author">කර්තෘ</th>
-                                <th id="th-status">තත්ත්වය</th>
-                                <th id="th-action">ක්‍රියාමාර්ග</th>
+                                <th>මාතෘකාව / කර්තෘ</th>
+                                <th>තත්ත්වය</th>
+                                <th>ක්‍රියාමාර්ග</th>
                             </tr>
                         </thead>
                         <tbody id="admin-news-table"></tbody>
@@ -485,55 +186,13 @@
     <script>
         const translations = {
             si: {
-                home: "ප්‍රධාන පිටුව",
-                user: "ගිණුම / ලියාපදිංචිය",
-                latest: "🔥 නවතම පුවත්",
+                home: "ප්‍රධාන පිටුව", user: "ගිණුම", latest: "🔥 නවතම පුවත්",
                 subLatest: "අපගේ නවතම ලිපි සහ පුවත් මෙහි ප්‍රදර්ශනය වේ.",
-                searchPh: "🔍 පුවත් සෙවීම සඳහා මෙහි ලියන්න...",
-                back: "ආපසු ප්‍රධාන පිටුවට",
-                loginTitle: "👤 නව ගිණුමක් තැනීම / පිවිසීම",
-                loginBtn: "ගිණුම සාදා ඇතුළු වන්න",
-                addTitle: "✍️ නව පුවතක් සකසන්න",
-                lblTitle: "පුවතේ ප්‍රධාන සිරස්තලය (Title)",
-                titlePh: "පුවතේ මාතෘකාව මෙහි ලියන්න...",
-                lblContent: "පුවතේ සම්පූර්ණ විස්තරය (MS Word ආකාරයට සකසන්න)",
-                editorPh: "මෙහි ඔබේ පුවත ලියන්න...",
-                submitBtn: "පුවත Publish කිරීමට යොමු කරන්න",
-                readMore: "කියවන්න →"
-            },
-            en: {
-                home: "Home",
-                user: "Account / Registration",
-                latest: "🔥 Latest News",
-                subLatest: "Explore our latest articles and news updates.",
-                searchPh: "🔍 Search news here...",
-                back: "Back to Home",
-                loginTitle: "👤 Create Account / Login",
-                loginBtn: "Create Account & Login",
-                addTitle: "✍️ Create New Article",
-                lblTitle: "Article Title",
-                titlePh: "Enter news title here...",
-                lblContent: "Full Article Content (MS Word Style Editor)",
-                editorPh: "Write your article here...",
-                submitBtn: "Submit News for Publish",
-                readMore: "Read More →"
-            },
-            ta: {
-                home: "முகப்பு",
-                user: "கணக்கு / பதிவு",
-                latest: "🔥 சமீபத்திய செய்திகள்",
-                subLatest: "எங்களின் சமீபத்திய கட்டுரைகள் மற்றும் செய்திகள்.",
-                searchPh: "🔍 செய்திகளை தேட...",
-                back: "முகப்புக்கு திரும்புக",
-                loginTitle: "👤 கணக்கை உருவாக்க / உள்நுழைய",
-                loginBtn: "கணக்கை உருவாக்கி உள்நுழைய",
-                addTitle: "✍️ புதிய செய்தியை உருவாக்கவும்",
-                lblTitle: "செய்தி தலைப்பு",
-                titlePh: "தலைப்பை இங்கு எழுதவும்...",
-                lblContent: "முழு செய்தி விவரம் (MS Word பாணி எடிட்டர்)",
-                editorPh: "உங்கள் செய்தியை இங்கு எழுதவும்...",
-                submitBtn: "வெளியிட சமர்ப்பிக்கவும்",
-                readMore: "மேலும் வாசிக்க →"
+                searchPh: "🔍 පුවත් සෙවීම සඳහා මෙහි ලියන්න...", back: "ආපසු ප්‍රධාන පිටුවට",
+                loginTitle: "👤 ලියාපදිංචිය / පිවිසීම", loginBtn: "ගිණුම සාදා ඇතුළු වන්න",
+                addTitle: "✍️ නව පුවතක් සකසන්න", lblTitle: "පුවතේ මාතෘකාව (Title)",
+                titlePh: "පුවතේ මාතෘකාව මෙහි ලියන්න...", lblContent: "පුවතේ විස්තරය",
+                editorPh: "මෙහි ඔබේ පුවත ලියන්න...", submitBtn: "පුවත Publish කිරීමට යොමු කරන්න", readMore: "කියවන්න →"
             }
         };
 
@@ -556,7 +215,6 @@
             if(document.getElementById('txt-lbl-content')) document.getElementById('txt-lbl-content').innerText = t.lblContent;
             if(document.getElementById('news-editor')) document.getElementById('news-editor').setAttribute('data-placeholder', t.editorPh);
             if(document.getElementById('submit-btn')) document.getElementById('submit-btn').innerText = t.submitBtn;
-
             fetchPublicNews();
         }
 
@@ -638,7 +296,7 @@
                 document.getElementById('auth-card').style.display = 'none';
                 document.getElementById('add-news-card').style.display = 'block';
                 document.getElementById('logged-user-name').innerText = currentUser.name;
-                document.getElementById('logged-user-details').innerText = `${currentUser.email} | ${currentUser.phone} | ${currentUser.role}`;
+                document.getElementById('logged-user-details').innerText = `${currentUser.email} | ${currentUser.role}`;
                 renderUserProfileNews();
             } else {
                 document.getElementById('auth-card').style.display = 'block';
@@ -674,7 +332,7 @@
             let newArticle = {
                 id: 'news_' + Date.now(),
                 title: title,
-                desc: plainText.substring(0, 150) + "...",
+                desc: plainText.substring(0, 120) + "...",
                 contentHtml: editorContent,
                 author: currentUser.name,
                 authorEmail: currentUser.email,
@@ -704,11 +362,10 @@
             cachedNews = {};
             allFetchedNews = [];
 
-            // Fixed check for both uppercase and lowercase 'approved' status
             let approvedNews = newsList.filter(item => item.status && item.status.trim().toLowerCase() === 'approved');
 
             if(approvedNews.length === 0) {
-                container.innerHTML = '<p style="color:var(--text-muted); grid-column: 1/-1; text-align:center; padding: 40px;">තවම අනුමත කළ පුවත් නැත.</p>';
+                container.innerHTML = '<p style="color:var(--text-muted); grid-column: 1/-1; text-align:center; padding: 30px; font-size: 13px;">තවම අනුමත කළ පුවත් නැත.</p>';
                 return;
             }
 
@@ -722,11 +379,7 @@
         function renderNewsCards(newsList) {
             let container = document.getElementById('public-news-container');
             container.innerHTML = '';
-            if(newsList.length === 0) {
-                container.innerHTML = '<p style="color:var(--text-muted); grid-column: 1/-1; text-align:center; padding: 40px;">පුවත් හමු නොවීය.</p>';
-                return;
-            }
-            const t = translations[currentLang];
+            if(newsList.length === 0) return;
             newsList.forEach(item => {
                 container.innerHTML += `
                     <div class="news-card" onclick="openFullArticle('${item.id}')">
@@ -737,7 +390,7 @@
                             </div>
                             <div class="news-meta">
                                 <span>✍️ ${item.author}</span>
-                                <span class="read-more-link">${t.readMore}</span>
+                                <span class="read-more-link">කියවන්න →</span>
                             </div>
                         </div>
                     </div>
@@ -752,7 +405,7 @@
             let myNews = newsList.filter(item => item.authorEmail === currentUser.email);
 
             if(myNews.length === 0) {
-                container.innerHTML = '<p style="color: var(--text-muted); font-size: 13px;">ඔබ තවම පුවත් කිසිවක් Publish කර නැත.</p>';
+                container.innerHTML = '<p style="color: var(--text-muted); font-size: 12px;">ඔබ තවම පුවත් කිසිවක් Publish කර නැත.</p>';
                 return;
             }
 
@@ -760,13 +413,13 @@
             myNews.forEach(item => {
                 let statusColor = (item.status && item.status.trim().toLowerCase() === 'approved') ? '#10b981' : '#f59e0b';
                 container.innerHTML += `
-                    <div style="background: #f8fafc; border: 1px solid var(--border); padding: 12px 15px; border-radius: 6px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+                    <div style="background: #f8fafc; border: 1px solid var(--border); padding: 10px; border-radius: 6px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; font-size: 13px;">
                         <div>
-                            <strong style="font-size: 14px; color: #0f172a;">${item.title}</strong><br>
-                            <small style="color: var(--text-muted);">දිනය: ${item.createdAt}</small>
+                            <strong>${item.title}</strong><br>
+                            <small style="color: var(--text-muted); font-size: 11px;">දිනය: ${item.createdAt}</small>
                         </div>
                         <div>
-                            <span style="background: ${statusColor}15; color: ${statusColor}; padding: 4px 10px; border-radius: 4px; font-size: 12px; font-weight: 600;">${item.status}</span>
+                            <span style="background: ${statusColor}15; color: ${statusColor}; padding: 3px 8px; border-radius: 4px; font-size: 11px; font-weight: 600;">${item.status}</span>
                         </div>
                     </div>
                 `;
@@ -787,8 +440,8 @@
 
             const fullContainer = document.getElementById('full-article-content');
             fullContainer.innerHTML = `
-                <h1 style="color: #0f172a; font-size: 26px; margin-bottom: 10px; line-height: 1.4;">${item.title}</h1>
-                <p style="color: var(--text-muted); font-size: 13px; margin-bottom: 20px; border-bottom: 1px solid var(--border); padding-bottom: 10px;">✍️ කර්තෘ: ${item.author} | 📅 ${item.createdAt}</p>
+                <h1 style="color: #0f172a; font-size: 22px; margin-bottom: 8px; line-height: 1.4;">${item.title}</h1>
+                <p style="color: var(--text-muted); font-size: 12px; margin-bottom: 15px; border-bottom: 1px solid var(--border); padding-bottom: 8px;">✍️ කර්තෘ: ${item.author} | 📅 ${item.createdAt}</p>
                 <div class="article-body">${item.contentHtml || item.desc}</div>
             `;
             switchTab('article-view');
@@ -801,7 +454,7 @@
             
             tbody.innerHTML = '';
             if(newsList.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; color:var(--text-muted);">පුවත් නැත.</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="3" style="text-align:center; color:var(--text-muted);">පුවත් නැත.</td></tr>';
                 return;
             }
 
@@ -809,8 +462,7 @@
                 let isAppr = item.status && item.status.trim().toLowerCase() === 'approved';
                 tbody.innerHTML += `
                     <tr>
-                        <td><strong>${item.title}</strong><br><small style="color:var(--text-muted);">කර්තෘ: ${item.author} (${item.authorEmail || 'N/A'})</small></td>
-                        <td>${item.author}</td>
+                        <td><strong>${item.title}</strong><br><small style="color:var(--text-muted);">✍️ ${item.author}</small></td>
                         <td><span style="color:${isAppr ? '#10b981' : '#f59e0b'}; font-weight: 600;">${item.status}</span></td>
                         <td>
                             ${!isAppr ? `<button class="action-btn btn-approve" onclick="updateStatus('${item.id}', 'Approved')">Approve</button>` : ''}
@@ -845,7 +497,7 @@
             if(urlParams.get('admin') === 'true') {
                 let nav = document.querySelector('header nav');
                 let adminBtn = document.createElement('button');
-                adminBtn.innerText = "⚙️ ඇඩ්මින් පැනලය";
+                adminBtn.innerText = "⚙️ ඇඩ්මින්";
                 adminBtn.setAttribute('onclick', "switchTab('admin')");
                 nav.appendChild(adminBtn);
             }
