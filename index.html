@@ -5,6 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Newsat.space - Tech & News Hub</title>
     <style>
+        :root {
+            --bg-main: #0b0f19;
+            --bg-card: #151c2c;
+            --border: #1f293d;
+            --text-main: #f3f4f6;
+            --text-muted: #9ca3af;
+            --primary: #38bdf8;
+            --accent: #f43f5e;
+            --success: #22c55e;
+        }
         * {
             margin: 0;
             padding: 0;
@@ -12,96 +22,342 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         body {
-            background-color: #0b0f19;
-            color: #f3f4f6;
+            background-color: var(--bg-main);
+            color: var(--text-main);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
         }
         header {
-            padding: 20px 40px;
+            padding: 15px 30px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 1px solid #1f293d;
+            border-bottom: 1px solid var(--border);
+            background: var(--bg-card);
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
         .logo {
-            font-size: 24px;
+            font-size: 22px;
             font-weight: bold;
-            color: #38bdf8;
-            letter-spacing: 1px;
+            color: var(--primary);
+            cursor: pointer;
         }
-        .logo span {
-            color: #f43f5e;
-        }
-        main {
-            text-align: center;
-            padding: 60px 20px;
-            max-width: 800px;
-            margin: auto;
-        }
-        h1 {
-            font-size: 42px;
-            margin-bottom: 20px;
-            background: linear-gradient(90deg, #38bdf8, #818cf8);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        p {
-            font-size: 18px;
-            color: #9ca3af;
-            line-height: 1.6;
-            margin-bottom: 30px;
-        }
-        .badge {
-            display: inline-block;
-            background-color: rgba(56, 189, 248, 0.1);
-            color: #38bdf8;
+        .logo span { color: var(--accent); }
+        nav button {
+            background: none;
+            border: 1px solid var(--border);
+            color: var(--text-main);
             padding: 8px 16px;
-            border-radius: 20px;
-            font-size: 14px;
-            border: 1px solid rgba(56, 189, 248, 0.2);
+            border-radius: 6px;
+            cursor: pointer;
+            margin-left: 10px;
+            transition: 0.3s;
+        }
+        nav button:hover, nav button.active {
+            background: var(--primary);
+            color: var(--bg-main);
+            border-color: var(--primary);
+            font-weight: bold;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 30px auto;
+            padding: 0 20px;
+            width: 100%;
+            flex: 1;
+        }
+        .section { display: none; }
+        .section.active { display: block; }
+        
+        /* Forms & Cards */
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            padding: 25px;
+            border-radius: 10px;
             margin-bottom: 20px;
         }
-        .btn {
-            display: inline-block;
-            background: linear-gradient(135deg, #38bdf8, #2563eb);
-            color: white;
-            padding: 12px 30px;
+        input, textarea, select {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0 20px 0;
+            background: var(--bg-main);
+            border: 1px solid var(--border);
+            color: var(--text-main);
             border-radius: 6px;
-            text-decoration: none;
+        }
+        button.btn {
+            background: linear-gradient(135deg, var(--primary), #2563eb);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 6px;
+            cursor: pointer;
             font-weight: bold;
-            transition: opacity 0.3s ease;
+            width: 100%;
         }
-        .btn:hover {
-            opacity: 0.9;
+        button.btn:hover { opacity: 0.9; }
+
+        /* News Grid */
+        .news-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
         }
+        .news-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        .news-card img {
+            width: 100%;
+            height: 160px;
+            object-fit: cover;
+        }
+        .news-content { padding: 15px; flex: 1; display: flex; flex-direction: column; justify-content: space-between; }
+        .news-title { font-size: 18px; margin-bottom: 8px; color: var(--primary); }
+        .news-desc { font-size: 14px; color: var(--text-muted); margin-bottom: 12px; }
+        .news-meta { font-size: 12px; color: var(--accent); display: flex; justify-content: space-between; }
+
+        /* Admin Table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+            font-size: 14px;
+        }
+        th { color: var(--primary); }
+        .action-btn {
+            padding: 6px 10px;
+            border-radius: 4px;
+            border: none;
+            cursor: pointer;
+            font-size: 12px;
+            margin-right: 5px;
+        }
+        .btn-approve { background: var(--success); color: white; }
+        .btn-delete { background: var(--accent); color: white; }
+
         footer {
             text-align: center;
             padding: 20px;
-            color: #6b7280;
+            border-top: 1px solid var(--border);
+            color: var(--text-muted);
             font-size: 14px;
-            border-top: 1px solid #1f293d;
+            background: var(--bg-card);
         }
     </style>
 </head>
 <body>
 
     <header>
-        <div class="logo">Newsat<span>.space</span></div>
+        <div class="logo" onclick="switchTab('home')">Newsat<span>.space</span></div>
+        <nav>
+            <button onclick="switchTab('home')" class="active" id="nav-home">പ്രධාන පිටුව</button>
+            <button onclick="switchTab('user')" id="nav-user">ගිණුම / නිව්ස් දැමීම</button>
+            <button onclick="switchTab('admin')" id="nav-admin">ඇඩ්මින් පැනලය</button>
+        </nav>
     </header>
 
-    <main>
-        <div class="badge">🚀 Online & Active</div>
-        <h1>නව ලෝකයේ තාක්ෂණික සහ පුවත් මධ්‍යස්ථානය</h1>
-        <p>අපගේ වෙබ් අඩවිය මේ වන විට සාර්ථකව නිර්මාණය කරමින් පවතී. නුදුරේදීම නවමු අත්දැකීම් සමඟින් ඔබ වෙත පැමිණෙන්නෙමු.</p>
-        <a href="#" class="btn">ළඟදිම බලාපොරොත්තු වන්න</a>
-    </main>
+    <div class="container">
+
+        <!-- 1. HOME / NEWS FEED SECTION -->
+        <div id="home" class="section active">
+            <h2>🔥 නවතම පුවත්</h2>
+            <p style="color: var(--text-muted); margin-bottom: 20px;">අපගේ පරිශීලකයින් විසින් එකතු කරන ලද නවතම පුවත්.</p>
+            <div class="news-grid" id="public-news-container">
+                <!-- News items will load here dynamically -->
+            </div>
+        </div>
+
+        <!-- 2. USER DASHBOARD & ADD NEWS SECTION -->
+        <div id="user" class="section">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                <div class="card">
+                    <h3>👤 පරිශීලක ලියාපදිංචිය / ඇතුළුවීම</h3>
+                    <input type="text" id="username" placeholder="ඔබේ නම (Username)">
+                    <input type="email" id="useremail" placeholder="ඊමේල් ලිපිනය">
+                    <button class="btn" onclick="registerUser()">ගිණුමට ඇතුළු වන්න</button>
+                </div>
+                <div class="card" id="add-news-card" style="opacity: 0.5; pointer-events: none;">
+                    <h3>✍️ නව පුවතක් එකතු කරන්න</h3>
+                    <input type="text" id="news-title" placeholder="පුවතේ සිරස්තලය (Title)">
+                    <input type="file" id="news-image" accept="image/*">
+                    <textarea id="news-desc" rows="3" placeholder="පුවතේ විස්තරය..."></textarea>
+                    <button class="btn" onclick="submitNews()">පුවත Publish කරන්න</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. ADMIN PANEL SECTION -->
+        <div id="admin" class="section">
+            <div class="card">
+                <h3>⚙️ ඇඩ්මින් පාලක මණ්ඩලය (Admin Panel)</h3>
+                <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 15px;">පරිශීලකයින් විසින් එවන ලද පුවත් පරීක්ෂා කර අනුමත කරන්න හෝ මකා දමන්න.</p>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>මාතෘකාව</th>
+                            <th>කර්තෘ (Author)</th>
+                            <th>තත්ත්වය</th>
+                            <th>ක්‍රියාමාර්ග</th>
+                        </tr>
+                    </thead>
+                    <tbody id="admin-news-table">
+                        <!-- Admin items load here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
 
     <footer>
         &copy; 2026 Newsat.space. All Rights Reserved.
     </footer>
 
+    <script>
+        // LocalStorage මත පදනම්ව දත්ත සුරැකීම
+        let currentUser = localStorage.getItem('newsat_user') || null;
+        let newsList = JSON.parse(localStorage.getItem('newsat_news')) || [
+            { id: 1, title: "SpaceX නව රොකට් අභ්‍යවකාශයට", desc: "අද දින සාර්ථක ලෙස අභ්‍යවකාශගත කරන ලද නවතම රොකට්ටුව පිළිබඳ තොරතුරු.", image: "https://images.unsplash.com/photo-1517976487492-5750f3195933?w=500", author: "Admin", status: "Approved" }
+        ];
+
+        function switchTab(tabId) {
+            document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
+            document.querySelectorAll('nav button').forEach(btn => btn.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            document.getElementById('nav-' + tabId).classList.add('active');
+            if(tabId === 'home') renderPublicNews();
+            if(tabId === 'admin') renderAdminTable();
+        }
+
+        function registerUser() {
+            let name = document.getElementById('username').value;
+            if(!name) { alert('කරුණාකර නමක් ඇතුළත් කරන්න!'); return; }
+            currentUser = name;
+            localStorage.setItem('newsat_user', currentUser);
+            alert('සාර්ථකයි! දැන් ඔබට පුවත් එකතු කළ හැක.');
+            document.getElementById('add-news-card').style.opacity = '1';
+            document.getElementById('add-news-card').style.pointerEvents = 'auto';
+        }
+
+        function submitNews() {
+            if(!currentUser) { alert('මුලින්ම ගිණුමට ඇතුළුවන්න!'); return; }
+            let title = document.getElementById('news-title').value;
+            let desc = document.getElementById('news-desc').value;
+            let fileInput = document.getElementById('news-image');
+            
+            if(!title || !desc) { alert('සියලුම තොරතුරු පුරවන්න!'); return; }
+
+            let reader = new FileReader();
+            if(fileInput.files && fileInput.files[0]) {
+                reader.onload = function(e) {
+                    saveNewsItem(title, desc, e.target.result);
+                }
+                reader.readAsDataURL(fileInput.files[0]);
+            } else {
+                saveNewsItem(title, desc, "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=500");
+            }
+        }
+
+        function saveNewsItem(title, desc, imgUrl) {
+            let newPost = {
+                id: Date.now(),
+                title: title,
+                desc: desc,
+                image: imgUrl,
+                author: currentUser,
+                status: "Pending"
+            };
+            newsList.push(newPost);
+            localStorage.setItem('newsat_news', JSON.stringify(newsList));
+            alert('පුවත සාර්ථකව යවන ලදී! ඇඩ්මින් අනුමත කළ පසු ප්‍රධාන පිටුවේ පෙන්වනු ඇත.');
+            document.getElementById('news-title').value = '';
+            document.getElementById('news-desc').value = '';
+            document.getElementById('news-image').value = '';
+            switchTab('home');
+        }
+
+        function renderPublicNews() {
+            let container = document.getElementById('public-news-container');
+            container.innerHTML = '';
+            let approvedNews = newsList.filter(item => item.status === 'Approved');
+            
+            if(approvedNews.length === 0) {
+                container.innerHTML = '<p style="color:var(--text-muted);">තවම පුවත් කිසිවක් නොමැත.</p>';
+                return;
+            }
+
+            approvedNews.forEach(item => {
+                container.innerHTML += `
+                    <div class="news-card">
+                        <img src="${item.image}" alt="News Image">
+                        <div class="news-content">
+                            <div>
+                                <h3 class="news-title">${item.title}</h3>
+                                <p class="news-desc">${item.desc}</p>
+                            </div>
+                            <div class="news-meta">
+                                <span>කර්තෘ: ${item.author}</span>
+                                <span>✅ Active</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function renderAdminTable() {
+            let tbody = document.getElementById('admin-news-table');
+            tbody.innerHTML = '';
+            newsList.forEach(item => {
+                tbody.innerHTML += `
+                    <tr>
+                        <td>${item.title}</td>
+                        <td>${item.author}</td>
+                        <td><span style="color:${item.status === 'Approved' ? 'var(--success)' : 'orange'}">${item.status}</span></td>
+                        <td>
+                            ${item.status === 'Pending' ? `<button class="action-btn btn-approve" onclick="updateStatus(${item.id}, 'Approved')">Approve</button>` : ''}
+                            <button class="action-btn btn-delete" onclick="deleteNews(${item.id})">Delete</button>
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
+        function updateStatus(id, status) {
+            newsList = newsList.map(item => item.id === id ? {...item, status: status} : item);
+            localStorage.setItem('newsat_news', JSON.stringify(newsList));
+            renderAdminTable();
+        }
+
+        function deleteNews(id) {
+            newsList = newsList.filter(item => item.id !== id);
+            localStorage.setItem('newsat_news', JSON.stringify(newsList));
+            renderAdminTable();
+            renderPublicNews();
+        }
+
+        // Initialize on load
+        window.onload = function() {
+            renderPublicNews();
+            if(currentUser) {
+                document.getElementById('add-news-card').style.opacity = '1';
+                document.getElementById('add-news-card').style.pointerEvents = 'auto';
+            }
+        }
+    </script>
 </body>
 </html>
