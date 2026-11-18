@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Newsat.space - Tech & News Hub</title>
     
-    <!-- Firebase App (Modular CDN) -->
+    <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
@@ -21,38 +21,254 @@
             --accent: #f43f5e;
             --success: #22c55e;
         }
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        body { background-color: var(--bg-main); color: var(--text-main); min-height: 100vh; display: flex; flex-direction: column; }
-        header { padding: 15px 20px; display: flex; flex-direction: column; gap: 12px; align-items: center; border-bottom: 1px solid var(--border); background: var(--bg-card); position: sticky; top: 0; z-index: 100; }
-        @media(min-width: 768px) { header { flex-direction: row; justify-content: space-between; padding: 15px 30px; } }
-        .logo { font-size: 22px; font-weight: bold; color: var(--primary); cursor: pointer; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        header {
+            padding: 15px 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            align-items: center;
+            border-bottom: 1px solid var(--border);
+            background: var(--bg-card);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        @media(min-width: 768px) {
+            header {
+                flex-direction: row;
+                justify-content: space-between;
+                padding: 15px 30px;
+            }
+        }
+        .logo {
+            font-size: 22px;
+            font-weight: bold;
+            color: var(--primary);
+            cursor: pointer;
+        }
         .logo span { color: var(--accent); }
-        nav { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
-        nav button { background: none; border: 1px solid var(--border); color: var(--text-main); padding: 8px 14px; border-radius: 6px; cursor: pointer; font-size: 14px; transition: 0.3s; }
-        nav button:hover, nav button.active { background: var(--primary); color: var(--bg-main); border-color: var(--primary); font-weight: bold; }
-        .container { max-width: 1000px; margin: 30px auto; padding: 0 20px; width: 100%; flex: 1; }
+        nav {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 8px;
+        }
+        nav button {
+            background: none;
+            border: 1px solid var(--border);
+            color: var(--text-main);
+            padding: 8px 14px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: 0.3s;
+        }
+        nav button:hover, nav button.active {
+            background: var(--primary);
+            color: var(--bg-main);
+            border-color: var(--primary);
+            font-weight: bold;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 30px auto;
+            padding: 0 20px;
+            width: 100%;
+            flex: 1;
+        }
         .section { display: none; }
         .section.active { display: block; }
-        .card { background: var(--bg-card); border: 1px solid var(--border); padding: 25px; border-radius: 10px; margin-bottom: 20px; }
+        
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            padding: 25px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
         h3 { margin-bottom: 15px; color: var(--primary); }
-        input, textarea { width: 100%; padding: 12px; margin: 10px 0 20px 0; background: var(--bg-main); border: 1px solid var(--border); color: var(--text-main); border-radius: 6px; font-size: 14px; }
-        button.btn { background: linear-gradient(135deg, var(--primary), #2563eb); color: white; border: none; padding: 12px 20px; border-radius: 6px; cursor: pointer; font-weight: bold; width: 100%; font-size: 15px; }
+        label { font-size: 13px; color: var(--text-muted); display: block; margin-top: 10px; }
+        input[type="text"], input[type="email"], input[type="password"], input[type="file"] {
+            width: 100%;
+            padding: 12px;
+            margin: 8px 0 18px 0;
+            background: var(--bg-main);
+            border: 1px solid var(--border);
+            color: var(--text-main);
+            border-radius: 6px;
+            font-size: 14px;
+        }
+        button.btn {
+            background: linear-gradient(135deg, var(--primary), #2563eb);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            width: 100%;
+            font-size: 15px;
+            margin-top: 10px;
+        }
         button.btn:hover { opacity: 0.9; }
-        .news-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
-        .news-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; display: flex; flex-direction: column; }
-        .news-card img { width: 100%; height: 160px; object-fit: cover; }
+        button.btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+        /* Rich Text Editor */
+        .editor-toolbar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            background: #1e293b;
+            padding: 10px;
+            border: 1px solid var(--border);
+            border-bottom: none;
+            border-radius: 6px 6px 0 0;
+            margin-top: 8px;
+        }
+        .editor-toolbar button {
+            background: var(--bg-main);
+            color: var(--text-main);
+            border: 1px solid var(--border);
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: bold;
+        }
+        .editor-toolbar button:hover {
+            background: var(--primary);
+            color: var(--bg-main);
+        }
+        .editor-area {
+            width: 100%;
+            min-height: 250px;
+            padding: 18px;
+            background: var(--bg-main);
+            border: 1px solid var(--border);
+            border-radius: 0 0 6px 6px;
+            color: var(--text-main);
+            font-size: 15px;
+            line-height: 1.7;
+            outline: none;
+            margin-bottom: 18px;
+            overflow-y: auto;
+        }
+        .editor-area:empty:before {
+            content: attr(data-placeholder);
+            color: var(--text-muted);
+        }
+        .editor-area img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin: 12px 0;
+            display: block;
+            border: 1px solid var(--border);
+        }
+
+        /* News Grid */
+        .news-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+        .news-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            cursor: pointer;
+            transition: transform 0.2s, border-color 0.2s;
+        }
+        .news-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--primary);
+        }
+        .news-card img {
+            width: 100%;
+            height: 170px;
+            object-fit: cover;
+        }
         .news-content { padding: 15px; flex: 1; display: flex; flex-direction: column; justify-content: space-between; }
         .news-title { font-size: 18px; margin-bottom: 8px; color: var(--primary); }
-        .news-desc { font-size: 14px; color: var(--text-muted); margin-bottom: 12px; }
-        .news-meta { font-size: 12px; color: var(--accent); display: flex; justify-content: space-between; }
-        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
-        th, td { padding: 12px; text-align: left; border-bottom: 1px solid var(--border); font-size: 14px; }
+        .news-desc { font-size: 14px; color: var(--text-muted); margin-bottom: 12px; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+        .news-meta { font-size: 12px; color: var(--accent); display: flex; justify-content: space-between; align-items: center; }
+
+        /* Full Article View */
+        .article-body {
+            line-height: 1.8;
+            font-size: 16px;
+            color: var(--text-main);
+            margin-top: 20px;
+        }
+        .article-body img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin: 15px 0;
+            display: block;
+        }
+        .article-body h2, .article-body h3 { margin: 18px 0 10px 0; color: var(--primary); }
+        .article-body ul, .article-body ol { margin-left: 25px; margin-bottom: 15px; }
+
+        /* Admin Table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+            font-size: 14px;
+        }
         th { color: var(--primary); }
-        .action-btn { padding: 6px 10px; border-radius: 4px; border: none; cursor: pointer; font-size: 12px; margin-right: 5px; }
+        .action-btn {
+            padding: 6px 10px;
+            border-radius: 4px;
+            border: none;
+            cursor: pointer;
+            font-size: 12px;
+            margin-right: 5px;
+        }
         .btn-approve { background: var(--success); color: white; }
         .btn-delete { background: var(--accent); color: white; }
-        .user-info { display: flex; justify-content: space-between; align-items: center; background: rgba(56, 189, 248, 0.1); padding: 12px 18px; border-radius: 6px; border: 1px solid rgba(56, 189, 248, 0.2); margin-bottom: 20px; }
-        footer { text-align: center; padding: 20px; border-top: 1px solid var(--border); color: var(--text-muted); font-size: 14px; background: var(--bg-card); }
+
+        .user-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(56, 189, 248, 0.1);
+            padding: 12px 18px;
+            border-radius: 6px;
+            border: 1px solid rgba(56, 189, 248, 0.2);
+            margin-bottom: 20px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            border-top: 1px solid var(--border);
+            color: var(--text-muted);
+            font-size: 14px;
+            background: var(--bg-card);
+        }
     </style>
 </head>
 <body>
@@ -68,14 +284,20 @@
 
     <div class="container">
 
-        <!-- 1. HOME -->
+        <!-- 1. HOME / NEWS FEED SECTION -->
         <div id="home" class="section active">
             <h2>🔥 නවතම පුවත්</h2>
-            <p style="color: var(--text-muted); margin-bottom: 20px;">අපගේ පරිශීලකයින් විසින් එකතු කරන ලද නවතම පුවත්.</p>
+            <p style="color: var(--text-muted); margin-bottom: 20px;">සම්පූර්ණ විස්තරය කියවීමට පුවත මත ක්ලික් කරන්න.</p>
             <div class="news-grid" id="public-news-container"></div>
         </div>
 
-        <!-- 2. USER DASHBOARD -->
+        <!-- 1.5 FULL NEWS VIEW SECTION -->
+        <div id="article-view" class="section">
+            <button onclick="switchTab('home')" style="background: var(--bg-card); color: var(--primary); border: 1px solid var(--border); padding: 8px 16px; border-radius: 6px; cursor: pointer; margin-bottom: 15px;">⬅️ ආපසු ප්‍රධාන පිටුවට</button>
+            <div class="card" id="full-article-content"></div>
+        </div>
+
+        <!-- 2. USER DASHBOARD SECTION -->
         <div id="user" class="section">
             <div class="card" id="auth-card">
                 <h3>👤 පරිශීලක ගිණුමට ඇතුළුවීම</h3>
@@ -89,19 +311,35 @@
                     <span>👤 පිවිසී ඇත්තේ: <strong id="logged-user-name" style="color: var(--primary);"></strong></span>
                     <button onclick="logoutUser()" style="background: var(--accent); color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 12px;">Logout</button>
                 </div>
-                <h3>✍️ නව පුවතක් එකතු කරන්න</h3>
-                <input type="text" id="news-title" placeholder="පුවතේ මාතෘකාව (Title)">
-                <input type="file" id="news-image" accept="image/*">
-                <textarea id="news-desc" rows="4" placeholder="පුවතේ සම්පූර්ණ විස්තරය..."></textarea>
+                <h3>✍️ නව පුවතක් සකසන්න</h3>
+                
+                <label>පුවතේ ප්‍රධාන සිරස්තලය (Title)</label>
+                <input type="text" id="news-title" placeholder="පුවතේ මාතෘකාව මෙහි ලියන්න...">
+                
+                <label>ප්‍රධාන කවරයේ ඡායාරූපය (Main Cover Photo)</label>
+                <input type="file" id="news-cover-image" accept="image/*">
+                
+                <label>පුවතේ සම්පූර්ණ විස්තරය</label>
+                <div class="editor-toolbar">
+                    <button type="button" onclick="formatDoc('bold')"><b>B</b></button>
+                    <button type="button" onclick="formatDoc('italic')"><i>I</i></button>
+                    <button type="button" onclick="formatDoc('underline')"><u>U</u></button>
+                    <button type="button" onclick="formatDoc('formatBlock', 'H3')">H3</button>
+                    <button type="button" onclick="formatDoc('insertUnorderedList')">• List</button>
+                    <button type="button" onclick="triggerInlineImage()" style="background: var(--primary); color: var(--bg-main);">📷 ෆොටෝ එකක් එක් කරන්න</button>
+                </div>
+                <input type="file" id="inline-image-input" accept="image/*" multiple style="display: none;" onchange="insertInlineImages(this)">
+                <div id="news-editor" class="editor-area" contenteditable="true" data-placeholder="පුවත මෙහි ලියන්න..."></div>
+
                 <button class="btn" id="submit-btn" onclick="submitNews()">පුවත Publish කිරීමට යොමු කරන්න</button>
             </div>
         </div>
 
-        <!-- 3. ADMIN PANEL -->
+        <!-- 3. ADMIN PANEL SECTION -->
         <div id="admin" class="section">
             <div class="card" id="admin-login-card" style="max-width: 450px; margin: 20px auto;">
                 <h3>🔐 ඇඩ්මින් පිවිසුම (Admin Login)</h3>
-                <input type="password" id="admin-password" placeholder="මුරපදය ඇතුළත් කරන්න">
+                <input type="password" id="admin-password" placeholder="මුරපදය ඇතුළත් කරන්න" onkeypress="if(event.key === 'Enter') verifyAdmin()">
                 <button class="btn" onclick="verifyAdmin()">ඇතුළු වන්න</button>
             </div>
 
@@ -129,14 +367,13 @@
     <footer>&copy; 2026 Newsat.space. All Rights Reserved.</footer>
 
     <script>
-        // --- FIREBASE CONFIGURATION (ඔබේ Firebase දත්ත මෙහි දමන්න) ---
         const firebaseConfig = {
-            apiKey: "YOUR_API_KEY",
-            authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-            projectId: "YOUR_PROJECT_ID",
-            storageBucket: "YOUR_PROJECT_ID.appspot.com",
-            messagingSenderId: "YOUR_SENDER_ID",
-            appId: "YOUR_APP_ID"
+            apiKey: "AIzaSyBnUPr3XxkYd5qYo7sAoE8MZc-F9K",
+            authDomain: "newsat-2d9f8.firebaseapp.com",
+            projectId: "newsat-2d9f8",
+            storageBucket: "newsat-2d9f8.firebasestorage.app",
+            messagingSenderId: "529324718671",
+            appId: "1:529324718671:web:0f45e89bf317cbb061083a"
         };
 
         firebase.initializeApp(firebaseConfig);
@@ -146,26 +383,56 @@
         const ADMIN_PASS = "cha1996AM";
         let isAdminLogged = sessionStorage.getItem('newsat_admin') === 'true';
         let currentUser = localStorage.getItem('newsat_user') || null;
+        let cachedNews = {};
 
         function switchTab(tabId) {
             document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
             document.querySelectorAll('nav button').forEach(btn => btn.classList.remove('active'));
             document.getElementById(tabId).classList.add('active');
-            document.getElementById('nav-' + tabId).classList.add('active');
-            
+            if(document.getElementById('nav-' + tabId)) {
+                document.getElementById('nav-' + tabId).classList.add('active');
+            }
             if(tabId === 'home') fetchPublicNews();
             if(tabId === 'user') checkLoginState();
             if(tabId === 'admin') checkAdminState();
         }
 
-        // Admin Auth
+        function formatDoc(cmd, value = null) {
+            document.execCommand(cmd, false, value);
+            document.getElementById('news-editor').focus();
+        }
+
+        function triggerInlineImage() {
+            document.getElementById('inline-image-input').click();
+        }
+
+        // Convert selected inline images directly to Base64 to prevent storage upload hangs
+        function insertInlineImages(input) {
+            if (!input.files || input.files.length === 0) return;
+            const editor = document.getElementById('news-editor');
+            
+            for (let i = 0; i < input.files.length; i++) {
+                const file = input.files[i];
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const imgHtml = `<br><img src="${e.target.result}" alt="Photo"><br>`;
+                    editor.focus();
+                    document.execCommand('insertHTML', false, imgHtml);
+                };
+                reader.readAsDataURL(file);
+            }
+            input.value = '';
+        }
+
         function verifyAdmin() {
             if(document.getElementById('admin-password').value === ADMIN_PASS) {
                 isAdminLogged = true;
                 sessionStorage.setItem('newsat_admin', 'true');
+                document.getElementById('admin-password').value = '';
                 checkAdminState();
             } else { alert('මුරපදය වැරදියි!'); }
         }
+
         function checkAdminState() {
             if(isAdminLogged) {
                 document.getElementById('admin-login-card').style.display = 'none';
@@ -176,20 +443,22 @@
                 document.getElementById('admin-dashboard-card').style.display = 'none';
             }
         }
+
         function logoutAdmin() {
             isAdminLogged = false;
             sessionStorage.removeItem('newsat_admin');
             checkAdminState();
         }
 
-        // User Auth
         function registerUser() {
             let name = document.getElementById('username').value.trim();
-            if(!name) { alert('නම ඇතුළත් කරන්න!'); return; }
+            let email = document.getElementById('useremail').value.trim();
+            if(!name || !email) { alert('නම සහ ඊමේල් ලිපිනය ඇතුළත් කරන්න!'); return; }
             currentUser = name;
             localStorage.setItem('newsat_user', currentUser);
             checkLoginState();
         }
+
         function checkLoginState() {
             if(currentUser) {
                 document.getElementById('auth-card').style.display = 'none';
@@ -200,69 +469,113 @@
                 document.getElementById('add-news-card').style.display = 'none';
             }
         }
+
         function logoutUser() {
             localStorage.removeItem('newsat_user');
             currentUser = null;
             checkLoginState();
         }
 
-        // Submit News with Firebase Storage & Firestore
-        function submitNews() {
+        // Safe Submit with Base64 Fallback to prevent hanging
+        async function submitNews() {
             let title = document.getElementById('news-title').value.trim();
-            let desc = document.getElementById('news-desc').value.trim();
-            let fileInput = document.getElementById('news-image');
+            let editorContent = document.getElementById('news-editor').innerHTML.trim();
+            let plainText = document.getElementById('news-editor').innerText.trim();
+            let coverInput = document.getElementById('news-cover-image');
             
-            if(!title || !desc) { alert('සියල්ල පුරවන්න!'); return; }
-            if(!fileInput.files[0]) { alert('කරුණාකර පින්තූරයක් තෝරන්න!'); return; }
+            if(!title || !plainText) { 
+                alert('කරුණාකර මාතෘකාව සහ විස්තරය ඇතුළත් කරන්න!'); 
+                return; 
+            }
+            if(!coverInput.files || !coverInput.files[0]) { 
+                alert('කරුණාකර ප්‍රධාන කවරයේ ඡායාරූපයක් තෝරන්න!'); 
+                return; 
+            }
 
-            document.getElementById('submit-btn').innerText = "Upload වෙමින් පවතී...";
-            document.getElementById('submit-btn').disabled = true;
+            let submitBtn = document.getElementById('submit-btn');
+            submitBtn.innerText = "පුවත Publish වෙමින් පවතී...";
+            submitBtn.disabled = true;
 
-            let file = fileInput.files[0];
+            let file = coverInput.files[0];
+            
+            // Helper function to save to Firestore
+            const saveToFirestore = (imgUrl) => {
+                db.collection('news').add({
+                    title: title,
+                    desc: plainText.substring(0, 150) + "...",
+                    contentHtml: editorContent,
+                    image: imgUrl,
+                    author: currentUser,
+                    status: "Pending",
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                }).then(() => {
+                    alert('පුවත සාර්ථකව යවන ලදී! ඇඩ්මින් අනුමත කළ පසු ප්‍රධාන පිටුවේ පෙන්වනු ඇත.');
+                    document.getElementById('news-title').value = '';
+                    document.getElementById('news-editor').innerHTML = '';
+                    coverInput.value = '';
+                    submitBtn.innerText = "පුවත Publish කිරීමට යොමු කරන්න";
+                    submitBtn.disabled = false;
+                    switchTab('home');
+                }).catch(error => {
+                    alert('දෝෂයක් ඇති විය: ' + error.message);
+                    submitBtn.innerText = "පුවත Publish කිරීමට යොමු කරන්න";
+                    submitBtn.disabled = false;
+                });
+            };
+
+            // Try Firebase Storage first; if it fails or hangs, automatically fallback to Base64 data URL
+            let uploadDone = false;
             let storageRef = storage.ref('news_images/' + Date.now() + '_' + file.name);
+
+            setTimeout(() => {
+                if(!uploadDone) {
+                    // Fallback to Base64 if storage takes too long
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        uploadDone = true;
+                        saveToFirestore(e.target.result);
+                    };
+                    reader.readAsDataURL(file);
+                }
+            }, 5000); // 5 seconds timeout limit
 
             storageRef.put(file).then(snapshot => {
                 return snapshot.ref.getDownloadURL();
             }).then(downloadURL => {
-                return db.collection('news').add({
-                    title: title,
-                    desc: desc,
-                    image: downloadURL,
-                    author: currentUser,
-                    status: "Pending",
-                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
-                });
-            }).then(() => {
-                alert('පුවත සාර්ථකව යවන ලදී!');
-                document.getElementById('news-title').value = '';
-                document.getElementById('news-desc').value = '';
-                document.getElementById('news-image').value = '';
-                document.getElementById('submit-btn').innerText = "පුවත Publish කිරීමට යොමු කරන්න";
-                document.getElementById('submit-btn').disabled = false;
-                switchTab('home');
+                if(!uploadDone) {
+                    uploadDone = true;
+                    saveToFirestore(downloadURL);
+                }
             }).catch(error => {
-                alert('දෝෂයක් ඇති විය: ' + error.message);
-                document.getElementById('submit-btn').innerText = "පුවත Publish කිරීමට යොමු කරන්න";
-                document.getElementById('submit-btn').disabled = false;
+                if(!uploadDone) {
+                    uploadDone = true;
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        saveToFirestore(e.target.result);
+                    };
+                    reader.readAsDataURL(file);
+                }
             });
         }
 
-        // Fetch Public News (Approved only)
         function fetchPublicNews() {
             let container = document.getElementById('public-news-container');
             container.innerHTML = '<p style="color:var(--text-muted);">පුවත් පූරණය වෙමින් පවතී...</p>';
             
             db.collection('news').where('status', '==', 'Approved').get().then(querySnapshot => {
                 container.innerHTML = '';
+                cachedNews = {};
                 if(querySnapshot.empty) {
                     container.innerHTML = '<p style="color:var(--text-muted);">තවම අනුමත කළ පුවත් නැත.</p>';
                     return;
                 }
                 querySnapshot.forEach(doc => {
                     let item = doc.data();
+                    let id = doc.id;
+                    cachedNews[id] = item;
                     container.innerHTML += `
-                        <div class="news-card">
-                            <img src="${item.image}" alt="News">
+                        <div class="news-card" onclick="openFullArticle('${id}')">
+                            <img src="${item.image}" alt="News Image">
                             <div class="news-content">
                                 <div>
                                     <h3 class="news-title">${item.title}</h3>
@@ -270,24 +583,40 @@
                                 </div>
                                 <div class="news-meta">
                                     <span>කර්තෘ: ${item.author}</span>
-                                    <span>✅ Active</span>
+                                    <span style="color: var(--primary); font-weight: bold;">කියවන්න →</span>
                                 </div>
                             </div>
                         </div>
                     `;
                 });
+            }).catch(error => {
+                container.innerHTML = '<p style="color:var(--accent);">පුවත් ලබාගැනීමේ දෝෂයක් ඇත.</p>';
             });
         }
 
-        // Fetch All News for Admin
+        function openFullArticle(id) {
+            const item = cachedNews[id];
+            if(!item) return;
+
+            const fullContainer = document.getElementById('full-article-content');
+            fullContainer.innerHTML = `
+                <h1 style="color: var(--primary); font-size: 26px; margin-bottom: 10px;">${item.title}</h1>
+                <p style="color: var(--accent); font-size: 13px; margin-bottom: 18px;">✍️ කර්තෘ: ${item.author}</p>
+                <img src="${item.image}" style="width: 100%; max-height: 420px; object-fit: cover; border-radius: 8px; margin-bottom: 20px;" alt="Cover">
+                <div class="article-body">${item.contentHtml || item.desc}</div>
+            `;
+            switchTab('article-view');
+            window.scrollTo(0, 0);
+        }
+
         function fetchAllNews() {
             let tbody = document.getElementById('admin-news-table');
-            tbody.innerHTML = '<tr><td colspan="4">පූරණය වෙමින් පවතී...</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;">පූරණය වෙමින් පවතී...</td></tr>';
             
             db.collection('news').get().then(querySnapshot => {
                 tbody.innerHTML = '';
                 if(querySnapshot.empty) {
-                    tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;">පුවත් නැත.</td></tr>';
+                    tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; color:var(--text-muted);">පුවත් නැත.</td></tr>';
                     return;
                 }
                 querySnapshot.forEach(doc => {
