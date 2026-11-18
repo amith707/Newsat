@@ -239,8 +239,21 @@
 
         <!-- 3. ADMIN PANEL SECTION -->
         <div id="admin" class="section">
-            <div class="card">
-                <h3>⚙️ ඇඩ්මින් පාලක මණ්ඩලය (Admin Panel)</h3>
+            
+            <!-- Admin Login Box -->
+            <div class="card" id="admin-login-card" style="max-width: 450px; margin: 20px auto;">
+                <h3>🔐 ඇඩ්මින් පිවිසුම (Admin Login)</h3>
+                <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 15px;">ඇඩ්මින් පාලක මණ්ඩලයට පිවිසීම සඳහා මුරපදය (Password) ඇතුළත් කරන්න.</p>
+                <input type="password" id="admin-password" placeholder="මුරපදය ඇතුළත් කරන්න" onkeypress="if(event.key === 'Enter') verifyAdmin()">
+                <button class="btn" onclick="verifyAdmin()">ඇතුළු වන්න</button>
+            </div>
+
+            <!-- Admin Dashboard Content (Hidden until password verified) -->
+            <div class="card" id="admin-dashboard-card" style="display: none;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                    <h3 style="margin-bottom: 0;">⚙️ ඇඩ්මින් පාලක මණ්ඩලය</h3>
+                    <button onclick="logoutAdmin()" style="background: var(--accent); color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 12px;">Admin Logout</button>
+                </div>
                 <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 15px;">පරිශීලකයින් විසින් එවන ලද පුවත් පරීක්ෂා කර අනුමත කරන්න හෝ මකා දමන්න.</p>
                 <div style="overflow-x: auto;">
                     <table>
@@ -258,6 +271,7 @@
                     </table>
                 </div>
             </div>
+
         </div>
 
     </div>
@@ -267,6 +281,9 @@
     </footer>
 
     <script>
+        const ADMIN_PASS = "cha1996AM";
+        let isAdminLogged = sessionStorage.getItem('newsat_admin') === 'true';
+
         let currentUser = localStorage.getItem('newsat_user') || null;
         let newsList = JSON.parse(localStorage.getItem('newsat_news')) || [
             { id: 1, title: "SpaceX නව රොකට් අභ්‍යවකාශයට", desc: "අද දින සාර්ථක ලෙස අභ්‍යවකාශගත කරන ලද නවතම රොකට්ටුව පිළිබඳ තොරතුරු.", image: "https://images.unsplash.com/photo-1517976487492-5750f3195933?w=500", author: "Admin", status: "Approved" }
@@ -277,11 +294,43 @@
             document.querySelectorAll('nav button').forEach(btn => btn.classList.remove('active'));
             document.getElementById(tabId).classList.add('active');
             document.getElementById('nav-' + tabId).classList.add('active');
+            
             if(tabId === 'home') renderPublicNews();
-            if(tabId === 'admin') renderAdminTable();
             if(tabId === 'user') checkLoginState();
+            if(tabId === 'admin') checkAdminState();
         }
 
+        // Admin Authentication Functions
+        function verifyAdmin() {
+            const inputPass = document.getElementById('admin-password').value;
+            if(inputPass === ADMIN_PASS) {
+                isAdminLogged = true;
+                sessionStorage.setItem('newsat_admin', 'true');
+                document.getElementById('admin-password').value = '';
+                checkAdminState();
+            } else {
+                alert('මුරපදය වැරදියි! කරුණාකර නැවත උත්සාහ කරන්න.');
+            }
+        }
+
+        function checkAdminState() {
+            if(isAdminLogged) {
+                document.getElementById('admin-login-card').style.display = 'none';
+                document.getElementById('admin-dashboard-card').style.display = 'block';
+                renderAdminTable();
+            } else {
+                document.getElementById('admin-login-card').style.display = 'block';
+                document.getElementById('admin-dashboard-card').style.display = 'none';
+            }
+        }
+
+        function logoutAdmin() {
+            isAdminLogged = false;
+            sessionStorage.removeItem('newsat_admin');
+            checkAdminState();
+        }
+
+        // User Functions
         function registerUser() {
             let name = document.getElementById('username').value.trim();
             let email = document.getElementById('useremail').value.trim();
@@ -416,6 +465,7 @@
         window.onload = function() {
             renderPublicNews();
             checkLoginState();
+            checkAdminState();
         }
     </script>
 </body>
