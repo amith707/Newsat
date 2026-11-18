@@ -2,21 +2,106 @@
 <html lang="si">
 <head>
     <meta charset="UTF-8">
-    <title>මගේ පළමු වෙබ් අඩවිය</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Newsat.space - Tech & News Hub</title>
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
         body {
-            font-family: Arial, sans-serif;
+            background-color: #0b0f19;
+            color: #f3f4f6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        header {
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #1f293d;
+        }
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #38bdf8;
+            letter-spacing: 1px;
+        }
+        .logo span {
+            color: #f43f5e;
+        }
+        main {
             text-align: center;
-            margin-top: 100px;
-            background-color: #f4f4f9;
+            padding: 60px 20px;
+            max-width: 800px;
+            margin: auto;
         }
         h1 {
-            color: #333;
+            font-size: 42px;
+            margin-bottom: 20px;
+            background: linear-gradient(90deg, #38bdf8, #818cf8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        p {
+            font-size: 18px;
+            color: #9ca3af;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+        .badge {
+            display: inline-block;
+            background-color: rgba(56, 189, 248, 0.1);
+            color: #38bdf8;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            border: 1px solid rgba(56, 189, 248, 0.2);
+            margin-bottom: 20px;
+        }
+        .btn {
+            display: inline-block;
+            background: linear-gradient(135deg, #38bdf8, #2563eb);
+            color: white;
+            padding: 12px 30px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: opacity 0.3s ease;
+        }
+        .btn:hover {
+            opacity: 0.9;
+        }
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: #6b7280;
+            font-size: 14px;
+            border-top: 1px solid #1f293d;
         }
     </style>
 </head>
 <body>
-    <h1>স্বাগতম! මගේ GitHub වෙබ් අඩවියට සාදරයෙන් පිළිගනිමු!</h1>
-    <p>මෙය GitHub Pages හරහා Host කරන ලදී.</p>
+
+    <header>
+        <div class="logo">Newsat<span>.space</span></div>
+    </header>
+
+    <main>
+        <div class="badge">🚀 Online & Active</div>
+        <h1>නව ලෝකයේ තාක්ෂණික සහ පුවත් මධ්‍යස්ථානය</h1>
+        <p>අපගේ වෙබ් අඩවිය මේ වන විට සාර්ථකව නිර්මාණය කරමින් පවතී. නුදුරේදීම නවමු අත්දැකීම් සමඟින් ඔබ වෙත පැමිණෙන්නෙමු.</p>
+        <a href="#" class="btn">ළඟදිම බලාපොරොත්තු වන්න</a>
+    </main>
+
+    <footer>
+        &copy; 2026 Newsat.space. All Rights Reserved.
+    </footer>
+
 </body>
 </html>
