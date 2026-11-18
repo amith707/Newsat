@@ -105,22 +105,24 @@
             <div class="card" id="full-article-content"></div>
         </div>
 
-        <!-- 2. USER REGISTRATION / PROFILE -->
+        <!-- 2. USER REGISTRATION / LOGIN & PROFILE -->
         <div id="user" class="section">
             <div class="card" id="auth-card" style="max-width: 450px; margin: 20px auto;">
-                <h3 id="txt-login-title">👤 ලියාපදිංචිය / පිවිසීම</h3>
+                <h3 id="txt-login-title">👤 ගිණුම් ලියාපදිංචිය / පිවිසීම</h3>
                 <label>සම්පූර්ණ නම (Full Name)</label>
                 <input type="text" id="reg-name" placeholder="ඔබේ නම මෙහි ලියන්න...">
-                <label>ඊමේල් ලිපිනය (Email)</label>
+                <label>ඊමේල් ලිපිනය (Email Address)</label>
                 <input type="email" id="reg-email" placeholder="example@gmail.com">
-                <label>දුරකථන අංකය (Phone)</label>
+                <label>මුරපදය (Password)</label>
+                <input type="password" id="reg-pass" placeholder="රහස් මුරපදයක් ඇතුළත් කරන්න">
+                <label>දුරකථන අංකය (Phone Number)</label>
                 <input type="text" id="reg-phone" placeholder="07XXXXXXXX">
                 <label>කාර්යභාරය (Role)</label>
                 <select id="reg-role">
                     <option value="Writer">သတင်း රචක / News Writer</option>
                     <option value="Editor">ಸංಸ್කාරಕ / Editor</option>
                 </select>
-                <button class="btn" id="txt-login-btn" onclick="registerUser()">ගිණුම සාදා ඇතුළු වන්න</button>
+                <button class="btn" id="txt-login-btn" onclick="handleUserAuth()">ගිණුම සාදා ඇතුළු වන්න / පිවිසෙන්න</button>
             </div>
 
             <div class="card" id="add-news-card" style="display: none;">
@@ -212,7 +214,7 @@
                 home: "ප්‍රධාන පිටුව", user: "ගිණුම", latest: "🔥 නවතම පුවත්",
                 subLatest: "අපගේ නවතම ලිපි සහ පුවත් මෙහි ප්‍රදර්ශනය වේ.",
                 searchPh: "🔍 පුවත් සෙවීම සඳහා මෙහි ලියන්න...", back: "ආපසු ප්‍රධාන පිටුවට",
-                loginTitle: "👤 ලියාපදිංචිය / පිවිසීම", loginBtn: "ගිණුම සාදා ඇතුළු වන්න",
+                loginTitle: "👤 ගිණුම් ලියාපදිංචිය / පිවිසීම", loginBtn: "ගිණුම සාදා ඇතුළු වන්න / පිවිසෙන්න",
                 addTitle: "✍️ නව පුවතක් සකසන්න", lblTitle: "පුවතේ මාතෘකාව (Title)",
                 titlePh: "පුවතේ මාතෘකාව මෙහි ලියන්න...", lblContent: "පුවතේ විස්තරය",
                 editorPh: "මෙහි ඔබේ පුවත ලියන්න...", submitBtn: "පුවත Publish කිරීමට යොමු කරන්න", readMore: "කියවන්න →"
@@ -297,21 +299,46 @@
             checkAdminState();
         }
 
-        function registerUser() {
+        // --- USER AUTHENTICATION & FIREBASE USERS COLLECTION ---
+        async function handleUserAuth() {
             let name = document.getElementById('reg-name').value.trim();
             let email = document.getElementById('reg-email').value.trim();
+            let pass = document.getElementById('reg-pass').value.trim();
             let phone = document.getElementById('reg-phone').value.trim();
             let role = document.getElementById('reg-role').value;
 
-            if(!name || !email || !phone) { 
-                alert('කරුණාකර සියලුම විස්තර පුරවන්න!'); 
+            if(!name || !email || !pass || !phone) { 
+                alert('කරුණාකර සියලුම විස්තර සහ මුරපදය ඇතුළත් කරන්න!'); 
                 return; 
             }
 
-            currentUser = { name, email, phone, role };
-            localStorage.setItem('newsat_user_profile', JSON.stringify(currentUser));
-            checkLoginState();
-            alert('ගිණුම සාර්ථකව සාදන ලදී!');
+            try {
+                // Check if user already exists in Firestore 'users' collection
+                let userQuery = await db.collection('users').where('email', '==', email).get();
+                
+                if(!userQuery.empty) {
+                    // User exists, verify password
+                    let userData = userQuery.docs[0].data();
+                    if(userData.password === pass) {
+                        currentUser = userData;
+                        localStorage.setItem('newsat_user_profile', JSON.stringify(currentUser));
+                        checkLoginState();
+                        alert('සාර්ථකව ගිණුමට පිවිසෙන ලදී!');
+                    } else {
+                        alert('ඇතුළත් කළ මුරපදය (Password) වැරදියි!');
+                    }
+                } else {
+                    // Create new user in Firestore
+                    let newUser = { name, email, password: pass, phone, role, createdAt: new Date().toLocaleDateString() };
+                    await db.collection('users').add(newUser);
+                    currentUser = newUser;
+                    localStorage.setItem('newsat_user_profile', JSON.stringify(currentUser));
+                    checkLoginState();
+                    alert('නව ගිණුම සාර්ථකව සාදන ලදී!');
+                }
+            } catch (error) {
+                alert('දෝෂයක් ඇති විය: ' + error.message);
+            }
         }
 
         function checkLoginState() {
@@ -333,7 +360,7 @@
             checkLoginState();
         }
 
-        // --- FIREBASE DATABASE FUNCTIONS ---
+        // --- FIREBASE NEWS FUNCTIONS ---
         function submitNews() {
             let title = document.getElementById('news-title').value.trim();
             let editorContent = document.getElementById('news-editor').innerHTML.trim();
