@@ -5,10 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Newsat.space - Tech & News Hub</title>
     
-    <!-- Firebase SDK -->
+    <!-- Firebase SDK (Compat Version) -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
 
     <style>
         :root {
@@ -126,7 +125,7 @@
         button.btn:hover { opacity: 0.9; }
         button.btn:disabled { opacity: 0.5; cursor: not-allowed; }
 
-        /* Rich Text Editor */
+        /* Advanced Word-like Rich Text Editor Styles */
         .editor-toolbar {
             display: flex;
             flex-wrap: wrap;
@@ -154,14 +153,14 @@
         }
         .editor-area {
             width: 100%;
-            min-height: 250px;
+            min-height: 300px;
             padding: 18px;
             background: var(--bg-main);
             border: 1px solid var(--border);
             border-radius: 0 0 6px 6px;
             color: var(--text-main);
             font-size: 15px;
-            line-height: 1.7;
+            line-height: 1.8;
             outline: none;
             margin-bottom: 18px;
             overflow-y: auto;
@@ -174,7 +173,7 @@
             max-width: 100%;
             height: auto;
             border-radius: 8px;
-            margin: 12px 0;
+            margin: 15px 0;
             display: block;
             border: 1px solid var(--border);
         }
@@ -211,7 +210,7 @@
 
         /* Full Article View */
         .article-body {
-            line-height: 1.8;
+            line-height: 1.9;
             font-size: 16px;
             color: var(--text-main);
             margin-top: 20px;
@@ -223,7 +222,7 @@
             margin: 15px 0;
             display: block;
         }
-        .article-body h2, .article-body h3 { margin: 18px 0 10px 0; color: var(--primary); }
+        .article-body h2, .article-body h3 { margin: 20px 0 10px 0; color: var(--primary); }
         .article-body ul, .article-body ol { margin-left: 25px; margin-bottom: 15px; }
 
         /* Admin Table */
@@ -311,7 +310,7 @@
                     <span>👤 පිවිසී ඇත්තේ: <strong id="logged-user-name" style="color: var(--primary);"></strong></span>
                     <button onclick="logoutUser()" style="background: var(--accent); color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 12px;">Logout</button>
                 </div>
-                <h3>✍️ නව පුවතක් සකසන්න</h3>
+                <h3>✍️ නව පුවතක් සකසන්න (Advanced Editor)</h3>
                 
                 <label>පුවතේ ප්‍රධාන සිරස්තලය (Title)</label>
                 <input type="text" id="news-title" placeholder="පුවතේ මාතෘකාව මෙහි ලියන්න...">
@@ -319,17 +318,18 @@
                 <label>ප්‍රධාන කවරයේ ඡායාරූපය (Main Cover Photo)</label>
                 <input type="file" id="news-cover-image" accept="image/*">
                 
-                <label>පුවතේ සම්පූර්ණ විස්තරය</label>
+                <label>පුවතේ සම්පූර්ණ විස්තරය (Word Document එකක් මෙන් සකසන්න)</label>
                 <div class="editor-toolbar">
-                    <button type="button" onclick="formatDoc('bold')"><b>B</b></button>
-                    <button type="button" onclick="formatDoc('italic')"><i>I</i></button>
-                    <button type="button" onclick="formatDoc('underline')"><u>U</u></button>
-                    <button type="button" onclick="formatDoc('formatBlock', 'H3')">H3</button>
-                    <button type="button" onclick="formatDoc('insertUnorderedList')">• List</button>
-                    <button type="button" onclick="triggerInlineImage()" style="background: var(--primary); color: var(--bg-main);">📷 ෆොටෝ එකක් එක් කරන්න</button>
+                    <button type="button" onclick="formatDoc('bold')" title="Bold"><b>B</b></button>
+                    <button type="button" onclick="formatDoc('italic')" title="Italic"><i>I</i></button>
+                    <button type="button" onclick="formatDoc('underline')" title="Underline"><u>U</u></button>
+                    <button type="button" onclick="formatDoc('formatBlock', 'H3')" title="Heading">H3</button>
+                    <button type="button" onclick="formatDoc('insertUnorderedList')" title="Bullet List">• List</button>
+                    <button type="button" onclick="formatDoc('insertOrderedList')" title="Numbered List">1. List</button>
+                    <button type="button" onclick="triggerInlineImage()" style="background: var(--primary); color: var(--bg-main);" title="Add Photos">📷 ෆොටෝ එකක් එක් කරන්න</button>
                 </div>
                 <input type="file" id="inline-image-input" accept="image/*" multiple style="display: none;" onchange="insertInlineImages(this)">
-                <div id="news-editor" class="editor-area" contenteditable="true" data-placeholder="පුවත මෙහි ලියන්න..."></div>
+                <div id="news-editor" class="editor-area" contenteditable="true" data-placeholder="ඔබේ පුවත මෙහි ලියන්න. ඡායාරූප ඇතුළත් කිරීමට ඉහත '📷 ෆොටෝ එකක් එක් කරන්න' බොත්තම ඔබන්න..."></div>
 
                 <button class="btn" id="submit-btn" onclick="submitNews()">පුවත Publish කිරීමට යොමු කරන්න</button>
             </div>
@@ -367,18 +367,18 @@
     <footer>&copy; 2026 Newsat.space. All Rights Reserved.</footer>
 
     <script>
+        // --- FIREBASE CONFIGURATION ---
         const firebaseConfig = {
             apiKey: "AIzaSyBnUPr3XxkYd5qYo7sAoE8MZc-F9K",
-            authDomain: "newsat-2d9f8.firebaseapp.com",
-            projectId: "newsat-2d9f8",
-            storageBucket: "newsat-2d9f8.firebasestorage.app",
+            authDomain: "newsat-2d9F8.firebaseapp.com",
+            projectId: "newsat-2D9F8",
+            storageBucket: "newsat-2d9F8.appspot.com",
             messagingSenderId: "529324718671",
             appId: "1:529324718671:web:0f45e89bf317cbb061083a"
         };
 
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
-        const storage = firebase.storage();
 
         const ADMIN_PASS = "cha1996AM";
         let isAdminLogged = sessionStorage.getItem('newsat_admin') === 'true';
@@ -397,6 +397,7 @@
             if(tabId === 'admin') checkAdminState();
         }
 
+        // Rich Text Formatting
         function formatDoc(cmd, value = null) {
             document.execCommand(cmd, false, value);
             document.getElementById('news-editor').focus();
@@ -406,7 +407,7 @@
             document.getElementById('inline-image-input').click();
         }
 
-        // Convert selected inline images directly to Base64 to prevent storage upload hangs
+        // Insert multiple inline images as Base64 directly into the editor
         function insertInlineImages(input) {
             if (!input.files || input.files.length === 0) return;
             const editor = document.getElementById('news-editor');
@@ -415,7 +416,7 @@
                 const file = input.files[i];
                 const reader = new FileReader();
                 reader.onload = function(e) {
-                    const imgHtml = `<br><img src="${e.target.result}" alt="Photo"><br>`;
+                    const imgHtml = `<br><img src="${e.target.result}" alt="News Photo"><br>`;
                     editor.focus();
                     document.execCommand('insertHTML', false, imgHtml);
                 };
@@ -476,15 +477,15 @@
             checkLoginState();
         }
 
-        // Safe Submit with Base64 Fallback to prevent hanging
-        async function submitNews() {
+        // Submit Advanced News Post with Cover Photo & Formatted HTML
+        function submitNews() {
             let title = document.getElementById('news-title').value.trim();
             let editorContent = document.getElementById('news-editor').innerHTML.trim();
             let plainText = document.getElementById('news-editor').innerText.trim();
             let coverInput = document.getElementById('news-cover-image');
             
             if(!title || !plainText) { 
-                alert('කරුණාකර මාතෘකාව සහ විස්තරය ඇතුළත් කරන්න!'); 
+                alert('කරුණාකර මාතෘකාව සහ පුවතේ විස්තරය ඇතුළත් කරන්න!'); 
                 return; 
             }
             if(!coverInput.files || !coverInput.files[0]) { 
@@ -496,15 +497,15 @@
             submitBtn.innerText = "පුවත Publish වෙමින් පවතී...";
             submitBtn.disabled = true;
 
-            let file = coverInput.files[0];
-            
-            // Helper function to save to Firestore
-            const saveToFirestore = (imgUrl) => {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                let coverBase64 = e.target.result;
+                
                 db.collection('news').add({
                     title: title,
                     desc: plainText.substring(0, 150) + "...",
                     contentHtml: editorContent,
-                    image: imgUrl,
+                    image: coverBase64,
                     author: currentUser,
                     status: "Pending",
                     createdAt: firebase.firestore.FieldValue.serverTimestamp()
@@ -522,40 +523,7 @@
                     submitBtn.disabled = false;
                 });
             };
-
-            // Try Firebase Storage first; if it fails or hangs, automatically fallback to Base64 data URL
-            let uploadDone = false;
-            let storageRef = storage.ref('news_images/' + Date.now() + '_' + file.name);
-
-            setTimeout(() => {
-                if(!uploadDone) {
-                    // Fallback to Base64 if storage takes too long
-                    const reader = new FileReader();
-                    reader.onload = function(e) {
-                        uploadDone = true;
-                        saveToFirestore(e.target.result);
-                    };
-                    reader.readAsDataURL(file);
-                }
-            }, 5000); // 5 seconds timeout limit
-
-            storageRef.put(file).then(snapshot => {
-                return snapshot.ref.getDownloadURL();
-            }).then(downloadURL => {
-                if(!uploadDone) {
-                    uploadDone = true;
-                    saveToFirestore(downloadURL);
-                }
-            }).catch(error => {
-                if(!uploadDone) {
-                    uploadDone = true;
-                    const reader = new FileReader();
-                    reader.onload = function(e) {
-                        saveToFirestore(e.target.result);
-                    };
-                    reader.readAsDataURL(file);
-                }
-            });
+            reader.readAsDataURL(coverInput.files[0]);
         }
 
         function fetchPublicNews() {
