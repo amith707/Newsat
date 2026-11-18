@@ -4,10 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Newsat.space - Tech & News Hub</title>
-    
-    <!-- Firebase SDK (Firestore Only - 100% Stable) -->
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 
     <style>
         :root {
@@ -121,7 +117,7 @@
         }
         h3 { margin-bottom: 15px; color: var(--primary); }
         label { font-size: 13px; color: var(--text-muted); display: block; margin-top: 10px; }
-        input[type="text"], input[type="email"], input[type="password"], input[type="file"] {
+        input[type="text"], input[type="email"], input[type="password"] {
             width: 100%;
             padding: 12px;
             margin: 8px 0 18px 0;
@@ -145,7 +141,6 @@
             transition: 0.2s;
         }
         button.btn:hover { opacity: 0.9; transform: translateY(-1px); }
-        button.btn:disabled { opacity: 0.5; cursor: not-allowed; }
 
         /* Search Bar */
         .search-container {
@@ -163,7 +158,7 @@
             box-shadow: 0 0 10px rgba(56, 189, 248, 0.1);
         }
 
-        /* Word Document style MS Ribbon Editor */
+        /* MS Word styled Ribbon Editor */
         .ms-word-container {
             border: 1px solid var(--border);
             border-radius: 8px;
@@ -225,13 +220,6 @@
             content: attr(data-placeholder);
             color: var(--text-muted);
         }
-        .editor-area img {
-            max-width: 100%;
-            height: auto;
-            border-radius: 8px;
-            margin: 15px 0;
-            display: block;
-        }
         .ms-status-bar {
             background: #0f172a;
             padding: 6px 15px;
@@ -242,7 +230,7 @@
             justify-content: space-between;
         }
 
-        /* News Grid with colorful modern styling */
+        /* News Grid */
         .news-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -263,11 +251,6 @@
             border-color: var(--primary);
             box-shadow: 0 10px 25px rgba(14, 165, 233, 0.2);
         }
-        .news-card img {
-            width: 100%;
-            height: 180px;
-            object-fit: cover;
-        }
         .news-content { padding: 18px; flex: 1; display: flex; flex-direction: column; justify-content: space-between; }
         .news-title { font-size: 18px; margin-bottom: 8px; color: var(--primary); }
         .news-desc { font-size: 14px; color: var(--text-muted); margin-bottom: 12px; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
@@ -279,13 +262,6 @@
             font-size: 16px;
             color: var(--text-main);
             margin-top: 20px;
-        }
-        .article-body img {
-            max-width: 100%;
-            height: auto;
-            border-radius: 8px;
-            margin: 15px 0;
-            display: block;
         }
         .article-body h2, .article-body h3 { margin: 20px 0 10px 0; color: var(--primary); }
         .article-body ul, .article-body ol { margin-left: 25px; margin-bottom: 15px; }
@@ -391,8 +367,6 @@
                 
                 <label id="txt-lbl-title">පුවතේ ප්‍රධාන සිරස්තලය (Title)</label>
                 <input type="text" id="news-title" placeholder="පුවතේ මාතෘකාව මෙහි ලියන්න...">
-                
-                <!-- Cover photo removed as requested, keeping other features -->
                 
                 <label id="txt-lbl-content">පුවතේ සම්පූර්ණ විස්තරය (MS Word ආකාරයට සකසන්න)</label>
                 
@@ -582,24 +556,9 @@
             fetchPublicNews();
         }
 
-        // --- FIREBASE CONFIGURATION ---
-        const firebaseConfig = {
-            apiKey: "AIzaSyBnUPr3XxkYd5qYo7sAoE8MZc-F9K",
-            authDomain: "newsat-2D9F8.firebaseapp.com",
-            projectId: "newsat-2D9F8",
-            storageBucket: "newsat-2d9F8.appspot.com",
-            messagingSenderId: "529324718671",
-            appId: "1:529324718671:web:0f45e89bf317cbb061083a"
-        };
-
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.firestore();
-
         const ADMIN_PASS = "cha1996AM";
         let isAdminLogged = sessionStorage.getItem('newsat_admin') === 'true';
         let currentUser = localStorage.getItem('newsat_user') || null;
-        let cachedNews = {};
-        let allFetchedNews = [];
 
         function switchTab(tabId) {
             document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
@@ -618,7 +577,6 @@
             document.getElementById('news-editor').focus();
         }
 
-        // Word count tracker
         const editor = document.getElementById('news-editor');
         if(editor) {
             editor.addEventListener('input', function() {
@@ -680,7 +638,16 @@
             checkLoginState();
         }
 
-        // Submit News (Without Cover Photo input requirement as requested)
+        // LocalStorage News Saving
+        function getStoredNews() {
+            let news = localStorage.getItem('newsat_local_news');
+            return news ? JSON.parse(news) : [];
+        }
+
+        function saveStoredNews(newsList) {
+            localStorage.setItem('newsat_local_news', JSON.stringify(newsList));
+        }
+
         function submitNews() {
             let title = document.getElementById('news-title').value.trim();
             let editorContent = document.getElementById('news-editor').innerHTML.trim();
@@ -691,54 +658,50 @@
                 return; 
             }
 
-            let submitBtn = document.getElementById('submit-btn');
-            submitBtn.innerText = "පුවත Publish වෙමින් පවතී...";
-            submitBtn.disabled = true;
-
-            db.collection('news').add({
+            let newArticle = {
+                id: 'news_' + Date.now(),
                 title: title,
                 desc: plainText.substring(0, 150) + "...",
                 contentHtml: editorContent,
                 author: currentUser,
                 status: "Pending",
-                createdAt: firebase.firestore.FieldValue.serverTimestamp()
-            }).then(() => {
-                alert('පුවත සාර්ථකව යවන ලදී! ඇඩ්මින් අනුමත කළ පසු ප්‍රධාන පිටුවේ පෙන්වනු ඇත.');
-                document.getElementById('news-title').value = '';
-                document.getElementById('news-editor').innerHTML = '';
-                document.getElementById('word-count').innerText = "0 words";
-                submitBtn.innerText = translations[currentLang].submitBtn;
-                submitBtn.disabled = false;
-                switchTab('home');
-            }).catch(error => {
-                alert('දෝෂයක් ඇති විය: ' + error.message);
-                submitBtn.innerText = translations[currentLang].submitBtn;
-                submitBtn.disabled = false;
-            });
+                createdAt: new Date().toLocaleString()
+            };
+
+            let newsList = getStoredNews();
+            newsList.unshift(newArticle);
+            saveStoredNews(newsList);
+
+            alert('පුවත සාර්ථකව යවන ලදී! ඇඩ්මින් අනුමත කළ පසු ප්‍රධාන පිටුවේ පෙන්වනු ඇත.');
+            document.getElementById('news-title').value = '';
+            document.getElementById('news-editor').innerHTML = '';
+            document.getElementById('word-count').innerText = "0 words";
+            switchTab('home');
         }
+
+        let allFetchedNews = [];
+        let cachedNews = {};
 
         function fetchPublicNews() {
             let container = document.getElementById('public-news-container');
-            container.innerHTML = '<p style="color:var(--text-muted);">පුවත් පූරණය වෙමින් පවතී...</p>';
+            let newsList = getStoredNews();
             
-            db.collection('news').where('status', '==', 'Approved').get().then(querySnapshot => {
-                container.innerHTML = '';
-                cachedNews = {};
-                allFetchedNews = [];
-                if(querySnapshot.empty) {
-                    container.innerHTML = '<p style="color:var(--text-muted);">තවම අනුමත කළ පුවත් නැත.</p>';
-                    return;
-                }
-                querySnapshot.forEach(doc => {
-                    let item = doc.data();
-                    let id = doc.id;
-                    cachedNews[id] = item;
-                    allFetchedNews.push({ id, ...item });
-                });
-                renderNewsCards(allFetchedNews);
-            }).catch(error => {
-                container.innerHTML = '<p style="color:var(--accent);">පුවත් ලබාගැනීමේ දෝෂයක් ඇත.</p>';
+            container.innerHTML = '';
+            cachedNews = {};
+            allFetchedNews = [];
+
+            let approvedNews = newsList.filter(item => item.status === 'Approved');
+
+            if(approvedNews.length === 0) {
+                container.innerHTML = '<p style="color:var(--text-muted);">තවම අනුමත කළ පුවත් නැත. (ඇඩ්මින් පැනලයට ගොස් පුවත Approve කරන්න)</p>';
+                return;
+            }
+
+            approvedNews.forEach(item => {
+                cachedNews[item.id] = item;
+                allFetchedNews.push(item);
             });
+            renderNewsCards(allFetchedNews);
         }
 
         function renderNewsCards(newsList) {
@@ -752,7 +715,7 @@
             newsList.forEach(item => {
                 container.innerHTML += `
                     <div class="news-card" onclick="openFullArticle('${item.id}')">
-                        <div class="news-content" style="min-height: 200px;">
+                        <div class="news-content" style="min-height: 180px;">
                             <div>
                                 <h3 class="news-title">${item.title}</h3>
                                 <p class="news-desc">${item.desc}</p>
@@ -791,43 +754,45 @@
 
         function fetchAllNews() {
             let tbody = document.getElementById('admin-news-table');
-            tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;">පූරණය වෙමින් පවතී...</td></tr>';
+            let newsList = getStoredNews();
             
-            db.collection('news').get().then(querySnapshot => {
-                tbody.innerHTML = '';
-                if(querySnapshot.empty) {
-                    tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; color:var(--text-muted);">පුවත් නැත.</td></tr>';
-                    return;
-                }
-                querySnapshot.forEach(doc => {
-                    let item = doc.data();
-                    let id = doc.id;
-                    tbody.innerHTML += `
-                        <tr>
-                            <td>${item.title}</td>
-                            <td>${item.author}</td>
-                            <td><span style="color:${item.status === 'Approved' ? 'var(--success)' : 'orange'}">${item.status}</span></td>
-                            <td>
-                                ${item.status === 'Pending' ? `<button class="action-btn btn-approve" onclick="updateStatus('${id}', 'Approved')">Approve</button>` : ''}
-                                <button class="action-btn btn-delete" onclick="deleteNews('${id}')">Delete</button>
-                            </td>
-                        </tr>
-                    `;
-                });
+            tbody.innerHTML = '';
+            if(newsList.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; color:var(--text-muted);">පුවත් නැත.</td></tr>';
+                return;
+            }
+
+            newsList.forEach(item => {
+                tbody.innerHTML += `
+                    <tr>
+                        <td>${item.title}</td>
+                        <td>${item.author}</td>
+                        <td><span style="color:${item.status === 'Approved' ? 'var(--success)' : 'orange'}">${item.status}</span></td>
+                        <td>
+                            ${item.status === 'Pending' ? `<button class="action-btn btn-approve" onclick="updateStatus('${item.id}', 'Approved')">Approve</button>` : ''}
+                            <button class="action-btn btn-delete" onclick="deleteNews('${item.id}')">Delete</button>
+                        </td>
+                    </tr>
+                `;
             });
         }
 
         function updateStatus(id, status) {
-            db.collection('news').doc(id).update({ status: status }).then(() => {
-                fetchAllNews();
+            let newsList = getStoredNews();
+            newsList = newsList.map(item => {
+                if(item.id === id) item.status = status;
+                return item;
             });
+            saveStoredNews(newsList);
+            fetchAllNews();
         }
 
         function deleteNews(id) {
             if(confirm('මෙම පුවත මකා දැමීමට අවශ්‍ය බව ස්ථිරද?')) {
-                db.collection('news').doc(id).delete().then(() => {
-                    fetchAllNews();
-                });
+                let newsList = getStoredNews();
+                newsList = newsList.filter(item => item.id !== id);
+                saveStoredNews(newsList);
+                fetchAllNews();
             }
         }
 
