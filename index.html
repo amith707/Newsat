@@ -4,6 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Newsat.space - Tech & News Hub</title>
+    
+    <!-- Firebase App (Modular CDN) -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
+
     <style>
         :root {
             --bg-main: #0b0f19;
@@ -15,179 +21,38 @@
             --accent: #f43f5e;
             --success: #22c55e;
         }
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        body {
-            background-color: var(--bg-main);
-            color: var(--text-main);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
-        header {
-            padding: 15px 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            align-items: center;
-            border-bottom: 1px solid var(--border);
-            background: var(--bg-card);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-        @media(min-width: 768px) {
-            header {
-                flex-direction: row;
-                justify-content: space-between;
-                padding: 15px 30px;
-            }
-        }
-        .logo {
-            font-size: 22px;
-            font-weight: bold;
-            color: var(--primary);
-            cursor: pointer;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: var(--bg-main); color: var(--text-main); min-height: 100vh; display: flex; flex-direction: column; }
+        header { padding: 15px 20px; display: flex; flex-direction: column; gap: 12px; align-items: center; border-bottom: 1px solid var(--border); background: var(--bg-card); position: sticky; top: 0; z-index: 100; }
+        @media(min-width: 768px) { header { flex-direction: row; justify-content: space-between; padding: 15px 30px; } }
+        .logo { font-size: 22px; font-weight: bold; color: var(--primary); cursor: pointer; }
         .logo span { color: var(--accent); }
-        nav {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 8px;
-        }
-        nav button {
-            background: none;
-            border: 1px solid var(--border);
-            color: var(--text-main);
-            padding: 8px 14px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 14px;
-            transition: 0.3s;
-        }
-        nav button:hover, nav button.active {
-            background: var(--primary);
-            color: var(--bg-main);
-            border-color: var(--primary);
-            font-weight: bold;
-        }
-        .container {
-            max-width: 1000px;
-            margin: 30px auto;
-            padding: 0 20px;
-            width: 100%;
-            flex: 1;
-        }
+        nav { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
+        nav button { background: none; border: 1px solid var(--border); color: var(--text-main); padding: 8px 14px; border-radius: 6px; cursor: pointer; font-size: 14px; transition: 0.3s; }
+        nav button:hover, nav button.active { background: var(--primary); color: var(--bg-main); border-color: var(--primary); font-weight: bold; }
+        .container { max-width: 1000px; margin: 30px auto; padding: 0 20px; width: 100%; flex: 1; }
         .section { display: none; }
         .section.active { display: block; }
-        
-        /* Cards & Forms */
-        .card {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            padding: 25px;
-            border-radius: 10px;
-            margin-bottom: 20px;
-        }
-        h3 {
-            margin-bottom: 15px;
-            color: var(--primary);
-        }
-        input, textarea {
-            width: 100%;
-            padding: 12px;
-            margin: 10px 0 20px 0;
-            background: var(--bg-main);
-            border: 1px solid var(--border);
-            color: var(--text-main);
-            border-radius: 6px;
-            font-size: 14px;
-        }
-        button.btn {
-            background: linear-gradient(135deg, var(--primary), #2563eb);
-            color: white;
-            border: none;
-            padding: 12px 20px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: bold;
-            width: 100%;
-            font-size: 15px;
-        }
+        .card { background: var(--bg-card); border: 1px solid var(--border); padding: 25px; border-radius: 10px; margin-bottom: 20px; }
+        h3 { margin-bottom: 15px; color: var(--primary); }
+        input, textarea { width: 100%; padding: 12px; margin: 10px 0 20px 0; background: var(--bg-main); border: 1px solid var(--border); color: var(--text-main); border-radius: 6px; font-size: 14px; }
+        button.btn { background: linear-gradient(135deg, var(--primary), #2563eb); color: white; border: none; padding: 12px 20px; border-radius: 6px; cursor: pointer; font-weight: bold; width: 100%; font-size: 15px; }
         button.btn:hover { opacity: 0.9; }
-
-        /* News Grid */
-        .news-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px;
-        }
-        .news-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-        }
-        .news-card img {
-            width: 100%;
-            height: 160px;
-            object-fit: cover;
-        }
+        .news-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+        .news-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; display: flex; flex-direction: column; }
+        .news-card img { width: 100%; height: 160px; object-fit: cover; }
         .news-content { padding: 15px; flex: 1; display: flex; flex-direction: column; justify-content: space-between; }
         .news-title { font-size: 18px; margin-bottom: 8px; color: var(--primary); }
         .news-desc { font-size: 14px; color: var(--text-muted); margin-bottom: 12px; }
         .news-meta { font-size: 12px; color: var(--accent); display: flex; justify-content: space-between; }
-
-        /* Admin Table */
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 15px;
-        }
-        th, td {
-            padding: 12px;
-            text-align: left;
-            border-bottom: 1px solid var(--border);
-            font-size: 14px;
-        }
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid var(--border); font-size: 14px; }
         th { color: var(--primary); }
-        .action-btn {
-            padding: 6px 10px;
-            border-radius: 4px;
-            border: none;
-            cursor: pointer;
-            font-size: 12px;
-            margin-right: 5px;
-        }
+        .action-btn { padding: 6px 10px; border-radius: 4px; border: none; cursor: pointer; font-size: 12px; margin-right: 5px; }
         .btn-approve { background: var(--success); color: white; }
         .btn-delete { background: var(--accent); color: white; }
-
-        .user-info {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: rgba(56, 189, 248, 0.1);
-            padding: 12px 18px;
-            border-radius: 6px;
-            border: 1px solid rgba(56, 189, 248, 0.2);
-            margin-bottom: 20px;
-        }
-
-        footer {
-            text-align: center;
-            padding: 20px;
-            border-top: 1px solid var(--border);
-            color: var(--text-muted);
-            font-size: 14px;
-            background: var(--bg-card);
-        }
+        .user-info { display: flex; justify-content: space-between; align-items: center; background: rgba(56, 189, 248, 0.1); padding: 12px 18px; border-radius: 6px; border: 1px solid rgba(56, 189, 248, 0.2); margin-bottom: 20px; }
+        footer { text-align: center; padding: 20px; border-top: 1px solid var(--border); color: var(--text-muted); font-size: 14px; background: var(--bg-card); }
     </style>
 </head>
 <body>
@@ -203,91 +68,84 @@
 
     <div class="container">
 
-        <!-- 1. HOME / NEWS FEED SECTION -->
+        <!-- 1. HOME -->
         <div id="home" class="section active">
             <h2>🔥 නවතම පුවත්</h2>
             <p style="color: var(--text-muted); margin-bottom: 20px;">අපගේ පරිශීලකයින් විසින් එකතු කරන ලද නවතම පුවත්.</p>
-            <div class="news-grid" id="public-news-container">
-                <!-- Dynamic News Cards -->
-            </div>
+            <div class="news-grid" id="public-news-container"></div>
         </div>
 
-        <!-- 2. USER DASHBOARD & ADD NEWS SECTION -->
+        <!-- 2. USER DASHBOARD -->
         <div id="user" class="section">
-            <!-- Login Card -->
             <div class="card" id="auth-card">
                 <h3>👤 පරිශීලක ගිණුමට ඇතුළුවීම</h3>
-                <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 15px;">පුවත් එකතු කිරීම සඳහා ඔබේ නම සහ ඊමේල් ලිපිනය ලබා දී ඇතුළු වන්න.</p>
                 <input type="text" id="username" placeholder="ඔබේ නම (Username)">
                 <input type="email" id="useremail" placeholder="ඊමේල් ලිපිනය (Email)">
                 <button class="btn" onclick="registerUser()">ගිණුමට ඇතුළු වන්න</button>
             </div>
 
-            <!-- Add News Card -->
             <div class="card" id="add-news-card" style="display: none;">
                 <div class="user-info">
                     <span>👤 පිවිසී ඇත්තේ: <strong id="logged-user-name" style="color: var(--primary);"></strong></span>
-                    <button onclick="logoutUser()" style="background: var(--accent); color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 12px;">අයින් වන්න (Logout)</button>
+                    <button onclick="logoutUser()" style="background: var(--accent); color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 12px;">Logout</button>
                 </div>
                 <h3>✍️ නව පුවතක් එකතු කරන්න</h3>
                 <input type="text" id="news-title" placeholder="පුවතේ මාතෘකාව (Title)">
                 <input type="file" id="news-image" accept="image/*">
                 <textarea id="news-desc" rows="4" placeholder="පුවතේ සම්පූර්ණ විස්තරය..."></textarea>
-                <button class="btn" onclick="submitNews()">පුවත Publish කිරීමට යොමු කරන්න</button>
+                <button class="btn" id="submit-btn" onclick="submitNews()">පුවත Publish කිරීමට යොමු කරන්න</button>
             </div>
         </div>
 
-        <!-- 3. ADMIN PANEL SECTION -->
+        <!-- 3. ADMIN PANEL -->
         <div id="admin" class="section">
-            
-            <!-- Admin Login Box -->
             <div class="card" id="admin-login-card" style="max-width: 450px; margin: 20px auto;">
                 <h3>🔐 ඇඩ්මින් පිවිසුම (Admin Login)</h3>
-                <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 15px;">ඇඩ්මින් පාලක මණ්ඩලයට පිවිසීම සඳහා මුරපදය (Password) ඇතුළත් කරන්න.</p>
-                <input type="password" id="admin-password" placeholder="මුරපදය ඇතුළත් කරන්න" onkeypress="if(event.key === 'Enter') verifyAdmin()">
+                <input type="password" id="admin-password" placeholder="මුරපදය ඇතුළත් කරන්න">
                 <button class="btn" onclick="verifyAdmin()">ඇතුළු වන්න</button>
             </div>
 
-            <!-- Admin Dashboard Content (Hidden until password verified) -->
             <div class="card" id="admin-dashboard-card" style="display: none;">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
                     <h3 style="margin-bottom: 0;">⚙️ ඇඩ්මින් පාලක මණ්ඩලය</h3>
                     <button onclick="logoutAdmin()" style="background: var(--accent); color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 12px;">Admin Logout</button>
                 </div>
-                <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 15px;">පරිශීලකයින් විසින් එවන ලද පුවත් පරීක්ෂා කර අනුමත කරන්න හෝ මකා දමන්න.</p>
-                <div style="overflow-x: auto;">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>මාතෘකාව</th>
-                                <th>කර්තෘ (Author)</th>
-                                <th>තත්ත්වය</th>
-                                <th>ක්‍රියාමාර්ග</th>
-                            </tr>
-                        </thead>
-                        <tbody id="admin-news-table">
-                            <!-- Dynamic Admin Rows -->
-                        </tbody>
-                    </table>
-                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>මාතෘකාව</th>
+                            <th>කර්තෘ</th>
+                            <th>තත්ත්වය</th>
+                            <th>ක්‍රියාමාර්ග</th>
+                        </tr>
+                    </thead>
+                    <tbody id="admin-news-table"></tbody>
+                </table>
             </div>
-
         </div>
 
     </div>
 
-    <footer>
-        &copy; 2026 Newsat.space. All Rights Reserved.
-    </footer>
+    <footer>&copy; 2026 Newsat.space. All Rights Reserved.</footer>
 
     <script>
+        // --- FIREBASE CONFIGURATION (ඔබේ Firebase දත්ත මෙහි දමන්න) ---
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_PROJECT_ID.appspot.com",
+            messagingSenderId: "YOUR_SENDER_ID",
+            appId: "YOUR_APP_ID"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+        const storage = firebase.storage();
+
         const ADMIN_PASS = "cha1996AM";
         let isAdminLogged = sessionStorage.getItem('newsat_admin') === 'true';
-
         let currentUser = localStorage.getItem('newsat_user') || null;
-        let newsList = JSON.parse(localStorage.getItem('newsat_news')) || [
-            { id: 1, title: "SpaceX නව රොකට් අභ්‍යවකාශයට", desc: "අද දින සාර්ථක ලෙස අභ්‍යවකාශගත කරන ලද නවතම රොකට්ටුව පිළිබඳ තොරතුරු.", image: "https://images.unsplash.com/photo-1517976487492-5750f3195933?w=500", author: "Admin", status: "Approved" }
-        ];
 
         function switchTab(tabId) {
             document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
@@ -295,52 +153,43 @@
             document.getElementById(tabId).classList.add('active');
             document.getElementById('nav-' + tabId).classList.add('active');
             
-            if(tabId === 'home') renderPublicNews();
+            if(tabId === 'home') fetchPublicNews();
             if(tabId === 'user') checkLoginState();
             if(tabId === 'admin') checkAdminState();
         }
 
-        // Admin Authentication Functions
+        // Admin Auth
         function verifyAdmin() {
-            const inputPass = document.getElementById('admin-password').value;
-            if(inputPass === ADMIN_PASS) {
+            if(document.getElementById('admin-password').value === ADMIN_PASS) {
                 isAdminLogged = true;
                 sessionStorage.setItem('newsat_admin', 'true');
-                document.getElementById('admin-password').value = '';
                 checkAdminState();
-            } else {
-                alert('මුරපදය වැරදියි! කරුණාකර නැවත උත්සාහ කරන්න.');
-            }
+            } else { alert('මුරපදය වැරදියි!'); }
         }
-
         function checkAdminState() {
             if(isAdminLogged) {
                 document.getElementById('admin-login-card').style.display = 'none';
                 document.getElementById('admin-dashboard-card').style.display = 'block';
-                renderAdminTable();
+                fetchAllNews();
             } else {
                 document.getElementById('admin-login-card').style.display = 'block';
                 document.getElementById('admin-dashboard-card').style.display = 'none';
             }
         }
-
         function logoutAdmin() {
             isAdminLogged = false;
             sessionStorage.removeItem('newsat_admin');
             checkAdminState();
         }
 
-        // User Functions
+        // User Auth
         function registerUser() {
             let name = document.getElementById('username').value.trim();
-            let email = document.getElementById('useremail').value.trim();
-            if(!name || !email) { alert('කරුණාකර නම සහ ඊමේල් ලිපිනය ඇතුළත් කරන්න!'); return; }
+            if(!name) { alert('නම ඇතුළත් කරන්න!'); return; }
             currentUser = name;
             localStorage.setItem('newsat_user', currentUser);
-            alert('සාර්ථකයි! දැන් ඔබට පුවත් එකතු කළ හැක.');
             checkLoginState();
         }
-
         function checkLoginState() {
             if(currentUser) {
                 document.getElementById('auth-card').style.display = 'none';
@@ -351,121 +200,131 @@
                 document.getElementById('add-news-card').style.display = 'none';
             }
         }
-
         function logoutUser() {
             localStorage.removeItem('newsat_user');
             currentUser = null;
-            document.getElementById('username').value = '';
-            document.getElementById('useremail').value = '';
             checkLoginState();
         }
 
+        // Submit News with Firebase Storage & Firestore
         function submitNews() {
             let title = document.getElementById('news-title').value.trim();
             let desc = document.getElementById('news-desc').value.trim();
             let fileInput = document.getElementById('news-image');
             
-            if(!title || !desc) { alert('කරුණාකර මාතෘකාව සහ විස්තරය අනිවාර්යයෙන් පුරවන්න!'); return; }
+            if(!title || !desc) { alert('සියල්ල පුරවන්න!'); return; }
+            if(!fileInput.files[0]) { alert('කරුණාකර පින්තූරයක් තෝරන්න!'); return; }
 
-            let reader = new FileReader();
-            if(fileInput.files && fileInput.files[0]) {
-                reader.onload = function(e) {
-                    saveNewsItem(title, desc, e.target.result);
-                }
-                reader.readAsDataURL(fileInput.files[0]);
-            } else {
-                saveNewsItem(title, desc, "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=500");
-            }
-        }
+            document.getElementById('submit-btn').innerText = "Upload වෙමින් පවතී...";
+            document.getElementById('submit-btn').disabled = true;
 
-        function saveNewsItem(title, desc, imgUrl) {
-            let newPost = {
-                id: Date.now(),
-                title: title,
-                desc: desc,
-                image: imgUrl,
-                author: currentUser,
-                status: "Pending"
-            };
-            newsList.push(newPost);
-            localStorage.setItem('newsat_news', JSON.stringify(newsList));
-            alert('පුවත සාර්ථකව යවන ලදී! ඇඩ්මින් අනුමත කළ පසු ප්‍රධාන පිටුවේ පෙන්වනු ඇත.');
-            document.getElementById('news-title').value = '';
-            document.getElementById('news-desc').value = '';
-            document.getElementById('news-image').value = '';
-            switchTab('home');
-        }
+            let file = fileInput.files[0];
+            let storageRef = storage.ref('news_images/' + Date.now() + '_' + file.name);
 
-        function renderPublicNews() {
-            let container = document.getElementById('public-news-container');
-            container.innerHTML = '';
-            let approvedNews = newsList.filter(item => item.status === 'Approved');
-            
-            if(approvedNews.length === 0) {
-                container.innerHTML = '<p style="color:var(--text-muted);">තවම අනුමත කළ පුවත් කිසිවක් නොමැත.</p>';
-                return;
-            }
-
-            approvedNews.forEach(item => {
-                container.innerHTML += `
-                    <div class="news-card">
-                        <img src="${item.image}" alt="News Image">
-                        <div class="news-content">
-                            <div>
-                                <h3 class="news-title">${item.title}</h3>
-                                <p class="news-desc">${item.desc}</p>
-                            </div>
-                            <div class="news-meta">
-                                <span>කර්තෘ: ${item.author}</span>
-                                <span>✅ Active</span>
-                            </div>
-                        </div>
-                    </div>
-                `;
+            storageRef.put(file).then(snapshot => {
+                return snapshot.ref.getDownloadURL();
+            }).then(downloadURL => {
+                return db.collection('news').add({
+                    title: title,
+                    desc: desc,
+                    image: downloadURL,
+                    author: currentUser,
+                    status: "Pending",
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+            }).then(() => {
+                alert('පුවත සාර්ථකව යවන ලදී!');
+                document.getElementById('news-title').value = '';
+                document.getElementById('news-desc').value = '';
+                document.getElementById('news-image').value = '';
+                document.getElementById('submit-btn').innerText = "පුවත Publish කිරීමට යොමු කරන්න";
+                document.getElementById('submit-btn').disabled = false;
+                switchTab('home');
+            }).catch(error => {
+                alert('දෝෂයක් ඇති විය: ' + error.message);
+                document.getElementById('submit-btn').innerText = "පුවත Publish කිරීමට යොමු කරන්න";
+                document.getElementById('submit-btn').disabled = false;
             });
         }
 
-        function renderAdminTable() {
-            let tbody = document.getElementById('admin-news-table');
-            tbody.innerHTML = '';
+        // Fetch Public News (Approved only)
+        function fetchPublicNews() {
+            let container = document.getElementById('public-news-container');
+            container.innerHTML = '<p style="color:var(--text-muted);">පුවත් පූරණය වෙමින් පවතී...</p>';
             
-            if(newsList.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; color:var(--text-muted);">පුවත් කිසිවක් නොමැත.</td></tr>';
-                return;
-            }
+            db.collection('news').where('status', '==', 'Approved').get().then(querySnapshot => {
+                container.innerHTML = '';
+                if(querySnapshot.empty) {
+                    container.innerHTML = '<p style="color:var(--text-muted);">තවම අනුමත කළ පුවත් නැත.</p>';
+                    return;
+                }
+                querySnapshot.forEach(doc => {
+                    let item = doc.data();
+                    container.innerHTML += `
+                        <div class="news-card">
+                            <img src="${item.image}" alt="News">
+                            <div class="news-content">
+                                <div>
+                                    <h3 class="news-title">${item.title}</h3>
+                                    <p class="news-desc">${item.desc}</p>
+                                </div>
+                                <div class="news-meta">
+                                    <span>කර්තෘ: ${item.author}</span>
+                                    <span>✅ Active</span>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+            });
+        }
 
-            newsList.forEach(item => {
-                tbody.innerHTML += `
-                    <tr>
-                        <td>${item.title}</td>
-                        <td>${item.author}</td>
-                        <td><span style="color:${item.status === 'Approved' ? 'var(--success)' : 'orange'}">${item.status}</span></td>
-                        <td>
-                            ${item.status === 'Pending' ? `<button class="action-btn btn-approve" onclick="updateStatus(${item.id}, 'Approved')">Approve</button>` : ''}
-                            <button class="action-btn btn-delete" onclick="deleteNews(${item.id})">Delete</button>
-                        </td>
-                    </tr>
-                `;
+        // Fetch All News for Admin
+        function fetchAllNews() {
+            let tbody = document.getElementById('admin-news-table');
+            tbody.innerHTML = '<tr><td colspan="4">පූරණය වෙමින් පවතී...</td></tr>';
+            
+            db.collection('news').get().then(querySnapshot => {
+                tbody.innerHTML = '';
+                if(querySnapshot.empty) {
+                    tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;">පුවත් නැත.</td></tr>';
+                    return;
+                }
+                querySnapshot.forEach(doc => {
+                    let item = doc.data();
+                    let id = doc.id;
+                    tbody.innerHTML += `
+                        <tr>
+                            <td>${item.title}</td>
+                            <td>${item.author}</td>
+                            <td><span style="color:${item.status === 'Approved' ? 'var(--success)' : 'orange'}">${item.status}</span></td>
+                            <td>
+                                ${item.status === 'Pending' ? `<button class="action-btn btn-approve" onclick="updateStatus('${id}', 'Approved')">Approve</button>` : ''}
+                                <button class="action-btn btn-delete" onclick="deleteNews('${id}')">Delete</button>
+                            </td>
+                        </tr>
+                    `;
+                });
             });
         }
 
         function updateStatus(id, status) {
-            newsList = newsList.map(item => item.id === id ? {...item, status: status} : item);
-            localStorage.setItem('newsat_news', JSON.stringify(newsList));
-            renderAdminTable();
+            db.collection('news').doc(id).update({ status: status }).then(() => {
+                fetchAllNews();
+            });
         }
 
         function deleteNews(id) {
-            newsList = newsList.filter(item => item.id !== id);
-            localStorage.setItem('newsat_news', JSON.stringify(newsList));
-            renderAdminTable();
-            renderPublicNews();
+            if(confirm('මෙම පුවත මකා දැමීමට අවශ්‍ය බව ස්ථිරද?')) {
+                db.collection('news').doc(id).delete().then(() => {
+                    fetchAllNews();
+                });
+            }
         }
 
         window.onload = function() {
-            renderPublicNews();
+            fetchPublicNews();
             checkLoginState();
-            checkAdminState();
         }
     </script>
 </body>
