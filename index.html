@@ -29,7 +29,6 @@
             display: flex;
             flex-direction: column;
         }
-        /* Modern Header */
         header {
             background: var(--header-bg);
             color: white;
@@ -96,7 +95,6 @@
             font-weight: 600;
         }
 
-        /* Container */
         .container {
             max-width: 1100px;
             margin: 30px auto;
@@ -107,7 +105,6 @@
         .section { display: none; }
         .section.active { display: block; }
 
-        /* Search Bar */
         .search-container {
             margin-bottom: 25px;
         }
@@ -124,7 +121,6 @@
         }
         .search-bar:focus { border-color: var(--primary); }
 
-        /* News Grid Layout (College Style) */
         .news-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
@@ -184,7 +180,6 @@
             text-decoration: none;
         }
 
-        /* Cards & Forms */
         .card {
             background: var(--bg-card);
             border: 1px solid var(--border);
@@ -195,7 +190,7 @@
         }
         h3 { margin-bottom: 15px; color: #0f172a; font-size: 20px; }
         label { font-size: 13px; font-weight: 600; color: var(--text-muted); display: block; margin-top: 12px; margin-bottom: 6px; }
-        input[type="text"], input[type="email"], input[type="password"] {
+        input[type="text"], input[type="email"], input[type="password"], select {
             width: 100%;
             padding: 12px 15px;
             background: #f8fafc;
@@ -206,7 +201,7 @@
             outline: none;
             transition: border-color 0.2s;
         }
-        input:focus { border-color: var(--primary); background: #fff; }
+        input:focus, select:focus { border-color: var(--primary); background: #fff; }
 
         button.btn {
             background: var(--primary);
@@ -269,9 +264,7 @@
             font-weight: 600;
             transition: background 0.2s;
         }
-        .editor-toolbar button:hover {
-            background: #e2e8f0;
-        }
+        .editor-toolbar button:hover { background: #e2e8f0; }
         .editor-area {
             width: 100%;
             min-height: 280px;
@@ -297,7 +290,6 @@
             justify-content: space-between;
         }
 
-        /* Full Article View */
         .article-body {
             line-height: 1.9;
             font-size: 16px;
@@ -306,7 +298,6 @@
         }
         .article-body h2, .article-body h3 { margin: 20px 0 10px 0; color: #0f172a; }
 
-        /* Admin Table */
         table {
             width: 100%;
             border-collapse: collapse;
@@ -341,6 +332,8 @@
             border: 1px solid #bfdbfe;
             margin-bottom: 20px;
             color: #1e40af;
+            flex-wrap: wrap;
+            gap: 10px;
         }
 
         footer {
@@ -366,8 +359,7 @@
             </select>
             <nav>
                 <button onclick="switchTab('home')" class="active" id="nav-home">ප්‍රධාන පිටුව</button>
-                <button onclick="switchTab('user')" id="nav-user">ගිණුම / නිව්ස් දැමීම</button>
-                <button onclick="switchTab('admin')" id="nav-admin">ඇඩ්මින් පැනලය</button>
+                <button onclick="switchTab('user')" id="nav-user">ගිණුම / ලියාපදිංචිය</button>
             </nav>
         </div>
     </header>
@@ -394,28 +386,38 @@
             <div class="card" id="full-article-content"></div>
         </div>
 
-        <!-- 2. USER DASHBOARD SECTION -->
+        <!-- 2. USER DASHBOARD / REGISTRATION SECTION -->
         <div id="user" class="section">
             <div class="card" id="auth-card" style="max-width: 500px; margin: 40px auto;">
-                <h3 id="txt-login-title">👤 පරිශීලක ගිණුමට ඇතුළුවීම</h3>
-                <input type="text" id="username" placeholder="ඔබේ නම (Username)">
-                <input type="email" id="useremail" placeholder="ඊමේල් ලිපිනය (Email)">
-                <button class="btn" id="txt-login-btn" onclick="registerUser()">ගිණුමට ඇතුළු වන්න</button>
+                <h3 id="txt-login-title">👤 නව ගිණුමක් තැනීම / පිවිසීම</h3>
+                <label>සම්පූර්ණ නම (Full Name)</label>
+                <input type="text" id="reg-name" placeholder="ඔබේ නම මෙහි ලියන්න...">
+                <label>ඊමේල් ලිපිනය (Email Address)</label>
+                <input type="email" id="reg-email" placeholder="example@gmail.com">
+                <label>දුරකථන අංකය (Phone Number)</label>
+                <input type="text" id="reg-phone" placeholder="07XXXXXXXX">
+                <label>කාර්යභාරය (Role)</label>
+                <select id="reg-role">
+                    <option value="Writer">သတင်း රචක / News Writer</option>
+                    <option value="Editor">ಸංස්කාරක / Editor</option>
+                </select>
+                <button class="btn" id="txt-login-btn" onclick="registerUser()">ගිණුම සාදා ඇතුළු වන්න</button>
             </div>
 
             <div class="card" id="add-news-card" style="display: none;">
                 <div class="user-info">
-                    <span>👤 <span id="txt-logged-as">පිවිසී ඇත්තේ</span>: <strong id="logged-user-name"></strong></span>
+                    <div>
+                        <span>👤 පරිශීලකයා: <strong id="logged-user-name"></strong></span><br>
+                        <small style="color: var(--text-muted);" id="logged-user-details"></small>
+                    </div>
                     <button onclick="logoutUser()" style="background: var(--accent); color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 12px;">Logout</button>
                 </div>
-                <h3 id="txt-add-title">✍️ නව පුවතක් සකසන්න</h3>
                 
+                <h3 id="txt-add-title">✍️ නව පුවතක් සකසන්න</h3>
                 <label id="txt-lbl-title">පුවතේ ප්‍රධාන සිරස්තලය (Title)</label>
                 <input type="text" id="news-title" placeholder="පුවතේ මාතෘකාව මෙහි ලියන්න...">
                 
                 <label id="txt-lbl-content">පුවතේ සම්පූර්ණ විස්තරය (MS Word ආකාරයට සකසන්න)</label>
-                
-                <!-- MS Word styled Editor -->
                 <div class="ms-word-container">
                     <div class="ms-ribbon-tab">
                         <span class="active-tab">Home</span>
@@ -439,10 +441,16 @@
                 </div>
 
                 <button class="btn" id="submit-btn" onclick="submitNews()">පුවත Publish කිරීමට යොමු කරන්න</button>
+
+                <!-- User Profile News Section -->
+                <div style="margin-top: 40px; border-top: 2px solid var(--border); padding-top: 25px;">
+                    <h3 style="margin-bottom: 15px;">📂 ඔබ විසින් ප්‍රකාශයට පත් කරන ලද පුවත් (My Profile)</h3>
+                    <div id="user-profile-news-list"></div>
+                </div>
             </div>
         </div>
 
-        <!-- 3. ADMIN PANEL SECTION -->
+        <!-- 3. HIDDEN ADMIN PANEL SECTION -->
         <div id="admin" class="section">
             <div class="card" id="admin-login-card" style="max-width: 450px; margin: 40px auto;">
                 <h3 id="txt-admin-login">🔐 ඇඩ්මින් පිවිසුම (Admin Login)</h3>
@@ -452,7 +460,7 @@
 
             <div class="card" id="admin-dashboard-card" style="display: none;">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                    <h3 id="txt-admin-dash" style="margin-bottom: 0;">⚙️ ඇඩ්මින් පාලක මණ්ඩලය</h3>
+                    <h3 id="txt-admin-dash" style="margin-bottom: 0;">⚙️ ඇඩ්මින් පාලක මණ්ඩලය (គ្រប់គ្រង)</h3>
                     <button onclick="logoutAdmin()" style="background: var(--accent); color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 12px;">Admin Logout</button>
                 </div>
                 <div style="overflow-x: auto;">
@@ -476,93 +484,56 @@
     <footer>&copy; 2026 Newsat.space. All Rights Reserved.</footer>
 
     <script>
-        // --- TRANSLATIONS DICTIONARY ---
         const translations = {
             si: {
                 home: "ප්‍රධාන පිටුව",
-                user: "ගිණුම / නිව්ස් දැමීම",
-                admin: "ඇඩ්මින් පැනලය",
+                user: "ගිණුම / ලියාපදිංචිය",
                 latest: "🔥 නවතම පුවත්",
                 subLatest: "අපගේ නවතම ලිපි සහ පුවත් මෙහි ප්‍රදර්ශනය වේ.",
                 searchPh: "🔍 පුවත් සෙවීම සඳහා මෙහි ලියන්න...",
                 back: "ආපසු ප්‍රධාන පිටුවට",
-                loginTitle: "👤 පරිශීලක ගිණුමට ඇතුළුවීම",
-                usernamePh: "ඔබේ නම (Username)",
-                emailPh: "ඊමේල් ලිපිනය (Email)",
-                loginBtn: "ගිණුමට ඇතුළු වන්න",
-                loggedAs: "පිවිසී ඇත්තේ",
+                loginTitle: "👤 නව ගිණුමක් තැනීම / පිවිසීම",
+                loginBtn: "ගිණුම සාදා ඇතුළු වන්න",
                 addTitle: "✍️ නව පුවතක් සකසන්න",
                 lblTitle: "පුවතේ ප්‍රධාන සිරස්තලය (Title)",
                 titlePh: "පුවතේ මාතෘකාව මෙහි ලියන්න...",
                 lblContent: "පුවතේ සම්පූර්ණ විස්තරය (MS Word ආකාරයට සකසන්න)",
                 editorPh: "මෙහි ඔබේ පුවත ලියන්න...",
                 submitBtn: "පුවත Publish කිරීමට යොමු කරන්න",
-                adminLogin: "🔐 ඇඩ්මින් පිවිසුම (Admin Login)",
-                adminPassPh: "මුරපදය ඇතුළත් කරන්න",
-                adminBtn: "ඇතුළු වන්න",
-                adminDash: "⚙️ ඇඩ්මින් පාලක මණ්ඩලය",
-                thTitle: "මාතෘකාව",
-                thAuthor: "කර්තෘ",
-                thStatus: "තත්ත්වය",
-                thAction: "ක්‍රියාමාර්ග",
                 readMore: "කියවන්න →"
             },
             en: {
                 home: "Home",
-                user: "Account / Post News",
-                admin: "Admin Panel",
+                user: "Account / Registration",
                 latest: "🔥 Latest News",
                 subLatest: "Explore our latest articles and news updates.",
                 searchPh: "🔍 Search news here...",
                 back: "Back to Home",
-                loginTitle: "👤 User Account Login",
-                usernamePh: "Your Name (Username)",
-                emailPh: "Email Address",
-                loginBtn: "Login to Account",
-                loggedAs: "Logged in as",
+                loginTitle: "👤 Create Account / Login",
+                loginBtn: "Create Account & Login",
                 addTitle: "✍️ Create New Article",
                 lblTitle: "Article Title",
                 titlePh: "Enter news title here...",
                 lblContent: "Full Article Content (MS Word Style Editor)",
                 editorPh: "Write your article here...",
                 submitBtn: "Submit News for Publish",
-                adminLogin: "🔐 Admin Login",
-                adminPassPh: "Enter Password",
-                adminBtn: "Login",
-                adminDash: "⚙️ Admin Dashboard",
-                thTitle: "Title",
-                thAuthor: "Author",
-                thStatus: "Status",
-                thAction: "Action",
                 readMore: "Read More →"
             },
             ta: {
                 home: "முகப்பு",
-                user: "கணக்கு / செய்தி பதிவிட",
-                admin: "நிர்வாக குழு",
+                user: "கணக்கு / பதிவு",
                 latest: "🔥 சமீபத்திய செய்திகள்",
                 subLatest: "எங்களின் சமீபத்திய கட்டுரைகள் மற்றும் செய்திகள்.",
                 searchPh: "🔍 செய்திகளை தேட...",
                 back: "முகப்புக்கு திரும்புக",
-                loginTitle: "👤 பயனர் கணக்கு உள்நுழைவு",
-                usernamePh: "உங்கள் பெயர்",
-                emailPh: "மின்னஞ்சல் முகவரி",
-                loginBtn: "உள்நுழைக",
-                loggedAs: "உள்நுழைந்துள்ளவர்",
+                loginTitle: "👤 கணக்கை உருவாக்க / உள்நுழைய",
+                loginBtn: "கணக்கை உருவாக்கி உள்நுழைய",
                 addTitle: "✍️ புதிய செய்தியை உருவாக்கவும்",
                 lblTitle: "செய்தி தலைப்பு",
                 titlePh: "தலைப்பை இங்கு எழுதவும்...",
                 lblContent: "முழு செய்தி விவரம் (MS Word பாணி எடிட்டர்)",
                 editorPh: "உங்கள் செய்தியை இங்கு எழுதவும்...",
                 submitBtn: "வெளியிட சமர்ப்பிக்கவும்",
-                adminLogin: "🔐 நிர்வாகி உள்நுழைவு",
-                adminPassPh: "கடவுச்சொல்லை உள்ளிடவும்",
-                adminBtn: "உள்நுழைக",
-                adminDash: "⚙️ நிர்வாக கட்டுப்பாட்டகம்",
-                thTitle: "தலைப்பு",
-                thAuthor: "ஆசிரியர்",
-                thStatus: "நிலை",
-                thAction: "செயல்",
                 readMore: "மேலும் வாசிக்க →"
             }
         };
@@ -572,40 +543,27 @@
         function changeLanguage(lang) {
             currentLang = lang;
             const t = translations[lang];
-
-            document.getElementById('nav-home').innerText = t.home;
-            document.getElementById('nav-user').innerText = t.user;
-            document.getElementById('nav-admin').innerText = t.admin;
-            document.getElementById('txt-latest').innerText = t.latest;
-            document.getElementById('txt-sub-latest').innerText = t.subLatest;
-            document.getElementById('search-input').placeholder = t.searchPh;
-            document.getElementById('txt-back').innerText = t.back;
-            document.getElementById('txt-login-title').innerText = t.loginTitle;
-            document.getElementById('username').placeholder = t.usernamePh;
-            document.getElementById('useremail').placeholder = t.emailPh;
-            document.getElementById('txt-login-btn').innerText = t.loginBtn;
-            document.getElementById('txt-logged-as').innerText = t.loggedAs;
-            document.getElementById('txt-add-title').innerText = t.addTitle;
-            document.getElementById('txt-lbl-title').innerText = t.lblTitle;
-            document.getElementById('news-title').placeholder = t.titlePh;
-            document.getElementById('txt-lbl-content').innerText = t.lblContent;
-            document.getElementById('news-editor').setAttribute('data-placeholder', t.editorPh);
-            document.getElementById('submit-btn').innerText = t.submitBtn;
-            document.getElementById('txt-admin-login').innerText = t.adminLogin;
-            document.getElementById('admin-password').placeholder = t.adminPassPh;
-            document.getElementById('txt-admin-btn').innerText = t.adminBtn;
-            document.getElementById('txt-admin-dash').innerText = t.adminDash;
-            document.getElementById('th-title').innerText = t.thTitle;
-            document.getElementById('th-author').innerText = t.thAuthor;
-            document.getElementById('th-status').innerText = t.thStatus;
-            document.getElementById('th-action').innerText = t.thAction;
+            if(document.getElementById('nav-home')) document.getElementById('nav-home').innerText = t.home;
+            if(document.getElementById('nav-user')) document.getElementById('nav-user').innerText = t.user;
+            if(document.getElementById('txt-latest')) document.getElementById('txt-latest').innerText = t.latest;
+            if(document.getElementById('txt-sub-latest')) document.getElementById('txt-sub-latest').innerText = t.subLatest;
+            if(document.getElementById('search-input')) document.getElementById('search-input').placeholder = t.searchPh;
+            if(document.getElementById('txt-back')) document.getElementById('txt-back').innerText = t.back;
+            if(document.getElementById('txt-login-title')) document.getElementById('txt-login-title').innerText = t.loginTitle;
+            if(document.getElementById('txt-login-btn')) document.getElementById('txt-login-btn').innerText = t.loginBtn;
+            if(document.getElementById('txt-add-title')) document.getElementById('txt-add-title').innerText = t.addTitle;
+            if(document.getElementById('txt-lbl-title')) document.getElementById('txt-lbl-title').innerText = t.lblTitle;
+            if(document.getElementById('news-title')) document.getElementById('news-title').placeholder = t.titlePh;
+            if(document.getElementById('txt-lbl-content')) document.getElementById('txt-lbl-content').innerText = t.lblContent;
+            if(document.getElementById('news-editor')) document.getElementById('news-editor').setAttribute('data-placeholder', t.editorPh);
+            if(document.getElementById('submit-btn')) document.getElementById('submit-btn').innerText = t.submitBtn;
 
             fetchPublicNews();
         }
 
         const ADMIN_PASS = "cha1996AM";
         let isAdminLogged = sessionStorage.getItem('newsat_admin') === 'true';
-        let currentUser = localStorage.getItem('newsat_user') || null;
+        let currentUser = JSON.parse(localStorage.getItem('newsat_user_profile')) || null;
 
         function switchTab(tabId) {
             document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
@@ -660,19 +618,29 @@
         }
 
         function registerUser() {
-            let name = document.getElementById('username').value.trim();
-            let email = document.getElementById('useremail').value.trim();
-            if(!name || !email) { alert('නම සහ ඊමේල් ලිපිනය ඇතුළත් කරන්න!'); return; }
-            currentUser = name;
-            localStorage.setItem('newsat_user', currentUser);
+            let name = document.getElementById('reg-name').value.trim();
+            let email = document.getElementById('reg-email').value.trim();
+            let phone = document.getElementById('reg-phone').value.trim();
+            let role = document.getElementById('reg-role').value;
+
+            if(!name || !email || !phone) { 
+                alert('කරුණාකර සියලුම විස්තර පුරවන්න!'); 
+                return; 
+            }
+
+            currentUser = { name, email, phone, role };
+            localStorage.setItem('newsat_user_profile', JSON.stringify(currentUser));
             checkLoginState();
+            alert('ගිණුම සාර්ථකව සාදන ලදී!');
         }
 
         function checkLoginState() {
             if(currentUser) {
                 document.getElementById('auth-card').style.display = 'none';
                 document.getElementById('add-news-card').style.display = 'block';
-                document.getElementById('logged-user-name').innerText = currentUser;
+                document.getElementById('logged-user-name').innerText = currentUser.name;
+                document.getElementById('logged-user-details').innerText = `${currentUser.email} | ${currentUser.phone} | ${currentUser.role}`;
+                renderUserProfileNews();
             } else {
                 document.getElementById('auth-card').style.display = 'block';
                 document.getElementById('add-news-card').style.display = 'none';
@@ -680,7 +648,7 @@
         }
 
         function logoutUser() {
-            localStorage.removeItem('newsat_user');
+            localStorage.removeItem('newsat_user_profile');
             currentUser = null;
             checkLoginState();
         }
@@ -709,7 +677,8 @@
                 title: title,
                 desc: plainText.substring(0, 150) + "...",
                 contentHtml: editorContent,
-                author: currentUser,
+                author: currentUser.name,
+                authorEmail: currentUser.email,
                 status: "Pending",
                 createdAt: new Date().toLocaleDateString()
             };
@@ -722,7 +691,7 @@
             document.getElementById('news-title').value = '';
             document.getElementById('news-editor').innerHTML = '';
             document.getElementById('word-count').innerText = "0 words";
-            switchTab('home');
+            renderUserProfileNews();
         }
 
         let allFetchedNews = [];
@@ -739,7 +708,7 @@
             let approvedNews = newsList.filter(item => item.status === 'Approved');
 
             if(approvedNews.length === 0) {
-                container.innerHTML = '<p style="color:var(--text-muted); grid-column: 1/-1; text-align:center; padding: 40px;">තවම අනුමත කළ පුවත් නැත. (ඇඩ්මින් පැනලයට ගොස් පුවත Approve කරන්න)</p>';
+                container.innerHTML = '<p style="color:var(--text-muted); grid-column: 1/-1; text-align:center; padding: 40px;">තවම අනුමත කළ පුවත් නැත.</p>';
                 return;
             }
 
@@ -770,6 +739,34 @@
                                 <span>✍️ ${item.author}</span>
                                 <span class="read-more-link">${t.readMore}</span>
                             </div>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function renderUserProfileNews() {
+            let container = document.getElementById('user-profile-news-list');
+            if(!currentUser) return;
+            let newsList = getStoredNews();
+            let myNews = newsList.filter(item => item.authorEmail === currentUser.email);
+
+            if(myNews.length === 0) {
+                container.innerHTML = '<p style="color: var(--text-muted); font-size: 13px;">ඔබ තවම පුවත් කිසිවක් Publish කර නැත.</p>';
+                return;
+            }
+
+            container.innerHTML = '';
+            myNews.forEach(item => {
+                let statusColor = item.status === 'Approved' ? '#10b981' : '#f59e0b';
+                container.innerHTML += `
+                    <div style="background: #f8fafc; border: 1px solid var(--border); padding: 12px 15px; border-radius: 6px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+                        <div>
+                            <strong style="font-size: 14px; color: #0f172a;">${item.title}</strong><br>
+                            <small style="color: var(--text-muted);">දිනය: ${item.createdAt}</small>
+                        </div>
+                        <div>
+                            <span style="background: ${statusColor}15; color: ${statusColor}; padding: 4px 10px; border-radius: 4px; font-size: 12px; font-weight: 600;">${item.status}</span>
                         </div>
                     </div>
                 `;
@@ -811,7 +808,7 @@
             newsList.forEach(item => {
                 tbody.innerHTML += `
                     <tr>
-                        <td><strong>${item.title}</strong></td>
+                        <td><strong>${item.title}</strong><br><small style="color:var(--text-muted);">කර්තෘ: ${item.author} (${item.authorEmail || 'N/A'})</small></td>
                         <td>${item.author}</td>
                         <td><span style="color:${item.status === 'Approved' ? '#10b981' : '#f59e0b'}; font-weight: 600;">${item.status}</span></td>
                         <td>
@@ -843,6 +840,16 @@
         }
 
         window.onload = function() {
+            // Check if URL has ?admin=true to reveal Admin Tab
+            const urlParams = new URLSearchParams(window.location.search);
+            if(urlParams.get('admin') === 'true') {
+                let nav = document.querySelector('header nav');
+                let adminBtn = document.createElement('button');
+                adminBtn.innerText = "⚙️ ඇඩ්මින් පැනලය";
+                adminBtn.setAttribute('onclick', "switchTab('admin')");
+                nav.appendChild(adminBtn);
+            }
+
             fetchPublicNews();
             checkLoginState();
         }
