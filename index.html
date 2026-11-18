@@ -29,15 +29,23 @@
             flex-direction: column;
         }
         header {
-            padding: 15px 30px;
+            padding: 15px 20px;
             display: flex;
-            justify-content: space-between;
+            flex-direction: column;
+            gap: 12px;
             align-items: center;
             border-bottom: 1px solid var(--border);
             background: var(--bg-card);
             position: sticky;
             top: 0;
             z-index: 100;
+        }
+        @media(min-width: 768px) {
+            header {
+                flex-direction: row;
+                justify-content: space-between;
+                padding: 15px 30px;
+            }
         }
         .logo {
             font-size: 22px;
@@ -46,14 +54,20 @@
             cursor: pointer;
         }
         .logo span { color: var(--accent); }
+        nav {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 8px;
+        }
         nav button {
             background: none;
             border: 1px solid var(--border);
             color: var(--text-main);
-            padding: 8px 16px;
+            padding: 8px 14px;
             border-radius: 6px;
             cursor: pointer;
-            margin-left: 10px;
+            font-size: 14px;
             transition: 0.3s;
         }
         nav button:hover, nav button.active {
@@ -76,7 +90,7 @@
         .card {
             background: var(--bg-card);
             border: 1px solid var(--border);
-            padding: 25px;
+            padding: 20px;
             border-radius: 10px;
             margin-bottom: 20px;
         }
@@ -130,6 +144,8 @@
             width: 100%;
             border-collapse: collapse;
             margin-top: 15px;
+            overflow-x: auto;
+            display: block;
         }
         th, td {
             padding: 12px;
@@ -164,7 +180,7 @@
     <header>
         <div class="logo" onclick="switchTab('home')">Newsat<span>.space</span></div>
         <nav>
-            <button onclick="switchTab('home')" class="active" id="nav-home">പ്രධාන පිටුව</button>
+            <button onclick="switchTab('home')" class="active" id="nav-home">ප්‍රධාන පිටුව</button>
             <button onclick="switchTab('user')" id="nav-user">ගිණුම / නිව්ස් දැමීම</button>
             <button onclick="switchTab('admin')" id="nav-admin">ඇඩ්මින් පැනලය</button>
         </nav>
@@ -183,7 +199,7 @@
 
         <!-- 2. USER DASHBOARD & ADD NEWS SECTION -->
         <div id="user" class="section">
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+            <div style="display: grid; grid-template-columns: 1fr; gap: 20px;">
                 <div class="card">
                     <h3>👤 පරිශීලක ලියාපදිංචිය / ඇතුළුවීම</h3>
                     <input type="text" id="username" placeholder="ඔබේ නම (Username)">
@@ -228,7 +244,6 @@
     </footer>
 
     <script>
-        // LocalStorage මත පදනම්ව දත්ත සුරැකීම
         let currentUser = localStorage.getItem('newsat_user') || null;
         let newsList = JSON.parse(localStorage.getItem('newsat_news')) || [
             { id: 1, title: "SpaceX නව රොකට් අභ්‍යවකාශයට", desc: "අද දින සාර්ථක ලෙස අභ්‍යවකාශගත කරන ලද නවතම රොකට්ටුව පිළිබඳ තොරතුරු.", image: "https://images.unsplash.com/photo-1517976487492-5750f3195933?w=500", author: "Admin", status: "Approved" }
@@ -350,7 +365,6 @@
             renderPublicNews();
         }
 
-        // Initialize on load
         window.onload = function() {
             renderPublicNews();
             if(currentUser) {
