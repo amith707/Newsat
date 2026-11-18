@@ -3,19 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Newsat.space - Tech & News Hub</title>
-
+    <title>Newsat.space - Modern News Portal</title>
     <style>
         :root {
-            --bg-main: #090d16;
-            --bg-card: #111827;
-            --border: #1f293d;
-            --text-main: #f3f4f6;
-            --text-muted: #9ca3af;
-            --primary: #0ea5e9;
-            --primary-gradient: linear-gradient(135deg, #38bdf8, #6366f1);
+            --bg-body: #f8fafc;
+            --bg-card: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
             --accent: #f43f5e;
-            --success: #22c55e;
+            --border: #e2e8f0;
+            --header-bg: #0f172a;
         }
         * {
             margin: 0;
@@ -24,24 +23,25 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         body {
-            background-color: var(--bg-main);
+            background-color: var(--bg-body);
             color: var(--text-main);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
         }
+        /* Modern Header */
         header {
-            padding: 15px 25px;
+            background: var(--header-bg);
+            color: white;
+            padding: 15px 30px;
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 15px;
             align-items: center;
-            border-bottom: 1px solid var(--border);
-            background: linear-gradient(180deg, #111827 0%, #0b0f19 100%);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
             position: sticky;
             top: 0;
-            z-index: 100;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+            z-index: 1000;
         }
         @media(min-width: 768px) {
             header {
@@ -52,12 +52,13 @@
         .logo {
             font-size: 24px;
             font-weight: bold;
-            background: var(--primary-gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: #38bdf8;
             cursor: pointer;
+            letter-spacing: 0.5px;
         }
-        .header-right {
+        .logo span { color: var(--accent); }
+        
+        .header-controls {
             display: flex;
             align-items: center;
             gap: 15px;
@@ -65,9 +66,9 @@
             justify-content: center;
         }
         .lang-select {
-            background: var(--bg-main);
-            color: var(--text-main);
-            border: 1px solid var(--primary);
+            background: #1e293b;
+            color: white;
+            border: 1px solid #334155;
             padding: 6px 12px;
             border-radius: 6px;
             cursor: pointer;
@@ -76,29 +77,28 @@
         }
         nav {
             display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
             gap: 8px;
         }
         nav button {
-            background: rgba(255,255,255,0.03);
-            border: 1px solid var(--border);
-            color: var(--text-main);
+            background: transparent;
+            border: 1px solid #334155;
+            color: #cbd5e1;
             padding: 8px 16px;
             border-radius: 6px;
             cursor: pointer;
             font-size: 14px;
-            transition: 0.3s;
+            transition: all 0.3s ease;
         }
         nav button:hover, nav button.active {
-            background: var(--primary-gradient);
+            background: var(--primary);
             color: white;
-            border-color: transparent;
-            font-weight: bold;
-            box-shadow: 0 0 15px rgba(56, 189, 248, 0.4);
+            border-color: var(--primary);
+            font-weight: 600;
         }
+
+        /* Container */
         .container {
-            max-width: 1000px;
+            max-width: 1100px;
             margin: 30px auto;
             padding: 0 20px;
             width: 100%;
@@ -106,41 +106,6 @@
         }
         .section { display: none; }
         .section.active { display: block; }
-        
-        .card {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            padding: 25px;
-            border-radius: 12px;
-            margin-bottom: 20px;
-            box-shadow: 0 8px 30px rgba(0,0,0,0.3);
-        }
-        h3 { margin-bottom: 15px; color: var(--primary); }
-        label { font-size: 13px; color: var(--text-muted); display: block; margin-top: 10px; }
-        input[type="text"], input[type="email"], input[type="password"] {
-            width: 100%;
-            padding: 12px;
-            margin: 8px 0 18px 0;
-            background: var(--bg-main);
-            border: 1px solid var(--border);
-            color: var(--text-main);
-            border-radius: 6px;
-            font-size: 14px;
-        }
-        button.btn {
-            background: var(--primary-gradient);
-            color: white;
-            border: none;
-            padding: 12px 20px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: bold;
-            width: 100%;
-            font-size: 15px;
-            margin-top: 10px;
-            transition: 0.2s;
-        }
-        button.btn:hover { opacity: 0.9; transform: translateY(-1px); }
 
         /* Search Bar */
         .search-container {
@@ -149,92 +114,21 @@
         .search-bar {
             width: 100%;
             padding: 14px 20px;
-            background: var(--bg-card);
-            border: 1px solid var(--primary);
-            color: var(--text-main);
+            background: white;
+            border: 1px solid var(--border);
             border-radius: 8px;
             font-size: 15px;
             outline: none;
-            box-shadow: 0 0 10px rgba(56, 189, 248, 0.1);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+            transition: border-color 0.3s;
         }
+        .search-bar:focus { border-color: var(--primary); }
 
-        /* MS Word styled Ribbon Editor */
-        .ms-word-container {
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            background: #182235;
-            margin-top: 8px;
-            margin-bottom: 18px;
-            overflow: hidden;
-        }
-        .ms-ribbon-tab {
-            background: #0f172a;
-            padding: 8px 15px;
-            display: flex;
-            gap: 15px;
-            border-bottom: 1px solid var(--border);
-            font-size: 13px;
-            color: var(--text-muted);
-        }
-        .ms-ribbon-tab span.active-tab {
-            color: var(--primary);
-            font-weight: bold;
-            border-bottom: 2px solid var(--primary);
-            padding-bottom: 2px;
-        }
-        .editor-toolbar {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 6px;
-            background: #1e293b;
-            padding: 10px;
-            border-bottom: 1px solid var(--border);
-            align-items: center;
-        }
-        .editor-toolbar button {
-            background: var(--bg-main);
-            color: var(--text-main);
-            border: 1px solid var(--border);
-            padding: 6px 12px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 13px;
-            font-weight: bold;
-        }
-        .editor-toolbar button:hover {
-            background: var(--primary);
-            color: white;
-        }
-        .editor-area {
-            width: 100%;
-            min-height: 300px;
-            padding: 20px;
-            background: var(--bg-main);
-            color: var(--text-main);
-            font-size: 15px;
-            line-height: 1.8;
-            outline: none;
-            overflow-y: auto;
-        }
-        .editor-area:empty:before {
-            content: attr(data-placeholder);
-            color: var(--text-muted);
-        }
-        .ms-status-bar {
-            background: #0f172a;
-            padding: 6px 15px;
-            font-size: 12px;
-            color: var(--text-muted);
-            border-top: 1px solid var(--border);
-            display: flex;
-            justify-content: space-between;
-        }
-
-        /* News Grid */
+        /* News Grid Layout (College Style) */
         .news-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 25px;
         }
         .news-card {
             background: var(--bg-card);
@@ -244,27 +138,173 @@
             display: flex;
             flex-direction: column;
             cursor: pointer;
-            transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
         }
         .news-card:hover {
-            transform: translateY(-5px);
-            border-color: var(--primary);
-            box-shadow: 0 10px 25px rgba(14, 165, 233, 0.2);
+            transform: translateY(-4px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.08);
         }
-        .news-content { padding: 18px; flex: 1; display: flex; flex-direction: column; justify-content: space-between; }
-        .news-title { font-size: 18px; margin-bottom: 8px; color: var(--primary); }
-        .news-desc { font-size: 14px; color: var(--text-muted); margin-bottom: 12px; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
-        .news-meta { font-size: 12px; color: var(--accent); display: flex; justify-content: space-between; align-items: center; }
+        .news-content {
+            padding: 22px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .news-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #0f172a;
+            margin-bottom: 10px;
+            line-height: 1.4;
+        }
+        .news-desc {
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-bottom: 15px;
+            line-height: 1.6;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        .news-meta {
+            font-size: 12px;
+            color: var(--text-muted);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid var(--border);
+            padding-top: 12px;
+        }
+        .read-more-link {
+            color: var(--primary);
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        /* Cards & Forms */
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+            margin-bottom: 25px;
+        }
+        h3 { margin-bottom: 15px; color: #0f172a; font-size: 20px; }
+        label { font-size: 13px; font-weight: 600; color: var(--text-muted); display: block; margin-top: 12px; margin-bottom: 6px; }
+        input[type="text"], input[type="email"], input[type="password"] {
+            width: 100%;
+            padding: 12px 15px;
+            background: #f8fafc;
+            border: 1px solid var(--border);
+            color: var(--text-main);
+            border-radius: 6px;
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        input:focus { border-color: var(--primary); background: #fff; }
+
+        button.btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            width: 100%;
+            font-size: 15px;
+            margin-top: 15px;
+            transition: background 0.2s;
+        }
+        button.btn:hover { background: var(--primary-hover); }
+
+        /* MS Word styled Editor */
+        .ms-word-container {
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background: #ffffff;
+            margin-top: 5px;
+            margin-bottom: 18px;
+            overflow: hidden;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.02);
+        }
+        .ms-ribbon-tab {
+            background: #f1f5f9;
+            padding: 8px 15px;
+            display: flex;
+            gap: 15px;
+            border-bottom: 1px solid var(--border);
+            font-size: 13px;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+        .ms-ribbon-tab span.active-tab {
+            color: var(--primary);
+            font-weight: 600;
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 2px;
+        }
+        .editor-toolbar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            background: #f8fafc;
+            padding: 10px;
+            border-bottom: 1px solid var(--border);
+            align-items: center;
+        }
+        .editor-toolbar button {
+            background: white;
+            color: var(--text-main);
+            border: 1px solid var(--border);
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+            transition: background 0.2s;
+        }
+        .editor-toolbar button:hover {
+            background: #e2e8f0;
+        }
+        .editor-area {
+            width: 100%;
+            min-height: 280px;
+            padding: 20px;
+            background: white;
+            color: var(--text-main);
+            font-size: 15px;
+            line-height: 1.8;
+            outline: none;
+            overflow-y: auto;
+        }
+        .editor-area:empty:before {
+            content: attr(data-placeholder);
+            color: #94a3b8;
+        }
+        .ms-status-bar {
+            background: #f1f5f9;
+            padding: 6px 15px;
+            font-size: 12px;
+            color: var(--text-muted);
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+        }
 
         /* Full Article View */
         .article-body {
             line-height: 1.9;
             font-size: 16px;
-            color: var(--text-main);
+            color: #334155;
             margin-top: 20px;
         }
-        .article-body h2, .article-body h3 { margin: 20px 0 10px 0; color: var(--primary); }
-        .article-body ul, .article-body ol { margin-left: 25px; margin-bottom: 15px; }
+        .article-body h2, .article-body h3 { margin: 20px 0 10px 0; color: #0f172a; }
 
         /* Admin Table */
         table {
@@ -273,32 +313,34 @@
             margin-top: 15px;
         }
         th, td {
-            padding: 12px;
+            padding: 14px;
             text-align: left;
             border-bottom: 1px solid var(--border);
             font-size: 14px;
         }
-        th { color: var(--primary); }
+        th { color: #0f172a; background: #f8fafc; font-weight: 600; }
         .action-btn {
-            padding: 6px 10px;
+            padding: 6px 12px;
             border-radius: 4px;
             border: none;
             cursor: pointer;
             font-size: 12px;
+            font-weight: 600;
             margin-right: 5px;
         }
-        .btn-approve { background: var(--success); color: white; }
+        .btn-approve { background: #10b981; color: white; }
         .btn-delete { background: var(--accent); color: white; }
 
         .user-info {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: rgba(14, 165, 233, 0.1);
+            background: #eff6ff;
             padding: 12px 18px;
             border-radius: 6px;
-            border: 1px solid rgba(14, 165, 233, 0.2);
+            border: 1px solid #bfdbfe;
             margin-bottom: 20px;
+            color: #1e40af;
         }
 
         footer {
@@ -307,15 +349,16 @@
             border-top: 1px solid var(--border);
             color: var(--text-muted);
             font-size: 14px;
-            background: var(--bg-card);
+            background: white;
+            margin-top: auto;
         }
     </style>
 </head>
 <body>
 
     <header>
-        <div class="logo" onclick="switchTab('home')">Newsat<span style="color:var(--accent)">.space</span></div>
-        <div class="header-right">
+        <div class="logo" onclick="switchTab('home')">Newsat<span>.space</span></div>
+        <div class="header-controls">
             <select class="lang-select" id="lang-switcher" onchange="changeLanguage(this.value)">
                 <option value="si">සිංහල</option>
                 <option value="en">English</option>
@@ -333,8 +376,10 @@
 
         <!-- 1. HOME / NEWS FEED SECTION -->
         <div id="home" class="section active">
-            <h2 id="txt-latest" style="background:var(--primary-gradient); -webkit-background-clip:text; -webkit-text-fill-color:transparent; display:inline-block; font-size: 28px; margin-bottom: 5px;">🔥 නවතම පුවත්</h2>
-            <p id="txt-sub-latest" style="color: var(--text-muted); margin-bottom: 15px;">සම්පූර්ණ විස්තරය කියවීමට පුවත මත ක්ලික් කරන්න.</p>
+            <div style="margin-bottom: 25px;">
+                <h2 id="txt-latest" style="font-size: 26px; color: #0f172a; margin-bottom: 5px;">🔥 නවතම පුවත්</h2>
+                <p id="txt-sub-latest" style="color: var(--text-muted);">අපගේ නවතම ලිපි සහ පුවත් මෙහි ප්‍රදර්ශනය වේ.</p>
+            </div>
             
             <div class="search-container">
                 <input type="text" id="search-input" class="search-bar" placeholder="🔍 පුවත් සෙවීම සඳහා මෙහි ලියන්න..." onkeyup="filterNews()">
@@ -345,13 +390,13 @@
 
         <!-- 1.5 FULL NEWS VIEW SECTION -->
         <div id="article-view" class="section">
-            <button onclick="switchTab('home')" class="btn" style="width: auto; padding: 8px 16px; margin-bottom: 15px;">⬅️ <span id="txt-back">ආපසු ප්‍රධාන පිටුවට</span></button>
+            <button onclick="switchTab('home')" class="btn" style="width: auto; padding: 8px 16px; margin-bottom: 20px; background: #64748b;">⬅️ <span id="txt-back">ආපසු ප්‍රධාන පිටුවට</span></button>
             <div class="card" id="full-article-content"></div>
         </div>
 
         <!-- 2. USER DASHBOARD SECTION -->
         <div id="user" class="section">
-            <div class="card" id="auth-card">
+            <div class="card" id="auth-card" style="max-width: 500px; margin: 40px auto;">
                 <h3 id="txt-login-title">👤 පරිශීලක ගිණුමට ඇතුළුවීම</h3>
                 <input type="text" id="username" placeholder="ඔබේ නම (Username)">
                 <input type="email" id="useremail" placeholder="ඊමේල් ලිපිනය (Email)">
@@ -360,7 +405,7 @@
 
             <div class="card" id="add-news-card" style="display: none;">
                 <div class="user-info">
-                    <span>👤 <span id="txt-logged-as">පිවිසී ඇත්තේ</span>: <strong id="logged-user-name" style="color: var(--primary);"></strong></span>
+                    <span>👤 <span id="txt-logged-as">පිවිසී ඇත්තේ</span>: <strong id="logged-user-name"></strong></span>
                     <button onclick="logoutUser()" style="background: var(--accent); color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 12px;">Logout</button>
                 </div>
                 <h3 id="txt-add-title">✍️ නව පුවතක් සකසන්න</h3>
@@ -399,28 +444,30 @@
 
         <!-- 3. ADMIN PANEL SECTION -->
         <div id="admin" class="section">
-            <div class="card" id="admin-login-card" style="max-width: 450px; margin: 20px auto;">
+            <div class="card" id="admin-login-card" style="max-width: 450px; margin: 40px auto;">
                 <h3 id="txt-admin-login">🔐 ඇඩ්මින් පිවිසුම (Admin Login)</h3>
                 <input type="password" id="admin-password" placeholder="මුරපදය ඇතුළත් කරන්න" onkeypress="if(event.key === 'Enter') verifyAdmin()">
                 <button class="btn" id="txt-admin-btn" onclick="verifyAdmin()">ඇතුළු වන්න</button>
             </div>
 
             <div class="card" id="admin-dashboard-card" style="display: none;">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
                     <h3 id="txt-admin-dash" style="margin-bottom: 0;">⚙️ ඇඩ්මින් පාලක මණ්ඩලය</h3>
                     <button onclick="logoutAdmin()" style="background: var(--accent); color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 12px;">Admin Logout</button>
                 </div>
-                <table>
-                    <thead>
-                        <tr>
-                            <th id="th-title">මාතෘකාව</th>
-                            <th id="th-author">කර්තෘ</th>
-                            <th id="th-status">තත්ත්වය</th>
-                            <th id="th-action">ක්‍රියාමාර්ග</th>
-                        </tr>
-                    </thead>
-                    <tbody id="admin-news-table"></tbody>
-                </table>
+                <div style="overflow-x: auto;">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th id="th-title">මාතෘකාව</th>
+                                <th id="th-author">කර්තෘ</th>
+                                <th id="th-status">තත්ත්වය</th>
+                                <th id="th-action">ක්‍රියාමාර්ග</th>
+                            </tr>
+                        </thead>
+                        <tbody id="admin-news-table"></tbody>
+                    </table>
+                </div>
             </div>
         </div>
 
@@ -436,7 +483,7 @@
                 user: "ගිණුම / නිව්ස් දැමීම",
                 admin: "ඇඩ්මින් පැනලය",
                 latest: "🔥 නවතම පුවත්",
-                subLatest: "සම්පූර්ණ විස්තරය කියවීමට පුවත මත ක්ලික් කරන්න.",
+                subLatest: "අපගේ නවතම ලිපි සහ පුවත් මෙහි ප්‍රදර්ශනය වේ.",
                 searchPh: "🔍 පුවත් සෙවීම සඳහා මෙහි ලියන්න...",
                 back: "ආපසු ප්‍රධාන පිටුවට",
                 loginTitle: "👤 පරිශීලක ගිණුමට ඇතුළුවීම",
@@ -465,7 +512,7 @@
                 user: "Account / Post News",
                 admin: "Admin Panel",
                 latest: "🔥 Latest News",
-                subLatest: "Click on any news to read the full article.",
+                subLatest: "Explore our latest articles and news updates.",
                 searchPh: "🔍 Search news here...",
                 back: "Back to Home",
                 loginTitle: "👤 User Account Login",
@@ -494,7 +541,7 @@
                 user: "கணக்கு / செய்தி பதிவிட",
                 admin: "நிர்வாக குழு",
                 latest: "🔥 சமீபத்திய செய்திகள்",
-                subLatest: "முழு விவரங்களை வாசிக்க செய்தியை சொடுக்கவும்.",
+                subLatest: "எங்களின் சமீபத்திய கட்டுரைகள் மற்றும் செய்திகள்.",
                 searchPh: "🔍 செய்திகளை தேட...",
                 back: "முகப்புக்கு திரும்புக",
                 loginTitle: "👤 பயனர் கணக்கு உள்நுழைவு",
@@ -638,7 +685,6 @@
             checkLoginState();
         }
 
-        // LocalStorage News Saving
         function getStoredNews() {
             let news = localStorage.getItem('newsat_local_news');
             return news ? JSON.parse(news) : [];
@@ -665,7 +711,7 @@
                 contentHtml: editorContent,
                 author: currentUser,
                 status: "Pending",
-                createdAt: new Date().toLocaleString()
+                createdAt: new Date().toLocaleDateString()
             };
 
             let newsList = getStoredNews();
@@ -693,7 +739,7 @@
             let approvedNews = newsList.filter(item => item.status === 'Approved');
 
             if(approvedNews.length === 0) {
-                container.innerHTML = '<p style="color:var(--text-muted);">තවම අනුමත කළ පුවත් නැත. (ඇඩ්මින් පැනලයට ගොස් පුවත Approve කරන්න)</p>';
+                container.innerHTML = '<p style="color:var(--text-muted); grid-column: 1/-1; text-align:center; padding: 40px;">තවම අනුමත කළ පුවත් නැත. (ඇඩ්මින් පැනලයට ගොස් පුවත Approve කරන්න)</p>';
                 return;
             }
 
@@ -708,21 +754,21 @@
             let container = document.getElementById('public-news-container');
             container.innerHTML = '';
             if(newsList.length === 0) {
-                container.innerHTML = '<p style="color:var(--text-muted);">පුවත් හමු නොවීය.</p>';
+                container.innerHTML = '<p style="color:var(--text-muted); grid-column: 1/-1; text-align:center; padding: 40px;">පුවත් හමු නොවීය.</p>';
                 return;
             }
             const t = translations[currentLang];
             newsList.forEach(item => {
                 container.innerHTML += `
                     <div class="news-card" onclick="openFullArticle('${item.id}')">
-                        <div class="news-content" style="min-height: 180px;">
+                        <div class="news-content">
                             <div>
                                 <h3 class="news-title">${item.title}</h3>
                                 <p class="news-desc">${item.desc}</p>
                             </div>
                             <div class="news-meta">
-                                <span>කර්තෘ: ${item.author}</span>
-                                <span style="color: var(--primary); font-weight: bold;">${t.readMore}</span>
+                                <span>✍️ ${item.author}</span>
+                                <span class="read-more-link">${t.readMore}</span>
                             </div>
                         </div>
                     </div>
@@ -744,8 +790,8 @@
 
             const fullContainer = document.getElementById('full-article-content');
             fullContainer.innerHTML = `
-                <h1 style="color: var(--primary); font-size: 26px; margin-bottom: 10px;">${item.title}</h1>
-                <p style="color: var(--accent); font-size: 13px; margin-bottom: 18px;">✍️ කර්තෘ: ${item.author}</p>
+                <h1 style="color: #0f172a; font-size: 26px; margin-bottom: 10px; line-height: 1.4;">${item.title}</h1>
+                <p style="color: var(--text-muted); font-size: 13px; margin-bottom: 20px; border-bottom: 1px solid var(--border); padding-bottom: 10px;">✍️ කර්තෘ: ${item.author} | 📅 ${item.createdAt}</p>
                 <div class="article-body">${item.contentHtml || item.desc}</div>
             `;
             switchTab('article-view');
@@ -765,9 +811,9 @@
             newsList.forEach(item => {
                 tbody.innerHTML += `
                     <tr>
-                        <td>${item.title}</td>
+                        <td><strong>${item.title}</strong></td>
                         <td>${item.author}</td>
-                        <td><span style="color:${item.status === 'Approved' ? 'var(--success)' : 'orange'}">${item.status}</span></td>
+                        <td><span style="color:${item.status === 'Approved' ? '#10b981' : '#f59e0b'}; font-weight: 600;">${item.status}</span></td>
                         <td>
                             ${item.status === 'Pending' ? `<button class="action-btn btn-approve" onclick="updateStatus('${item.id}', 'Approved')">Approve</button>` : ''}
                             <button class="action-btn btn-delete" onclick="deleteNews('${item.id}')">Delete</button>
