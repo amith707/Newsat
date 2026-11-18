@@ -5,9 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Newsat.space - Tech & News Hub</title>
     
-    <!-- Firebase SDK (Compat Version) -->
+    <!-- Firebase SDK (Compat Version with Storage) -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
 
     <style>
         :root {
@@ -125,7 +126,7 @@
         button.btn:hover { opacity: 0.9; }
         button.btn:disabled { opacity: 0.5; cursor: not-allowed; }
 
-        /* Advanced Word-like Rich Text Editor Styles */
+        /* Rich Text Editor */
         .editor-toolbar {
             display: flex;
             flex-wrap: wrap;
@@ -310,7 +311,7 @@
                     <span>👤 පිවිසී ඇත්තේ: <strong id="logged-user-name" style="color: var(--primary);"></strong></span>
                     <button onclick="logoutUser()" style="background: var(--accent); color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 12px;">Logout</button>
                 </div>
-                <h3>✍️ නව පුවතක් සකසන්න (Advanced Editor)</h3>
+                <h3>✍️ නව පුවතක් සකසන්න (Firebase Storage Enabled)</h3>
                 
                 <label>පුවතේ ප්‍රධාන සිරස්තලය (Title)</label>
                 <input type="text" id="news-title" placeholder="පුවතේ මාතෘකාව මෙහි ලියන්න...">
@@ -325,10 +326,9 @@
                     <button type="button" onclick="formatDoc('underline')" title="Underline"><u>U</u></button>
                     <button type="button" onclick="formatDoc('formatBlock', 'H3')" title="Heading">H3</button>
                     <button type="button" onclick="formatDoc('insertUnorderedList')" title="Bullet List">• List</button>
-                    <button type="button" onclick="formatDoc('insertOrderedList')" title="Numbered List">1. List</button>
                     <button type="button" onclick="triggerInlineImage()" style="background: var(--primary); color: var(--bg-main);" title="Add Photos">📷 ෆොටෝ එකක් එක් කරන්න</button>
                 </div>
-                <input type="file" id="inline-image-input" accept="image/*" multiple style="display: none;" onchange="insertInlineImages(this)">
+                <input type="file" id="inline-image-input" accept="image/*" multiple style="display: none;" onchange="uploadInlineImages(this)">
                 <div id="news-editor" class="editor-area" contenteditable="true" data-placeholder="ඔබේ පුවත මෙහි ලියන්න. ඡායාරූප ඇතුළත් කිරීමට ඉහත '📷 ෆොටෝ එකක් එක් කරන්න' බොත්තම ඔබන්න..."></div>
 
                 <button class="btn" id="submit-btn" onclick="submitNews()">පුවත Publish කිරීමට යොමු කරන්න</button>
@@ -379,6 +379,7 @@
 
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
+        const storage = firebase.storage();
 
         const ADMIN_PASS = "cha1996AM";
         let isAdminLogged = sessionStorage.getItem('newsat_admin') === 'true';
@@ -397,7 +398,6 @@
             if(tabId === 'admin') checkAdminState();
         }
 
-        // Rich Text Formatting
         function formatDoc(cmd, value = null) {
             document.execCommand(cmd, false, value);
             document.getElementById('news-editor').focus();
@@ -407,22 +407,32 @@
             document.getElementById('inline-image-input').click();
         }
 
-        // Insert multiple inline images as Base64 directly into the editor
-        function insertInlineImages(input) {
+        // Upload multiple inline images directly to Firebase Storage (`news_images/`)
+        async function uploadInlineImages(input) {
             if (!input.files || input.files.length === 0) return;
             const editor = document.getElementById('news-editor');
-            
-            for (let i = 0; i < input.files.length; i++) {
-                const file = input.files[i];
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    const imgHtml = `<br><img src="${e.target.result}" alt="News Photo"><br>`;
+            let submitBtn = document.getElementById('submit-btn');
+            submitBtn.innerText = "ඡායාරූප Upload වෙමින් පවතී...";
+            submitBtn.disabled = true;
+
+            try {
+                for (let i = 0; i < input.files.length; i++) {
+                    let file = input.files[i];
+                    let storageRef = storage.ref('news_images/' + Date.now() + '_' + i + '_' + file.name);
+                    let snapshot = await storageRef.put(file);
+                    let downloadURL = await snapshot.ref.getDownloadURL();
+                    
+                    let imgHtml = `<br><img src="${downloadURL}" alt="News Photo"><br>`;
                     editor.focus();
                     document.execCommand('insertHTML', false, imgHtml);
-                };
-                reader.readAsDataURL(file);
+                }
+            } catch (error) {
+                alert("ඡායාරූපය Upload කිරීමේ දෝෂයක්: " + error.message);
+            } finally {
+                input.value = '';
+                submitBtn.innerText = "පුවත Publish කිරීමට යොමු කරන්න";
+                submitBtn.disabled = false;
             }
-            input.value = '';
         }
 
         function verifyAdmin() {
@@ -477,8 +487,8 @@
             checkLoginState();
         }
 
-        // Submit Advanced News Post with Cover Photo & Formatted HTML
-        function submitNews() {
+        // Submit News: Upload Cover Image to Firebase Storage & Save to Firestore
+        async function submitNews() {
             let title = document.getElementById('news-title').value.trim();
             let editorContent = document.getElementById('news-editor').innerHTML.trim();
             let plainText = document.getElementById('news-editor').innerText.trim();
@@ -494,36 +504,37 @@
             }
 
             let submitBtn = document.getElementById('submit-btn');
-            submitBtn.innerText = "පුවත Publish වෙමින් පවතී...";
+            submitBtn.innerText = "පුවත සහ Cover Image Upload වෙමින් පවතී...";
             submitBtn.disabled = true;
 
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                let coverBase64 = e.target.result;
+            try {
+                let file = coverInput.files[0];
+                let storageRef = storage.ref('news_images/' + Date.now() + '_cover_' + file.name);
                 
-                db.collection('news').add({
+                let snapshot = await storageRef.put(file);
+                let coverURL = await snapshot.ref.getDownloadURL();
+
+                await db.collection('news').add({
                     title: title,
                     desc: plainText.substring(0, 150) + "...",
                     contentHtml: editorContent,
-                    image: coverBase64,
+                    image: coverURL,
                     author: currentUser,
                     status: "Pending",
                     createdAt: firebase.firestore.FieldValue.serverTimestamp()
-                }).then(() => {
-                    alert('පුවත සාර්ථකව යවන ලදී! ඇඩ්මින් අනුමත කළ පසු ප්‍රධාන පිටුවේ පෙන්වනු ඇත.');
-                    document.getElementById('news-title').value = '';
-                    document.getElementById('news-editor').innerHTML = '';
-                    coverInput.value = '';
-                    submitBtn.innerText = "පුවත Publish කිරීමට යොමු කරන්න";
-                    submitBtn.disabled = false;
-                    switchTab('home');
-                }).catch(error => {
-                    alert('දෝෂයක් ඇති විය: ' + error.message);
-                    submitBtn.innerText = "පුවත Publish කිරීමට යොමු කරන්න";
-                    submitBtn.disabled = false;
                 });
-            };
-            reader.readAsDataURL(coverInput.files[0]);
+
+                alert('පුවත සාර්ථකව යවන ලදී! ඇඩ්මින් අනුමත කළ පසු ප්‍රධාන පිටුවේ පෙන්වනු ඇත.');
+                document.getElementById('news-title').value = '';
+                document.getElementById('news-editor').innerHTML = '';
+                coverInput.value = '';
+                switchTab('home');
+            } catch (error) {
+                alert('දෝෂයක් ඇති විය: ' + error.message);
+            } finally {
+                submitBtn.innerText = "පුවත Publish කිරීමට යොමු කරන්න";
+                submitBtn.disabled = false;
+            }
         }
 
         function fetchPublicNews() {
