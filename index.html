@@ -198,7 +198,7 @@
     <script>
         // --- FIREBASE CONFIGURATION ---
         const firebaseConfig = {
-            apiKey: "AIzaSyBnUPr3XxkYd5qYo7sAoE8MZc-F9K",
+            apiKey: "AIzaSyBMmZuPV3XKlYkGqjQYd7aJpFb8MZc",
             authDomain: "newsat-2D9F8.firebaseapp.com",
             projectId: "newsat-2D9F8",
             storageBucket: "newsat-2d9F8.appspot.com",
@@ -313,11 +313,9 @@
             }
 
             try {
-                // Check if user already exists in Firestore 'users' collection
                 let userQuery = await db.collection('users').where('email', '==', email).get();
                 
                 if(!userQuery.empty) {
-                    // User exists, verify password
                     let userData = userQuery.docs[0].data();
                     if(userData.password === pass) {
                         currentUser = userData;
@@ -328,7 +326,6 @@
                         alert('ඇතුළත් කළ මුරපදය (Password) වැරදියි!');
                     }
                 } else {
-                    // Create new user in Firestore
                     let newUser = { name, email, password: pass, phone, role, createdAt: new Date().toLocaleDateString() };
                     await db.collection('users').add(newUser);
                     currentUser = newUser;
