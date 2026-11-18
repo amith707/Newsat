@@ -86,15 +86,19 @@
         .section { display: none; }
         .section.active { display: block; }
         
-        /* Forms & Cards */
+        /* Cards & Forms */
         .card {
             background: var(--bg-card);
             border: 1px solid var(--border);
-            padding: 20px;
+            padding: 25px;
             border-radius: 10px;
             margin-bottom: 20px;
         }
-        input, textarea, select {
+        h3 {
+            margin-bottom: 15px;
+            color: var(--primary);
+        }
+        input, textarea {
             width: 100%;
             padding: 12px;
             margin: 10px 0 20px 0;
@@ -102,6 +106,7 @@
             border: 1px solid var(--border);
             color: var(--text-main);
             border-radius: 6px;
+            font-size: 14px;
         }
         button.btn {
             background: linear-gradient(135deg, var(--primary), #2563eb);
@@ -112,6 +117,7 @@
             cursor: pointer;
             font-weight: bold;
             width: 100%;
+            font-size: 15px;
         }
         button.btn:hover { opacity: 0.9; }
 
@@ -144,8 +150,6 @@
             width: 100%;
             border-collapse: collapse;
             margin-top: 15px;
-            overflow-x: auto;
-            display: block;
         }
         th, td {
             padding: 12px;
@@ -164,6 +168,17 @@
         }
         .btn-approve { background: var(--success); color: white; }
         .btn-delete { background: var(--accent); color: white; }
+
+        .user-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(56, 189, 248, 0.1);
+            padding: 12px 18px;
+            border-radius: 6px;
+            border: 1px solid rgba(56, 189, 248, 0.2);
+            margin-bottom: 20px;
+        }
 
         footer {
             text-align: center;
@@ -193,26 +208,32 @@
             <h2>🔥 නවතම පුවත්</h2>
             <p style="color: var(--text-muted); margin-bottom: 20px;">අපගේ පරිශීලකයින් විසින් එකතු කරන ලද නවතම පුවත්.</p>
             <div class="news-grid" id="public-news-container">
-                <!-- News items will load here dynamically -->
+                <!-- Dynamic News Cards -->
             </div>
         </div>
 
         <!-- 2. USER DASHBOARD & ADD NEWS SECTION -->
         <div id="user" class="section">
-            <div style="display: grid; grid-template-columns: 1fr; gap: 20px;">
-                <div class="card">
-                    <h3>👤 පරිශීලක ලියාපදිංචිය / ඇතුළුවීම</h3>
-                    <input type="text" id="username" placeholder="ඔබේ නම (Username)">
-                    <input type="email" id="useremail" placeholder="ඊමේල් ලිපිනය">
-                    <button class="btn" onclick="registerUser()">ගිණුමට ඇතුළු වන්න</button>
+            <!-- Login Card -->
+            <div class="card" id="auth-card">
+                <h3>👤 පරිශීලක ගිණුමට ඇතුළුවීම</h3>
+                <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 15px;">පුවත් එකතු කිරීම සඳහා ඔබේ නම සහ ඊමේල් ලිපිනය ලබා දී ඇතුළු වන්න.</p>
+                <input type="text" id="username" placeholder="ඔබේ නම (Username)">
+                <input type="email" id="useremail" placeholder="ඊමේල් ලිපිනය (Email)">
+                <button class="btn" onclick="registerUser()">ගිණුමට ඇතුළු වන්න</button>
+            </div>
+
+            <!-- Add News Card -->
+            <div class="card" id="add-news-card" style="display: none;">
+                <div class="user-info">
+                    <span>👤 පිවිසී ඇත්තේ: <strong id="logged-user-name" style="color: var(--primary);"></strong></span>
+                    <button onclick="logoutUser()" style="background: var(--accent); color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 12px;">අයින් වන්න (Logout)</button>
                 </div>
-                <div class="card" id="add-news-card" style="opacity: 0.5; pointer-events: none;">
-                    <h3>✍️ නව පුවතක් එකතු කරන්න</h3>
-                    <input type="text" id="news-title" placeholder="පුවතේ සිරස්තලය (Title)">
-                    <input type="file" id="news-image" accept="image/*">
-                    <textarea id="news-desc" rows="3" placeholder="පුවතේ විස්තරය..."></textarea>
-                    <button class="btn" onclick="submitNews()">පුවත Publish කරන්න</button>
-                </div>
+                <h3>✍️ නව පුවතක් එකතු කරන්න</h3>
+                <input type="text" id="news-title" placeholder="පුවතේ මාතෘකාව (Title)">
+                <input type="file" id="news-image" accept="image/*">
+                <textarea id="news-desc" rows="4" placeholder="පුවතේ සම්පූර්ණ විස්තරය..."></textarea>
+                <button class="btn" onclick="submitNews()">පුවත Publish කිරීමට යොමු කරන්න</button>
             </div>
         </div>
 
@@ -221,19 +242,21 @@
             <div class="card">
                 <h3>⚙️ ඇඩ්මින් පාලක මණ්ඩලය (Admin Panel)</h3>
                 <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 15px;">පරිශීලකයින් විසින් එවන ලද පුවත් පරීක්ෂා කර අනුමත කරන්න හෝ මකා දමන්න.</p>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>මාතෘකාව</th>
-                            <th>කර්තෘ (Author)</th>
-                            <th>තත්ත්වය</th>
-                            <th>ක්‍රියාමාර්ග</th>
-                        </tr>
-                    </thead>
-                    <tbody id="admin-news-table">
-                        <!-- Admin items load here -->
-                    </tbody>
-                </table>
+                <div style="overflow-x: auto;">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>මාතෘකාව</th>
+                                <th>කර්තෘ (Author)</th>
+                                <th>තත්ත්වය</th>
+                                <th>ක්‍රියාමාර්ග</th>
+                            </tr>
+                        </thead>
+                        <tbody id="admin-news-table">
+                            <!-- Dynamic Admin Rows -->
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
 
@@ -256,25 +279,44 @@
             document.getElementById('nav-' + tabId).classList.add('active');
             if(tabId === 'home') renderPublicNews();
             if(tabId === 'admin') renderAdminTable();
+            if(tabId === 'user') checkLoginState();
         }
 
         function registerUser() {
-            let name = document.getElementById('username').value;
-            if(!name) { alert('කරුණාකර නමක් ඇතුළත් කරන්න!'); return; }
+            let name = document.getElementById('username').value.trim();
+            let email = document.getElementById('useremail').value.trim();
+            if(!name || !email) { alert('කරුණාකර නම සහ ඊමේල් ලිපිනය ඇතුළත් කරන්න!'); return; }
             currentUser = name;
             localStorage.setItem('newsat_user', currentUser);
             alert('සාර්ථකයි! දැන් ඔබට පුවත් එකතු කළ හැක.');
-            document.getElementById('add-news-card').style.opacity = '1';
-            document.getElementById('add-news-card').style.pointerEvents = 'auto';
+            checkLoginState();
+        }
+
+        function checkLoginState() {
+            if(currentUser) {
+                document.getElementById('auth-card').style.display = 'none';
+                document.getElementById('add-news-card').style.display = 'block';
+                document.getElementById('logged-user-name').innerText = currentUser;
+            } else {
+                document.getElementById('auth-card').style.display = 'block';
+                document.getElementById('add-news-card').style.display = 'none';
+            }
+        }
+
+        function logoutUser() {
+            localStorage.removeItem('newsat_user');
+            currentUser = null;
+            document.getElementById('username').value = '';
+            document.getElementById('useremail').value = '';
+            checkLoginState();
         }
 
         function submitNews() {
-            if(!currentUser) { alert('මුලින්ම ගිණුමට ඇතුළුවන්න!'); return; }
-            let title = document.getElementById('news-title').value;
-            let desc = document.getElementById('news-desc').value;
+            let title = document.getElementById('news-title').value.trim();
+            let desc = document.getElementById('news-desc').value.trim();
             let fileInput = document.getElementById('news-image');
             
-            if(!title || !desc) { alert('සියලුම තොරතුරු පුරවන්න!'); return; }
+            if(!title || !desc) { alert('කරුණාකර මාතෘකාව සහ විස්තරය අනිවාර්යයෙන් පුරවන්න!'); return; }
 
             let reader = new FileReader();
             if(fileInput.files && fileInput.files[0]) {
@@ -311,7 +353,7 @@
             let approvedNews = newsList.filter(item => item.status === 'Approved');
             
             if(approvedNews.length === 0) {
-                container.innerHTML = '<p style="color:var(--text-muted);">තවම පුවත් කිසිවක් නොමැත.</p>';
+                container.innerHTML = '<p style="color:var(--text-muted);">තවම අනුමත කළ පුවත් කිසිවක් නොමැත.</p>';
                 return;
             }
 
@@ -337,6 +379,12 @@
         function renderAdminTable() {
             let tbody = document.getElementById('admin-news-table');
             tbody.innerHTML = '';
+            
+            if(newsList.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; color:var(--text-muted);">පුවත් කිසිවක් නොමැත.</td></tr>';
+                return;
+            }
+
             newsList.forEach(item => {
                 tbody.innerHTML += `
                     <tr>
@@ -367,10 +415,7 @@
 
         window.onload = function() {
             renderPublicNews();
-            if(currentUser) {
-                document.getElementById('add-news-card').style.opacity = '1';
-                document.getElementById('add-news-card').style.pointerEvents = 'auto';
-            }
+            checkLoginState();
         }
     </script>
 </body>
