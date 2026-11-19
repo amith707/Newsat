@@ -227,7 +227,6 @@ const ADMIN_EMAIL = "kularathnashac@gmail.com";
 
 let auth, db, currentUser=null, isAdmin=false, allNews=[], quillEditor, authMode='login';
 
-// Init Firebase & Quill
 firebase.initializeApp(firebaseConfig);
 auth = firebase.auth();
 db = firebase.firestore();
@@ -254,9 +253,7 @@ function toast(text, type='info'){
   $('toastContainer').appendChild(el);
   setTimeout(()=>el.remove(), 4000);
 }
-
 function friendlyError(e){ return e?.message || 'දෝෂයක් සිදුවිය.'; }
-
 function toggleTheme(){ document.documentElement.dataset.theme = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark'; }
 
 // Auth
@@ -305,10 +302,7 @@ async function logout(){ await auth.signOut(); toast('Logout විය.', 'succe
 async function handleUser(user){
   currentUser = user;
   if(!user){
-    isAdmin = false; 
-    updateNav(); 
-    showPage('home'); 
-    return;
+    isAdmin = false; updateNav(); showPage('home'); return;
   }
   
   isAdmin = (user.email === ADMIN_EMAIL);
@@ -344,9 +338,7 @@ async function loadProfile(){
     $('pOccupation').value = p.occupation || '';
     $('pBio').value = p.bio || '';
     updateProgress(p);
-  } catch(e) {
-    console.error("Profile Load Error:", e);
-  }
+  } catch(e) { console.error(e); }
 }
 
 function updateProgress(p){
@@ -373,7 +365,7 @@ async function saveProfile(e){
     toast('Profile සාර්ථකව Save කළා!', 'success');
   } catch(err) { 
     console.error("Profile Error:", err);
-    alert("Error: " + friendlyError(err)); 
+    alert("Profile Error: " + friendlyError(err)); 
   } finally { 
     btn.disabled = false; btn.textContent = 'Profile Save කරන්න'; 
   }
@@ -410,7 +402,7 @@ async function submitNews(e){
     loadMySubmissions();
   } catch(err) {
     console.error("Submit Error:", err); 
-    alert("Error: " + friendlyError(err)); 
+    alert("News Error: " + friendlyError(err)); 
   } finally { 
     btn.disabled = false; txt.textContent = 'පුවත Submit කරන්න'; 
   }
