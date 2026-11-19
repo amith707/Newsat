@@ -1,321 +1,518 @@
+
 <!DOCTYPE html>
 <html lang="si">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#101b35">
-<title>Newsat.space | Trusted News</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Noto+Sans+Sinhala:wght@400;500;600;700;800&family=Noto+Sans+Tamil:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+<title>Newsat.space | Latest News</title>
 <style>
-:root{--navy:#101b35;--navy2:#172747;--blue:#2563eb;--cyan:#38bdf8;--red:#ef476f;--ink:#172033;--muted:#6b7890;--line:#e7ebf2;--paper:#f4f6fa;--white:#fff;--green:#0f9d75;--shadow:0 14px 40px rgba(16,27,53,.09)}
-*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:"DM Sans","Noto Sans Sinhala","Noto Sans Tamil",sans-serif}button,input,select,textarea{font:inherit}button{cursor:pointer}.topline{height:4px;background:linear-gradient(90deg,var(--red),#ff9f43,var(--cyan),var(--blue))}.site-header{background:var(--navy);color:#fff;position:sticky;top:0;z-index:20;box-shadow:0 8px 24px #0b173033}.head-inner{max-width:1180px;margin:auto;padding:15px 22px;display:flex;align-items:center;justify-content:space-between;gap:18px}.brand{display:flex;align-items:center;gap:10px;color:white;text-decoration:none;font-size:24px;font-weight:800;letter-spacing:-1px}.brand-mark{width:38px;height:38px;border-radius:12px;background:linear-gradient(135deg,#38bdf8,#2563eb);display:grid;place-items:center;font-size:20px;box-shadow:0 6px 18px #2563eb55}.brand span{color:#ff6685}.head-actions{display:flex;align-items:center;gap:10px}.lang{background:#1d2b49;border:1px solid #3a4967;color:#fff;padding:9px 12px;border-radius:10px}.nav{display:flex;gap:7px}.nav button,.mobile-menu{border:0;background:transparent;color:#d9e2f4;padding:10px 13px;border-radius:9px;font-weight:600}.nav button.active,.nav button:hover{background:#ffffff18;color:#fff}.btn{border:0;border-radius:10px;padding:11px 16px;font-weight:700;transition:.2s}.btn-primary{background:linear-gradient(135deg,#3478f6,#1d55d8);color:white;box-shadow:0 7px 18px #2563eb35}.btn-primary:hover{transform:translateY(-1px);filter:brightness(1.06)}.btn-dark{background:var(--navy);color:#fff}.btn-soft{background:#edf3ff;color:#2458bf}.btn-danger{background:#fff0f3;color:#d72d53}.btn:disabled{opacity:.55;cursor:not-allowed}.wrap{max-width:1180px;margin:0 auto;padding:26px 22px 55px}.ticker{background:#fff;border:1px solid var(--line);border-radius:12px;display:flex;align-items:center;gap:12px;padding:10px 14px;margin-bottom:23px;overflow:hidden}.ticker-label{background:var(--red);color:white;border-radius:7px;padding:6px 9px;font-size:11px;font-weight:800;white-space:nowrap;letter-spacing:.5px}.ticker-text{font-size:13px;color:#536078;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.hero{display:grid;grid-template-columns:1.45fr .8fr;gap:20px;margin-bottom:34px}.hero-main{position:relative;min-height:380px;border-radius:20px;overflow:hidden;background:var(--navy);color:white;box-shadow:var(--shadow)}.hero-main img{position:absolute;width:100%;height:100%;object-fit:cover;inset:0;opacity:.65}.hero-main:after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,#081329 0%,#081329a8 43%,transparent 100%)}.hero-copy{position:absolute;z-index:1;left:30px;right:30px;bottom:28px}.eyebrow{display:inline-flex;align-items:center;gap:7px;color:#fff;background:var(--red);padding:6px 10px;border-radius:6px;font-size:11px;font-weight:800;letter-spacing:.5px}.hero-copy h1{font-size:clamp(25px,4vw,39px);line-height:1.25;margin:13px 0 10px;max-width:760px}.hero-copy p{color:#dce5f5;margin:0 0 15px;font-size:14px;line-height:1.7;max-width:650px}.hero-meta{font-size:12px;color:#dce5f5}.hero-side{display:flex;flex-direction:column;gap:15px}.side-card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:19px;display:flex;gap:14px;align-items:flex-start;flex:1;cursor:pointer;transition:.2s}.side-card:hover,.news-card:hover{transform:translateY(-3px);box-shadow:var(--shadow)}.side-num{font-size:25px;font-weight:800;color:#c8d5eb}.side-card h3{font-size:15px;line-height:1.45;margin:0 0 7px}.side-card small{color:var(--muted)}.section-head{display:flex;justify-content:space-between;align-items:end;gap:16px;margin:30px 0 17px}.section-head h2{font-size:23px;margin:0 0 5px;letter-spacing:-.5px}.section-head p{color:var(--muted);font-size:13px;margin:0}.search{display:flex;gap:9px;max-width:380px;width:100%}.search input{width:100%;padding:12px 14px;border:1px solid var(--line);border-radius:10px;background:white;outline:none}.search input:focus,.field input:focus,.field select:focus,.field textarea:focus{border-color:#76a2ff;box-shadow:0 0 0 3px #2563eb13}.category-row{display:flex;gap:8px;overflow:auto;padding:2px 0 15px}.chip{border:1px solid var(--line);background:#fff;color:#536078;padding:8px 13px;border-radius:99px;font-size:12px;font-weight:700;white-space:nowrap}.chip.active,.chip:hover{background:var(--navy);color:white;border-color:var(--navy)}.news-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}.news-card{background:white;border:1px solid var(--line);border-radius:15px;overflow:hidden;cursor:pointer;transition:.2s;min-width:0}.news-img{height:190px;background:#dce5f3;position:relative;overflow:hidden}.news-img img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .35s}.news-card:hover .news-img img{transform:scale(1.04)}.category-tag{position:absolute;left:13px;top:13px;background:#101b35e8;color:white;border-radius:6px;padding:6px 9px;font-size:10px;font-weight:800}.news-body{padding:16px}.news-body h3{font-size:16px;line-height:1.45;margin:0 0 9px}.news-body p{font-size:13px;color:var(--muted);line-height:1.6;margin:0 0 15px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}.meta{border-top:1px solid var(--line);padding-top:11px;display:flex;justify-content:space-between;gap:8px;color:#8993a6;font-size:11px}.read{color:var(--blue);font-weight:800}.empty{grid-column:1/-1;text-align:center;background:white;padding:45px 20px;border:1px dashed #ccd5e4;border-radius:15px;color:var(--muted)}.panel{display:none;background:white;border:1px solid var(--line);border-radius:18px;padding:24px;box-shadow:var(--shadow);margin:20px auto;max-width:850px}.panel.active{display:block}.panel h2{margin:0 0 7px;font-size:23px}.muted{color:var(--muted);font-size:13px;line-height:1.6}.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.field{margin-top:13px}.field.full{grid-column:1/-1}.field label{display:block;font-size:12px;font-weight:800;color:#536078;margin-bottom:7px}.field input,.field select,.field textarea{width:100%;padding:12px 13px;border:1px solid var(--line);border-radius:9px;background:#fbfcfe;outline:none;color:var(--ink)}.field textarea{min-height:160px;resize:vertical;line-height:1.6}.field input[type=file]{padding:10px;background:#fff}.hint{font-size:11px;color:#8792a5;margin-top:6px}.auth-switch{display:flex;gap:8px;margin:18px 0}.auth-switch button{flex:1}.status-box{padding:13px 15px;border-radius:10px;background:#eff5ff;border:1px solid #d8e6ff;color:#254e9a;font-size:13px;margin:15px 0}.userbar{display:flex;align-items:center;justify-content:space-between;gap:15px;background:#f1f6ff;border:1px solid #dce8ff;padding:14px;border-radius:12px;margin-bottom:20px}.userbar strong{display:block}.userbar small{color:var(--muted)}.profile-list{display:grid;gap:10px;margin-top:15px}.profile-item{border:1px solid var(--line);border-radius:10px;padding:13px;display:flex;justify-content:space-between;gap:12px;align-items:center}.status{font-size:11px;font-weight:800;border-radius:30px;padding:6px 9px;background:#fff4df;color:#a86600}.status.Approved{background:#e8f8f1;color:#087b59}.status.Rejected{background:#fff0f3;color:#c52d50}.admin-table-wrap{overflow:auto;margin-top:15px}table{width:100%;border-collapse:collapse;min-width:650px}th,td{text-align:left;padding:12px;border-bottom:1px solid var(--line);font-size:13px}th{background:#f7f9fc;color:#58657d;font-size:11px;text-transform:uppercase;letter-spacing:.4px}.table-actions{display:flex;gap:6px;flex-wrap:wrap}.table-actions .btn{padding:7px 10px;font-size:11px}.article-panel{max-width:900px}.article-cover{width:100%;max-height:440px;object-fit:cover;border-radius:13px;margin:17px 0}.article-title{font-size:clamp(25px,4vw,38px);line-height:1.3;margin:12px 0}.article-content{font-size:16px;line-height:1.9;color:#344158;overflow-wrap:anywhere}.article-content img{max-width:100%;height:auto;border-radius:10px}.article-content a{color:var(--blue)}.back{margin-bottom:14px}.footer{background:var(--navy);color:#d4deef;padding:34px 22px}.footer-inner{max-width:1180px;margin:auto;display:flex;justify-content:space-between;gap:20px;align-items:center}.footer p{font-size:12px;color:#a9b8d1;margin:6px 0 0}.toast{position:fixed;right:20px;bottom:20px;z-index:60;background:#152440;color:white;padding:13px 17px;border-radius:11px;box-shadow:var(--shadow);max-width:min(400px,calc(100% - 40px));font-size:13px;display:none}.toast.show{display:block;animation:pop .2s ease}@keyframes pop{from{transform:translateY(8px);opacity:0}to{transform:none;opacity:1}}.loading{padding:35px;text-align:center;color:var(--muted);grid-column:1/-1}.mobile-menu{display:none}
-@media(max-width:850px){.hero{grid-template-columns:1fr}.hero-main{min-height:360px}.hero-side{display:grid;grid-template-columns:1fr 1fr}.news-grid{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:620px){.head-inner{padding:12px 15px;flex-wrap:wrap}.brand{font-size:21px}.head-actions{width:100%;justify-content:space-between}.nav{flex:1;justify-content:flex-end}.nav button{padding:8px 9px;font-size:12px}.wrap{padding:18px 14px 40px}.ticker{margin-bottom:17px}.hero-main{min-height:390px}.hero-copy{left:19px;right:19px;bottom:20px}.hero-side{grid-template-columns:1fr}.side-card{padding:14px}.section-head{align-items:stretch;flex-direction:column}.search{max-width:none}.news-grid{grid-template-columns:1fr}.news-img{height:215px}.form-grid{grid-template-columns:1fr}.field.full{grid-column:auto}.panel{padding:18px}.userbar{align-items:flex-start;flex-direction:column}.footer-inner{flex-direction:column;align-items:flex-start}}
+:root{--navy:#101b35;--blue:#1d4ed8;--red:#e11d48;--bg:#f3f5f9;--text:#182235}
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,"Noto Sans Sinhala",sans-serif;background:var(--bg);color:var(--text)}
+header{background:var(--navy);color:white;position:sticky;top:0;z-index:5;box-shadow:0 3px 12px #0002}
+.top{max-width:1150px;margin:auto;padding:15px 18px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.logo{font-size:25px;font-weight:900;letter-spacing:-1px}.logo span{color:#fb7185}
+nav{display:flex;gap:8px;flex-wrap:wrap}
+button,.btn{border:0;border-radius:8px;padding:10px 14px;background:var(--blue);color:white;font-weight:700;cursor:pointer}
+button:hover,.btn:hover{filter:brightness(1.1)}
+button.secondary{background:#e5e7eb;color:#182235}
+button.danger{background:#dc2626}
+button.success{background:#15803d}
+button:disabled{opacity:.55;cursor:not-allowed}
+.ticker{background:#e11d48;color:white;padding:9px 16px;font-size:14px}
+main{max-width:1150px;margin:24px auto;padding:0 16px}
+.hero{background:linear-gradient(120deg,#101b35,#244b88);color:white;border-radius:16px;padding:30px;margin-bottom:20px}
+.hero h1{font-size:clamp(25px,5vw,40px);margin:0 0 10px}
+.hero p{margin:0;color:#dbeafe}
+.toolbar{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0}
+input,textarea,select{width:100%;padding:12px;border:1px solid #cbd5e1;border-radius:8px;font:inherit;background:white}
+.toolbar input{flex:1;min-width:180px}
+.toolbar select{width:auto;min-width:130px}
+.section{background:white;border-radius:14px;padding:18px;margin:20px 0;box-shadow:0 2px 12px #0f172a0a}
+.section h2{margin:0 0 15px;font-size:21px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(245px,1fr));gap:16px}
+.card{background:white;border:1px solid #e2e8f0;border-radius:13px;overflow:hidden;cursor:pointer;transition:.2s}
+.card:hover{transform:translateY(-3px);box-shadow:0 7px 20px #0f172a14}
+.card img{width:100%;height:175px;object-fit:cover;background:#e2e8f0}
+.cardbody{padding:14px}
+.card h3{margin:7px 0;font-size:18px;line-height:1.5}
+.card p{color:#64748b;line-height:1.6;margin:8px 0}
+.meta{font-size:12px;color:#64748b}
+.tag{display:inline-block;background:#dbeafe;color:#1e40af;padding:4px 8px;border-radius:20px;font-size:12px}
+.formgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.full{grid-column:1/-1}
+label{display:block;font-size:14px;font-weight:700;margin-bottom:6px}
+.field{margin-bottom:12px}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.hidden{display:none!important}
+.notice{padding:12px;border-radius:8px;background:#eff6ff;color:#1e40af;margin:10px 0}
+.error{background:#fef2f2;color:#991b1b}
+.successmsg{background:#f0fdf4;color:#166534}
+.article img{width:100%;max-height:460px;object-fit:cover;border-radius:12px}
+.article h1{font-size:clamp(24px,5vw,36px);line-height:1.45}
+.article-content{white-space:pre-wrap;line-height:1.9;font-size:17px}
+.adminrow{border:1px solid #e2e8f0;padding:12px;border-radius:9px;margin:10px 0}
+footer{text-align:center;background:var(--navy);color:#cbd5e1;padding:25px;margin-top:40px}
+.small{font-size:12px;color:#64748b}
+#loading{text-align:center;padding:25px;color:#64748b}
+@media(max-width:600px){
+ .top{align-items:flex-start}.logo{font-size:22px}
+ .formgrid{grid-template-columns:1fr}.full{grid-column:auto}
+ .hero{padding:22px}.toolbar select{flex:1}
+}
 </style>
 </head>
 <body>
-<div class="topline"></div>
-<header class="site-header">
-  <div class="head-inner">
-    <a class="brand" href="#" onclick="showPage('home');return false"><span class="brand-mark">N</span>Newsat<span>.space</span></a>
-    <div class="head-actions">
-      <nav class="nav" aria-label="Main navigation">
-        <button id="nav-home" class="active" onclick="showPage('home')" data-i18n="home">මුල් පිටුව</button>
-        <button id="nav-account" onclick="showPage('account')" data-i18n="account">ගිණුම</button>
-        <button id="nav-admin" style="display:none" onclick="showPage('admin')" data-i18n="admin">Admin</button>
-      </nav>
-      <select class="lang" id="language" aria-label="Language" onchange="setLanguage(this.value)">
-        <option value="si">සිංහල</option><option value="en">English</option><option value="ta">தமிழ்</option>
-      </select>
-    </div>
-  </div>
+<header>
+ <div class="top">
+  <div class="logo">NEWSAT<span>.SPACE</span></div>
+  <nav>
+   <button class="secondary" onclick="showHome()">Home</button>
+   <button onclick="showAccount()">Login / Register</button>
+   <button class="secondary" onclick="logoutUser()" id="logoutBtn" hidden>Logout</button>
+  </nav>
+ </div>
 </header>
 
-<main class="wrap">
-  <section id="home-page">
-    <div class="ticker"><span class="ticker-label" data-i18n="breaking">BREAKING</span><span class="ticker-text" id="ticker-text" data-i18n="ticker">ශ්‍රී ලංකාවේ සහ ලෝකයේ නවතම පුවත් — Newsat.space</span></div>
-    <div class="hero">
-      <article class="hero-main" id="hero-main">
-        <img id="hero-image" src="https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=1400&q=85" alt="News featured image">
-        <div class="hero-copy">
-          <span class="eyebrow" data-i18n="editorsPick">EDITOR'S PICK</span>
-          <h1 id="hero-title" data-i18n="heroTitle">ඔබේ විශ්වාසනීය පුවත් මූලාශ්‍රය</h1>
-          <p id="hero-desc" data-i18n="heroDesc">ශ්‍රී ලංකාවේ සහ ලොව පුරා සිදුවන වැදගත්ම සිදුවීම් එකම තැනකින් දැනගන්න.</p>
-          <div class="hero-meta" id="hero-meta">Newsat.space · Latest updates</div>
-        </div>
-      </article>
-      <div class="hero-side" id="top-stories">
-        <div class="side-card"><span class="side-num">01</span><div><h3>නවතම පුවත් මෙතැනින්</h3><small>Newsat.space</small></div></div>
-        <div class="side-card"><span class="side-num">02</span><div><h3>ඔබේ අදහස්, ඔබේ කතාව</h3><small>Join our writers</small></div></div>
-      </div>
-    </div>
+<div class="ticker">NEWSAT.SPACE — ඔබේ විශ්වාසනීය පුවත් වෙබ් අඩවිය</div>
 
-    <div class="section-head">
-      <div><h2 data-i18n="latest">නවතම පුවත්</h2><p data-i18n="latestSub">විශ්වාසනීය තොරතුරු. වැදගත් කතා.</p></div>
-      <div class="search"><input id="search-input" type="search" placeholder="පුවත් සොයන්න..." oninput="renderNews()" data-i18n-placeholder="search"><button class="btn btn-primary" onclick="renderNews()">⌕</button></div>
-    </div>
-    <div class="category-row" id="category-row">
-      <button class="chip active" data-category="all" onclick="setCategory('all',this)" data-i18n="all">සියල්ල</button>
-      <button class="chip" data-category="Sri Lanka" onclick="setCategory('Sri Lanka',this)" data-i18n="sriLanka">ශ්‍රී ලංකා</button>
-      <button class="chip" data-category="World" onclick="setCategory('World',this)" data-i18n="world">ලෝක</button>
-      <button class="chip" data-category="Business" onclick="setCategory('Business',this)" data-i18n="business">ව්‍යාපාර</button>
-      <button class="chip" data-category="Sports" onclick="setCategory('Sports',this)" data-i18n="sports">ක්‍රීඩා</button>
-      <button class="chip" data-category="Technology" onclick="setCategory('Technology',this)" data-i18n="technology">තාක්ෂණ</button>
-      <button class="chip" data-category="Entertainment" onclick="setCategory('Entertainment',this)" data-i18n="entertainment">විනෝදාස්වාද</button>
-    </div>
-    <div class="news-grid" id="news-grid"><div class="loading" data-i18n="loading">පුවත් පූරණය වෙමින්...</div></div>
-  </section>
+<main>
+ <section class="hero">
+  <h1 id="heroTitle">නවතම පුවත් එකම තැනකින්</h1>
+  <p id="heroText">ශ්‍රී ලංකාවේ සහ ලෝකයේ නවතම තොරතුරු දැන්ම කියවන්න.</p>
+ </section>
 
-  <section id="article-page" class="panel article-panel">
-    <button class="btn btn-soft back" onclick="showPage('home')" data-i18n="back">← ආපසු</button>
-    <div id="article-detail"></div>
-  </section>
+ <div class="toolbar">
+  <input id="searchInput" placeholder="පුවත් සොයන්න..." oninput="renderNews()">
+  <select id="categoryFilter" onchange="renderNews()">
+   <option value="">සියලු Categories</option>
+   <option>දේශීය</option><option>විදේශීය</option><option>ක්‍රීඩා</option>
+   <option>ව්‍යාපාර</option><option>තාක්ෂණය</option><option>විනෝදාස්වාදය</option>
+  </select>
+  <select id="languageSelect" onchange="changeLanguage()">
+   <option value="si">සිංහල</option>
+   <option value="en">English</option>
+   <option value="ta">தமிழ்</option>
+  </select>
+ </div>
 
-  <section id="account-page" class="panel">
-    <div id="auth-view">
-      <h2 data-i18n="join">Newsat.space සමඟ එක්වන්න</h2>
-      <p class="muted" data-i18n="joinSub">ගිණුමක් සාදා ඔබේ පුවත් ලිපි ඉදිරිපත් කරන්න.</p>
-      <div class="auth-switch">
-        <button id="login-tab" class="btn btn-primary" onclick="setAuthMode('login')" data-i18n="login">පිවිසෙන්න</button>
-        <button id="register-tab" class="btn btn-soft" onclick="setAuthMode('register')" data-i18n="register">ලියාපදිංචි වන්න</button>
-      </div>
-      <form id="auth-form" onsubmit="handleAuth(event)">
-        <div id="name-field" class="field" style="display:none"><label data-i18n="fullName">සම්පූර්ණ නම</label><input id="auth-name" autocomplete="name"></div>
-        <div class="field"><label>Email</label><input id="auth-email" type="email" required autocomplete="email"></div>
-        <div class="field"><label data-i18n="password">මුරපදය</label><input id="auth-password" type="password" required minlength="6" autocomplete="current-password"></div>
-        <div id="role-field" class="field" style="display:none"><label data-i18n="role">කාර්යභාරය</label><select id="auth-role"><option value="Writer">Writer</option><option value="Editor">Editor</option></select></div>
-        <button class="btn btn-primary" style="width:100%;margin-top:18px" id="auth-submit" type="submit" data-i18n="login">පිවිසෙන්න</button>
-      </form>
-      <p class="hint" data-i18n="authHint">ලියාපදිංචි වීමෙන් පසු ඔබට පුවත් යැවිය හැක. පළ කිරීම සඳහා Admin අනුමැතිය අවශ්‍ය වේ.</p>
-    </div>
+ <section class="section">
+  <h2 id="latestHeading">නවතම පුවත්</h2>
+  <div id="loading">පුවත් ලබාගනිමින්...</div>
+  <div class="grid" id="newsGrid"></div>
+  <p id="emptyNews" class="small hidden">දැනට පුවත් නොමැත.</p>
+ </section>
 
-    <div id="profile-view" style="display:none">
-      <div class="userbar"><div><strong id="profile-name">User</strong><small id="profile-email"></small></div><button class="btn btn-danger" onclick="logout()" data-i18n="logout">Logout</button></div>
-      <h2 data-i18n="submitNews">නව පුවතක් ඉදිරිපත් කරන්න</h2>
-      <p class="muted" data-i18n="submitSub">ඔබේ ලිපිය සහ ප්‍රධාන ඡායාරූපය යොමු කරන්න. අනුමත වූ පසු එය ප්‍රසිද්ධ වේ.</p>
-      <form id="news-form" onsubmit="submitNews(event)">
-        <div class="form-grid">
-          <div class="field full"><label data-i18n="title">මාතෘකාව</label><input id="news-title" maxlength="160" required></div>
-          <div class="field"><label data-i18n="category">ප්‍රවර්ගය</label><select id="news-category"><option value="Sri Lanka">Sri Lanka</option><option value="World">World</option><option value="Business">Business</option><option value="Sports">Sports</option><option value="Technology">Technology</option><option value="Entertainment">Entertainment</option></select></div>
-          <div class="field"><label data-i18n="language">ලිපියේ භාෂාව</label><select id="news-language"><option value="si">සිංහල</option><option value="en">English</option><option value="ta">தமிழ்</option></select></div>
-          <div class="field full"><label data-i18n="summary">කෙටි විස්තරය</label><textarea id="news-summary" maxlength="400" required></textarea></div>
-          <div class="field full"><label data-i18n="article">සම්පූර්ණ ලිපිය</label><textarea id="news-content" required style="min-height:220px"></textarea><div class="hint" data-i18n="articleHint">සරල පෙළ ලෙස ලිපිය ඇතුළත් කරන්න.</div></div>
-          <div class="field full"><label data-i18n="cover">ප්‍රධාන ඡායාරූපය</label><input id="news-photo" type="file" accept="image/jpeg,image/png,image/webp" required><div class="hint" data-i18n="photoHint">JPG, PNG හෝ WebP · උපරිම 5MB</div><img id="photo-preview" alt="Preview" style="display:none;max-width:220px;max-height:140px;object-fit:cover;border-radius:9px;margin-top:10px"></div>
-        </div>
-        <button class="btn btn-primary" type="submit" id="news-submit" style="margin-top:18px" data-i18n="sendReview">අනුමැතිය සඳහා යවන්න</button>
-      </form>
-      <div class="section-head"><div><h2 data-i18n="mySubmissions">මගේ ලිපි</h2><p data-i18n="mySubmissionsSub">ඔබ ඉදිරිපත් කළ ලිපිවල තත්ත්වය</p></div></div>
-      <div id="my-news" class="profile-list"><p class="muted">Loading...</p></div>
-    </div>
-  </section>
+ <section class="section hidden" id="accountSection">
+  <h2>ගිණුමට ඇතුළු වන්න / නව ගිණුමක් සාදන්න</h2>
+  <div id="accountMessage" class="notice hidden"></div>
+  <div class="formgrid">
+   <div class="field full" id="nameField">
+    <label>සම්පූර්ණ නම</label>
+    <input id="displayName" placeholder="ඔබගේ නම">
+   </div>
+   <div class="field full">
+    <label>Email ලිපිනය</label>
+    <input id="email" type="email" autocomplete="email" placeholder="name@example.com">
+   </div>
+   <div class="field full">
+    <label>Password</label>
+    <input id="password" type="password" autocomplete="current-password" placeholder="අවම අක්ෂර 6">
+   </div>
+  </div>
+  <div class="actions">
+   <button onclick="registerUser()">Register</button>
+   <button class="secondary" onclick="loginUser()">Login</button>
+  </div>
+  <p class="small">නව ගිණුම් Writer ලෙස සාදනු ලැබේ. Admin අවසරය ලබාදෙන්නේ Firebase Console එකෙන් පමණි.</p>
+ </section>
 
-  <section id="admin-page" class="panel">
-    <div id="admin-denied"><h2 data-i18n="admin">Admin Dashboard</h2><p class="muted" data-i18n="adminDenied">මෙම කොටසට පිවිසීමට Admin අවසරය අවශ්‍යයි.</p></div>
-    <div id="admin-content" style="display:none">
-      <div class="section-head"><div><h2 data-i18n="reviewQueue">පුවත් අනුමත කිරීම</h2><p class="muted" data-i18n="reviewSub">Pending ලිපි පරීක්ෂා කර අනුමත කරන්න.</p></div><button class="btn btn-soft" onclick="loadAdminNews()" data-i18n="refresh">Refresh</button></div>
-      <div class="admin-table-wrap"><table><thead><tr><th data-i18n="title">මාතෘකාව</th><th data-i18n="author">කර්තෘ</th><th data-i18n="status">තත්ත්වය</th><th data-i18n="actions">ක්‍රියාමාර්ග</th></tr></thead><tbody id="admin-news"><tr><td colspan="4">Loading...</td></tr></tbody></table></div>
-    </div>
-  </section>
+ <section class="section hidden" id="writerSection">
+  <h2>පුවතක් ඉදිරිපත් කරන්න</h2>
+  <div id="writerMessage" class="notice hidden"></div>
+  <div class="formgrid">
+   <div class="field full">
+    <label>පුවත් මාතෘකාව</label>
+    <input id="newsTitle" maxlength="180" placeholder="පුවත් මාතෘකාව">
+   </div>
+   <div class="field">
+    <label>Category</label>
+    <select id="newsCategory">
+     <option>දේශීය</option><option>විදේශීය</option><option>ක්‍රීඩා</option>
+     <option>ව්‍යාපාර</option><option>තාක්ෂණය</option><option>විනෝදාස්වාදය</option>
+    </select>
+   </div>
+   <div class="field">
+    <label>භාෂාව</label>
+    <select id="newsLanguage">
+     <option value="si">සිංහල</option><option value="en">English</option><option value="ta">தமிழ்</option>
+    </select>
+   </div>
+   <div class="field full">
+    <label>කෙටි විස්තරය</label>
+    <textarea id="newsSummary" rows="3" maxlength="500" placeholder="පුවත පිළිබඳ කෙටි විස්තරයක්"></textarea>
+   </div>
+   <div class="field full">
+    <label>සම්පූර්ණ පුවත</label>
+    <textarea id="newsContent" rows="9" placeholder="සම්පූර්ණ පුවත මෙතැන ලියන්න"></textarea>
+   </div>
+   <div class="field full">
+    <label>පුවතේ ඡායාරූපය</label>
+    <input id="newsPhoto" type="file" accept="image/jpeg,image/png,image/webp">
+    <p class="small">JPG, PNG හෝ WebP ඡායාරූපයක් තෝරන්න. උපරිම 8MB.</p>
+   </div>
+  </div>
+  <button onclick="submitNews()" id="submitNewsBtn">පුවත ඉදිරිපත් කරන්න</button>
+  <div id="mySubmissions"></div>
+ </section>
+
+ <section class="section hidden" id="adminSection">
+  <h2>Admin Dashboard</h2>
+  <p class="small">මෙහිදී පුවත් අනුමත කිරීම, ප්‍රතික්ෂේප කිරීම සහ මකා දැමීම කළ හැකිය.</p>
+  <div id="adminMessage" class="notice hidden"></div>
+  <div id="adminNewsList">පුවත් ලබාගනිමින්...</div>
+ </section>
+
+ <section class="section hidden" id="articleSection">
+  <button class="secondary" onclick="showHome()">← නැවත පුවත් වෙත</button>
+  <div class="article" id="articleContent"></div>
+ </section>
 </main>
 
-<footer class="footer"><div class="footer-inner"><div><a class="brand" href="#" onclick="showPage('home');return false"><span class="brand-mark">N</span>Newsat<span>.space</span></a><p data-i18n="footerTag">Your trusted source for what matters.</p></div><p>© <span id="year"></span> Newsat.space. All rights reserved.</p></div></footer>
-<div id="toast" class="toast" role="status"></div>
+<footer>
+ <strong>NEWSAT.SPACE</strong>
+ <p>ඔබේ විශ්වාසනීය පුවත් වෙබ් අඩවිය</p>
+ <p class="small">© <span id="year"></span> Newsat.space. All rights reserved.</p>
+</footer>
 
-<script>
-/* Firebase project configuration supplied by you.
-   Firebase API keys identify the project; protect data with Firebase Security Rules. */
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
+import {
+ getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword,
+ signOut, onAuthStateChanged, updateProfile
+} from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
+import {
+ getFirestore, collection, doc, getDoc, getDocs, addDoc,
+ query, where, orderBy, updateDoc, deleteDoc, serverTimestamp
+} from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
+
+/* 1. Firebase Console එකෙන් ලබාගත් නිවැරදි Web App details මෙතැන දාන්න */
 const firebaseConfig = {
-  apiKey: "AIzaSyBMmZuPV3XKlYkGqjQYd7aJpFb8MZc-P9k",
-  authDomain: "newsat-209f8.firebaseapp.com",
-  projectId: "newsat-209f8",
-  storageBucket: "newsat-209f8.firebasestorage.app",
-  messagingSenderId: "529324718671",
-  appId: "1:529324718671:web:0f45e89bf317cbb0c9083a",
-  measurementId: "G-VQ1FYLV51P"
+ apiKey: "PASTE_YOUR_FIREBASE_API_KEY",
+ authDomain: "newsat-209f8.firebaseapp.com",
+ projectId: "newsat-209f8",
+ appId: "PASTE_YOUR_FIREBASE_APP_ID"
 };
 
-const I18N = {
- si:{home:"මුල් පිටුව",account:"ගිණුම",admin:"Admin",breaking:"විශේෂ පුවත්",ticker:"ශ්‍රී ලංකාවේ සහ ලෝකයේ නවතම පුවත් — Newsat.space",editorsPick:"විශේෂ පුවත",heroTitle:"ඔබේ විශ්වාසනීය පුවත් මූලාශ්‍රය",heroDesc:"ශ්‍රී ලංකාවේ සහ ලොව පුරා සිදුවන වැදගත්ම සිදුවීම් එකම තැනකින් දැනගන්න.",latest:"නවතම පුවත්",latestSub:"විශ්වාසනීය තොරතුරු. වැදගත් කතා.",search:"පුවත් සොයන්න...",all:"සියල්ල",sriLanka:"ශ්‍රී ලංකා",world:"ලෝක",business:"ව්‍යාපාර",sports:"ක්‍රීඩා",technology:"තාක්ෂණ",entertainment:"විනෝදාස්වාද",loading:"පුවත් පූරණය වෙමින්...",back:"← ආපසු",join:"Newsat.space සමඟ එක්වන්න",joinSub:"ගිණුමක් සාදා ඔබේ පුවත් ලිපි ඉදිරිපත් කරන්න.",login:"පිවිසෙන්න",register:"ලියාපදිංචි වන්න",fullName:"සම්පූර්ණ නම",password:"මුරපදය",role:"කාර්යභාරය",authHint:"ලියාපදිංචි වීමෙන් පසු ඔබට පුවත් යැවිය හැක. පළ කිරීම සඳහා Admin අනුමැතිය අවශ්‍ය වේ.",logout:"ඉවත් වන්න",submitNews:"නව පුවතක් ඉදිරිපත් කරන්න",submitSub:"ඔබේ ලිපිය සහ ප්‍රධාන ඡායාරූපය යොමු කරන්න. අනුමත වූ පසු එය ප්‍රසිද්ධ වේ.",title:"මාතෘකාව",category:"ප්‍රවර්ගය",language:"ලිපියේ භාෂාව",summary:"කෙටි විස්තරය",article:"සම්පූර්ණ ලිපිය",articleHint:"සරල පෙළ ලෙස ලිපිය ඇතුළත් කරන්න.",cover:"ප්‍රධාන ඡායාරූපය",photoHint:"JPG, PNG හෝ WebP · උපරිම 5MB",sendReview:"අනුමැතිය සඳහා යවන්න",mySubmissions:"මගේ ලිපි",mySubmissionsSub:"ඔබ ඉදිරිපත් කළ ලිපිවල තත්ත්වය",adminDenied:"මෙම කොටසට පිවිසීමට Admin අවසරය අවශ්‍යයි.",reviewQueue:"පුවත් අනුමත කිරීම",reviewSub:"Pending ලිපි පරීක්ෂා කර අනුමත කරන්න.",refresh:"නැවත පූරණය",author:"කර්තෘ",status:"තත්ත්වය",actions:"ක්‍රියාමාර්ග",footerTag:"ඔබට වැදගත් දේ පිළිබඳ විශ්වාසනීය පුවත්.",noNews:"දැනට අනුමත කළ පුවත් නොමැත.",readMore:"සම්පූර්ණයෙන් කියවන්න →",pending:"අනුමැතිය බලාපොරොත්තුවෙන්",approved:"අනුමතයි",rejected:"ප්‍රතික්ෂේපයි",approve:"අනුමත කරන්න",reject:"ප්‍රතික්ෂේප කරන්න",delete:"මකන්න",noSubmissions:"ඔබ තවම ලිපි ඉදිරිපත් කර නැත.",authorLabel:"කර්තෘ",loginSuccess:"සාර්ථකව පිවිසුණා.",registerSuccess:"ගිණුම සාදා ඇත.",sent:"ලිපිය අනුමැතිය සඳහා යොමු කළා.",confirmDelete:"මෙම ලිපිය මකා දැමීමට අවශ්‍යද?",adminOnly:"Admin අවසරය නැත.",invalidImage:"කරුණාකර 5MB ට අඩු JPG, PNG හෝ WebP ඡායාරූපයක් තෝරන්න.",required:"කරුණාකර සියලුම අවශ්‍ය තොරතුරු පුරවන්න.",published:"ප්‍රකාශිතයි",by:"විසින්",date:"දිනය",uploading:"ඡායාරූපය Upload කරමින්...",failed:"දෝෂයක් ඇතිවිය: "},
- en:{home:"Home",account:"Account",admin:"Admin",breaking:"LATEST",ticker:"Latest news from Sri Lanka and around the world — Newsat.space",editorsPick:"EDITOR'S PICK",heroTitle:"Your trusted source for what matters",heroDesc:"Stay informed with the most important stories from Sri Lanka and around the world.",latest:"Latest News",latestSub:"Trusted information. Stories that matter.",search:"Search news...",all:"All",sriLanka:"Sri Lanka",world:"World",business:"Business",sports:"Sports",technology:"Technology",entertainment:"Entertainment",loading:"Loading news...",back:"← Back",join:"Join Newsat.space",joinSub:"Create an account and submit your news stories.",login:"Login",register:"Register",fullName:"Full name",password:"Password",role:"Role",authHint:"After registration you can submit stories. Admin approval is required before publication.",logout:"Logout",submitNews:"Submit a news story",submitSub:"Submit your article and cover photo. It will be published after approval.",title:"Title",category:"Category",language:"Article language",summary:"Short summary",article:"Full article",articleHint:"Enter your article as plain text.",cover:"Cover photo",photoHint:"JPG, PNG or WebP · Maximum 5MB",sendReview:"Submit for approval",mySubmissions:"My submissions",mySubmissionsSub:"Track the status of your submitted stories",adminDenied:"You need Admin permission to access this area.",reviewQueue:"Review submissions",reviewSub:"Review pending stories and approve them for publication.",refresh:"Refresh",author:"Author",status:"Status",actions:"Actions",footerTag:"Your trusted source for what matters.",noNews:"No approved news yet.",readMore:"Read full story →",pending:"Pending",approved:"Approved",rejected:"Rejected",approve:"Approve",reject:"Reject",delete:"Delete",noSubmissions:"You have not submitted any stories yet.",authorLabel:"By",date:"Date",loginSuccess:"Logged in successfully.",registerSuccess:"Account created.",sent:"Your story was submitted for review.",confirmDelete:"Delete this story?",adminOnly:"Admin permission required.",invalidImage:"Choose a JPG, PNG or WebP image under 5MB.",required:"Please complete all required fields.",published:"Published",by:"By",uploading:"Uploading photo...",failed:"Something went wrong: "},
- ta:{home:"முகப்பு",account:"கணக்கு",admin:"நிர்வாகம்",breaking:"முக்கிய செய்திகள்",ticker:"இலங்கை மற்றும் உலகின் சமீபத்திய செய்திகள் — Newsat.space",editorsPick:"சிறப்புச் செய்தி",heroTitle:"உங்கள் நம்பகமான செய்தி மூலம்",heroDesc:"இலங்கை மற்றும் உலகின் முக்கிய நிகழ்வுகளை ஒரே இடத்தில் அறிந்துகொள்ளுங்கள்.",latest:"சமீபத்திய செய்திகள்",latestSub:"நம்பகமான தகவல்கள். முக்கியமான செய்திகள்.",search:"செய்திகளைத் தேடுங்கள்...",all:"அனைத்தும்",sriLanka:"இலங்கை",world:"உலகம்",business:"வணிகம்",sports:"விளையாட்டு",technology:"தொழில்நுட்பம்",entertainment:"பொழுதுபோக்கு",loading:"செய்திகள் ஏற்றப்படுகின்றன...",back:"← திரும்பு",join:"Newsat.space உடன் இணையுங்கள்",joinSub:"கணக்கை உருவாக்கி உங்கள் செய்திகளைச் சமர்ப்பிக்கவும்.",login:"உள்நுழை",register:"பதிவு செய்க",fullName:"முழுப் பெயர்",password:"கடவுச்சொல்",role:"பங்கு",authHint:"பதிவுசெய்த பிறகு செய்திகளைச் சமர்ப்பிக்கலாம். வெளியிட நிர்வாக ஒப்புதல் தேவை.",logout:"வெளியேறு",submitNews:"செய்தியைச் சமர்ப்பிக்கவும்",submitSub:"உங்கள் கட்டுரையையும் படத்தையும் சமர்ப்பிக்கவும். ஒப்புதல் கிடைத்ததும் வெளியிடப்படும்.",title:"தலைப்பு",category:"வகை",language:"கட்டுரை மொழி",summary:"சுருக்கம்",article:"முழுக் கட்டுரை",articleHint:"கட்டுரையை சாதாரண உரையாக உள்ளிடவும்.",cover:"முதன்மைப் படம்",photoHint:"JPG, PNG அல்லது WebP · அதிகபட்சம் 5MB",sendReview:"ஒப்புதலுக்குச் சமர்ப்பிக்கவும்",mySubmissions:"எனது சமர்ப்பிப்புகள்",mySubmissionsSub:"உங்கள் செய்திகளின் நிலையைப் பார்க்கவும்",adminDenied:"இந்தப் பகுதியை அணுக நிர்வாக அனுமதி தேவை.",reviewQueue:"செய்திகளை மதிப்பாய்வு செய்க",reviewSub:"நிலுவையில் உள்ள செய்திகளை மதிப்பாய்வு செய்து ஒப்புதல் அளிக்கவும்.",refresh:"புதுப்பி",author:"ஆசிரியர்",status:"நிலை",actions:"செயல்கள்",footerTag:"முக்கியமான செய்திகளுக்கான உங்கள் நம்பகமான மூலம்.",noNews:"இன்னும் ஒப்புதல் பெற்ற செய்திகள் இல்லை.",readMore:"முழுச் செய்தியை வாசிக்க →",pending:"நிலுவையில்",approved:"ஒப்புதல்",rejected:"நிராகரிக்கப்பட்டது",approve:"ஒப்புதல்",reject:"நிராகரி",delete:"நீக்கு",noSubmissions:"நீங்கள் இன்னும் செய்திகளைச் சமர்ப்பிக்கவில்லை.",authorLabel:"எழுதியவர்",date:"தேதி",loginSuccess:"வெற்றிகரமாக உள்நுழைந்தீர்கள்.",registerSuccess:"கணக்கு உருவாக்கப்பட்டது.",sent:"செய்தி மதிப்பாய்வுக்கு அனுப்பப்பட்டது.",confirmDelete:"இந்தச் செய்தியை நீக்கவா?",adminOnly:"நிர்வாக அனுமதி தேவை.",invalidImage:"5MB-க்கு குறைவான JPG, PNG அல்லது WebP படத்தைத் தேர்ந்தெடுக்கவும்.",required:"தேவையான அனைத்து விவரங்களையும் நிரப்பவும்.",published:"வெளியிடப்பட்டது",by:"மூலம்",uploading:"படம் பதிவேற்றப்படுகிறது...",failed:"பிழை: "}
-};
-let lang = localStorage.getItem("newsat_lang") || "si";
-let authMode = "login", currentUser = null, isAdmin = false, allNews = [], activeCategory = "all", currentArticle = null;
-const $ = id => document.getElementById(id);
-const tr = key => (I18N[lang] && I18N[lang][key]) || I18N.en[key] || key;
+/* 2. ඔබගේ Cloudinary විස්තර */
 const CLOUDINARY_CLOUD_NAME = "afyjcb5r";
 const CLOUDINARY_UPLOAD_PRESET = "newsat_upload";
-let app, auth, db;
-try {
-  if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
-  app = firebase.app(); auth = firebase.auth(); db = firebase.firestore();
-  auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL).catch(console.warn);
-} catch (e) { console.error(e); toast("Firebase setup error: " + e.message); }
+const CLOUDINARY_FOLDER = "newsat";
 
-function setLanguage(value){
-  lang=value;localStorage.setItem("newsat_lang",lang);document.documentElement.lang=lang;$("language").value=lang;
-  document.querySelectorAll("[data-i18n]").forEach(el=>{const key=el.dataset.i18n;if(I18N[lang][key])el.textContent=I18N[lang][key]});
-  document.querySelectorAll("[data-i18n-placeholder]").forEach(el=>{const key=el.dataset.i18nPlaceholder;if(I18N[lang][key])el.placeholder=I18N[lang][key]});
-  renderNews();if(currentArticle)openArticle(currentArticle.id);
-}
-function toast(message){const el=$("toast");el.textContent=message;el.classList.add("show");clearTimeout(toast.timer);toast.timer=setTimeout(()=>el.classList.remove("show"),3600)}
-function showPage(page){
-  ["home","article","account","admin"].forEach(p=>{const el=$(p+"-page");if(el)el.classList.toggle("active",p===page);});
-  document.querySelectorAll(".nav button").forEach(b=>b.classList.remove("active"));
-  const nav=$("nav-"+(page==="article"?"home":page));if(nav)nav.classList.add("active");
-  if(page==="account")refreshAccount();if(page==="admin")loadAdminNews();
-  window.scrollTo({top:0,behavior:"smooth"});
-}
-function setAuthMode(mode){
-  authMode=mode;$("name-field").style.display=mode==="register"?"block":"none";$("role-field").style.display=mode==="register"?"block":"none";
-  $("auth-name").required=mode==="register";$("auth-password").autocomplete=mode==="register"?"new-password":"current-password";
-  $("login-tab").className="btn "+(mode==="login"?"btn-primary":"btn-soft");$("register-tab").className="btn "+(mode==="register"?"btn-primary":"btn-soft");
-  $("auth-submit").textContent=tr(mode);
-}
-async function handleAuth(event){
-  event.preventDefault();if(!auth)return;
-  const email=$("auth-email").value.trim(),password=$("auth-password").value;
-  try{
-    if(authMode==="register"){
-      const name=$("auth-name").value.trim();if(!name)throw new Error(tr("required"));
-      const cred=await auth.createUserWithEmailAndPassword(email,password);
-      await cred.user.updateProfile({displayName:name});
-      await db.collection("users").doc(cred.user.uid).set({name,email,role:$("auth-role").value,createdAt:firebase.firestore.FieldValue.serverTimestamp()});
-      toast(tr("registerSuccess"));
-    }else{await auth.signInWithEmailAndPassword(email,password);toast(tr("loginSuccess"));}
-  }catch(e){toast(tr("failed")+friendlyError(e));}
-}
-function friendlyError(e){const map={"auth/email-already-in-use":"This email is already registered.","auth/invalid-email":"Invalid email address.","auth/weak-password":"Password must be at least 6 characters.","auth/user-not-found":"Account not found.","auth/wrong-password":"Incorrect password.","auth/invalid-credential":"Email or password is incorrect.","auth/too-many-requests":"Too many attempts. Try again later.","storage/unauthorized":"Storage permission denied."};return map[e.code]||e.message||"Please try again."}
-async function logout(){try{await auth.signOut()}catch(e){toast(tr("failed")+e.message)}}
-async function refreshAccount(){
-  if(!currentUser){$("auth-view").style.display="block";$("profile-view").style.display="none";return;}
-  $("auth-view").style.display="none";$("profile-view").style.display="block";
-  $("profile-name").textContent=currentUser.displayName||currentUser.email;$("profile-email").textContent=currentUser.email;
-  loadMyNews();
-}
-async function onAuthState(user){
-  currentUser=user;isAdmin=false;
-  if(user){try{const token=await user.getIdTokenResult(true);isAdmin=token.claims.admin===true;}catch(e){console.warn(e)}}
-  $("nav-admin").style.display=isAdmin?"inline-block":"none";
-  refreshAccount();
-}
-if(auth)auth.onAuthStateChanged(onAuthState);
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
 
-function safeText(value){return String(value??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
-function safeUrl(url){try{const u=new URL(url);return ["https:","http:"].includes(u.protocol)?u.href:""}catch{return ""}}
-function dateText(ts){if(!ts)return "";const d=ts.toDate?ts.toDate():new Date(ts);return isNaN(d)? "":d.toLocaleDateString(lang==="si"?"si-LK":lang==="ta"?"ta-LK":"en-GB")}
-async function loadPublicNews(){
+let currentUser = null;
+let currentRole = "Guest";
+let allNews = [];
+let activeLanguage = "si";
+
+const $ = id => document.getElementById(id);
+const show = id => $(id).classList.remove("hidden");
+const hide = id => $(id).classList.add("hidden");
+
+function message(id,text,isError=false){
+ const el=$(id);
+ el.textContent=text;
+ el.classList.remove("hidden","error","successmsg");
+ el.classList.add(isError?"error":"successmsg");
+}
+function clearMessage(id){hide(id);$(id).textContent="";}
+
+function escapeHTML(value=""){
+ return String(value).replace(/[&<>"']/g,c=>({
+  "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+ }[c]));
+}
+function dateText(value){
+ if(!value)return "";
+ try{
+  const d=value.toDate?value.toDate():new Date(value);
+  return d.toLocaleString();
+ }catch{return "";}
+}
+
+/* Account */
+window.showAccount=()=>{
+ show("accountSection");
+ $("accountSection").scrollIntoView({behavior:"smooth"});
+};
+window.registerUser=async()=>{
+ clearMessage("accountMessage");
+ const name=$("displayName").value.trim();
+ const email=$("email").value.trim();
+ const password=$("password").value;
+ if(!name||!email||password.length<6){
+  message("accountMessage","නම, නිවැරදි Email එක සහ අවම අක්ෂර 6ක Password එකක් ඇතුළත් කරන්න.",true);return;
+ }
+ try{
+  const result=await createUserWithEmailAndPassword(auth,email,password);
+  await updateProfile(result.user,{displayName:name});
+  await addDoc(collection(db,"_registration_log"),{
+   uid:result.user.uid,createdAt:serverTimestamp()
+  }).catch(()=>{});
+  await ensureProfile(result.user,name);
+  message("accountMessage","ගිණුම සාර්ථකව සෑදුවා. දැන් ඔබට පුවත් ඉදිරිපත් කළ හැකිය.");
+ }catch(e){message("accountMessage",friendlyError(e),true);}
+};
+window.loginUser=async()=>{
+ clearMessage("accountMessage");
+ const email=$("email").value.trim();
+ const password=$("password").value;
+ if(!email||!password){message("accountMessage","Email සහ Password ඇතුළත් කරන්න.",true);return;}
+ try{
+  await signInWithEmailAndPassword(auth,email,password);
+  message("accountMessage","සාර්ථකව Login වුණා.");
+ }catch(e){message("accountMessage",friendlyError(e),true);}
+};
+window.logoutUser=async()=>{
+ try{await signOut(auth);}catch(e){alert(friendlyError(e));}
+};
+function friendlyError(e){
+ const code=e?.code||"";
+ const errors={
+  "auth/email-already-in-use":"මෙම Email ලිපිනය දැනටමත් භාවිතා කර ඇත.",
+  "auth/invalid-email":"Email ලිපිනය නිවැරදි නැත.",
+  "auth/weak-password":"Password එක අවම අක්ෂර 6ක් විය යුතුය.",
+  "auth/invalid-credential":"Email හෝ Password වැරදියි.",
+  "auth/user-not-found":"මෙම ගිණුම සොයාගත නොහැක.",
+  "auth/wrong-password":"Password එක වැරදියි.",
+  "auth/api-key-not-valid":"Firebase API key එක වැරදියි. Firebase Web App config එක නැවත පරීක්ෂා කරන්න.",
+  "permission-denied":"Firebase Firestore Rules අවසරය ලබා නොදේ. Rules පරීක්ෂා කරන්න."
+ };
+ return errors[code]||e?.message||"දෝෂයක් සිදුවිය.";
+}
+async function ensureProfile(user,name=""){
+ const ref=doc(db,"users",user.uid);
+ const snap=await getDoc(ref);
+ if(!snap.exists()){
+  await importSetProfile(ref,{
+   uid:user.uid,name:name||user.displayName||"Writer",
+   email:user.email||"",role:"Writer",createdAt:serverTimestamp()
+  });
+ }
+}
+async function importSetProfile(ref,data){
+ const {setDoc}=await import("https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js");
+ await setDoc(ref,data);
+}
+onAuthStateChanged(auth,async user=>{
+ currentUser=user;
+ currentRole="Guest";
+ if(user){
   try{
-    const snap=await db.collection("news").where("status","==","Approved").orderBy("createdAt","desc").limit(60).get();
-    allNews=snap.docs.map(d=>({id:d.id,...d.data()}));renderNews();updateHero();
-  }catch(e){
-    console.error(e);$("news-grid").innerHTML='<div class="empty">Could not load news. Check Firestore configuration and security rules.</div>';
-  }
-}
-function setCategory(category,button){activeCategory=category;document.querySelectorAll(".chip").forEach(c=>c.classList.remove("active"));button.classList.add("active");renderNews()}
-function renderNews(){
-  if(!$("news-grid"))return;
-  const q=($("search-input")?.value||"").trim().toLowerCase();
-  const filtered=allNews.filter(n=>(activeCategory==="all"||n.category===activeCategory)&&[n.title,n.summary,n.content,n.author].some(v=>String(v||"").toLowerCase().includes(q)));
-  if(!filtered.length){$("news-grid").innerHTML=`<div class="empty">${tr("noNews")}</div>`;return;}
-  $("news-grid").innerHTML=filtered.map(n=>{
-    const img=safeUrl(n.photoURL)||"https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=900&q=80";
-    return `<article class="news-card" onclick="openArticle('${n.id}')"><div class="news-img"><img src="${img}" alt="" loading="lazy"><span class="category-tag">${safeText(n.category||"News")}</span></div><div class="news-body"><h3>${safeText(n.title)}</h3><p>${safeText(n.summary||"")}</p><div class="meta"><span>${safeText(n.author||"Newsat.space")} · ${dateText(n.createdAt)}</span><span class="read">${tr("readMore")}</span></div></div></article>`;
-  }).join("");
-}
-function updateHero(){
-  if(!allNews.length)return;
-  const n=allNews[0];$("hero-title").textContent=n.title||tr("heroTitle");$("hero-desc").textContent=n.summary||tr("heroDesc");
-  if(n.photoURL)$("hero-image").src=safeUrl(n.photoURL)||$("hero-image").src;
-  $("hero-meta").textContent=`${n.author||"Newsat.space"} · ${dateText(n.createdAt)}`;
-  $("hero-main").onclick=()=>openArticle(n.id);$("hero-main").style.cursor="pointer";
-  $("top-stories").innerHTML=allNews.slice(1,3).map((x,i)=>`<article class="side-card" onclick="openArticle('${x.id}')"><span class="side-num">0${i+1}</span><div><h3>${safeText(x.title)}</h3><small>${safeText(x.category||"News")} · ${dateText(x.createdAt)}</small></div></article>`).join("")||$("top-stories").innerHTML;
-}
-function openArticle(id){
-  const n=allNews.find(x=>x.id===id);if(!n)return;currentArticle=n;
-  const image=safeUrl(n.photoURL);
-  const body=safeText(n.content||n.summary||"").replace(/\n/g,"<br>");
-  $("article-detail").innerHTML=`<span class="eyebrow">${safeText(n.category||"NEWS")}</span><h1 class="article-title">${safeText(n.title)}</h1><p class="muted">${tr("authorLabel")}: ${safeText(n.author||"Newsat.space")} · ${dateText(n.createdAt)}</p>${image?`<img class="article-cover" src="${image}" alt="">`:""}<div class="article-content">${body}</div>`;
-  showPage("article");
-}
-$("news-photo").addEventListener("change",()=>{
-  const file=$("news-photo").files[0];const preview=$("photo-preview");
-  if(!file){preview.style.display="none";return}
-  if(!["image/jpeg","image/png","image/webp"].includes(file.type)||file.size>5*1024*1024){$("news-photo").value="";preview.style.display="none";toast(tr("invalidImage"));return}
-  preview.src=URL.createObjectURL(file);preview.style.display="block";
+   await ensureProfile(user);
+   const snap=await getDoc(doc(db,"users",user.uid));
+   currentRole=snap.exists()?snap.data().role:"Writer";
+  }catch(e){console.error(e);message("accountMessage",friendlyError(e),true);}
+ }
+ updateAccountUI();
+ await loadNews();
 });
-async function uploadToCloudinary(file){
-  const endpoint = `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`;
-  const formData = new FormData();
-  formData.append("file", file);
-  formData.append("upload_preset", CLOUDINARY_UPLOAD_PRESET);
-  formData.append("folder", "newsat");
-  const response = await fetch(endpoint, { method: "POST", body: formData });
-  const result = await response.json();
-  if (!response.ok) throw new Error(result?.error?.message || "Cloudinary photo upload failed.");
-  if (!result.secure_url) throw new Error("Cloudinary did not return an image URL.");
-  return { secure_url: result.secure_url, public_id: result.public_id || "" };
+function updateAccountUI(){
+ $("logoutBtn").hidden=!currentUser;
+ if(currentUser){
+  hide("accountSection");
+  show("writerSection");
+  if(currentRole==="Admin")show("adminSection");else hide("adminSection");
+ }else{
+  hide("writerSection");hide("adminSection");
+ }
 }
-async function submitNews(event){
-  event.preventDefault();if(!currentUser||!db){toast("Please sign in first.");return;}
-  const title=$("news-title").value.trim(),summary=$("news-summary").value.trim(),content=$("news-content").value.trim(),file=$("news-photo").files[0];
-  if(!title||!summary||!content||!file){toast(tr("required"));return}
-  if(file.size>5*1024*1024||!["image/jpeg","image/png","image/webp"].includes(file.type)){toast(tr("invalidImage"));return}
-  const btn=$("news-submit");btn.disabled=true;btn.textContent=tr("uploading");
-  try{
-    const uploaded = await uploadToCloudinary(file);
-    await db.collection("news").add({
-      title,summary,content,category:$("news-category").value,language:$("news-language").value,
-      photoURL:uploaded.secure_url,cloudinaryPublicId:uploaded.public_id,
-      author:currentUser.displayName||currentUser.email,authorEmail:currentUser.email,
-      authorUid:currentUser.uid,status:"Pending",createdAt:firebase.firestore.FieldValue.serverTimestamp()
-    });
-    $("news-form").reset();$("photo-preview").style.display="none";toast(tr("sent"));loadMyNews();
-  }catch(e){console.error(e);toast(tr("failed")+friendlyError(e));}
-  finally{btn.disabled=false;btn.textContent=tr("sendReview")}
+
+/* Load public news and own submissions */
+async function loadNews(){
+ $("loading").classList.remove("hidden");
+ $("newsGrid").innerHTML="";
+ try{
+  const q=query(collection(db,"news"),where("status","==","Approved"),orderBy("createdAt","desc"));
+  const snap=await getDocs(q);
+  const publicItems=snap.docs.map(d=>({id:d.id,...d.data()}));
+  let ownItems=[];
+  if(currentUser){
+   const ownQ=query(collection(db,"news"),where("authorId","==",currentUser.uid),orderBy("createdAt","desc"));
+   const ownSnap=await getDocs(ownQ);
+   ownItems=ownSnap.docs.map(d=>({id:d.id,...d.data()}));
+  }
+  const map=new Map();
+  [...publicItems,...ownItems].forEach(item=>map.set(item.id,item));
+  allNews=[...map.values()].sort((a,b)=>{
+   const ta=a.createdAt?.seconds||0,tb=b.createdAt?.seconds||0;return tb-ta;
+  });
+  renderNews();
+  renderSubmissions(ownItems);
+  if(currentRole==="Admin")await loadAdminNews();
+ }catch(e){
+  console.error(e);
+  $("newsGrid").innerHTML='<p class="notice error">පුවත් ලබාගැනීමට නොහැකි විය: '+escapeHTML(friendlyError(e))+'</p>';
+ }finally{$("loading").classList.add("hidden");}
 }
-async function loadMyNews(){
-  if(!currentUser)return;
-  $("my-news").innerHTML='<p class="muted">Loading...</p>';
-  try{
-    const snap=await db.collection("news").where("authorUid","==",currentUser.uid).orderBy("createdAt","desc").limit(40).get();
-    if(snap.empty){$("my-news").innerHTML=`<p class="muted">${tr("noSubmissions")}</p>`;return}
-    $("my-news").innerHTML=snap.docs.map(d=>{const n=d.data();const s=n.status||"Pending";return `<div class="profile-item"><div><strong>${safeText(n.title)}</strong><div class="hint">${dateText(n.createdAt)}</div></div><span class="status ${safeText(s)}">${s==="Approved"?tr("approved"):s==="Rejected"?tr("rejected"):tr("pending")}</span></div>`}).join("");
-  }catch(e){$("my-news").innerHTML=`<p class="muted">${safeText(friendlyError(e))}</p>`}
+window.renderNews=()=>{
+ const search=$("searchInput").value.toLowerCase().trim();
+ const category=$("categoryFilter").value;
+ const items=allNews.filter(n=>{
+  if(n.status!=="Approved")return false;
+  const text=[n.title,n.summary,n.content,n.category].join(" ").toLowerCase();
+  return (!search||text.includes(search))&&(!category||n.category===category);
+ });
+ $("newsGrid").innerHTML=items.map(n=>`
+  <article class="card" onclick="openArticle('${n.id}')">
+   <img src="${escapeHTML(n.photoUrl||"https://placehold.co/700x400?text=NEWSAT")}" alt="" loading="lazy">
+   <div class="cardbody">
+    <span class="tag">${escapeHTML(n.category||"News")}</span>
+    <h3>${escapeHTML(n.title||"")}</h3>
+    <p>${escapeHTML(n.summary||"")}</p>
+    <div class="meta">${escapeHTML(n.authorName||"Newsat")} · ${escapeHTML(dateText(n.createdAt))}</div>
+   </div>
+  </article>`).join("");
+ $("emptyNews").classList.toggle("hidden",items.length!==0);
+};
+window.openArticle=id=>{
+ const n=allNews.find(x=>x.id===id);
+ if(!n)return;
+ $("articleContent").innerHTML=`
+  <h1>${escapeHTML(n.title)}</h1>
+  <p class="meta">${escapeHTML(n.category||"")} · ${escapeHTML(n.authorName||"")} · ${escapeHTML(dateText(n.createdAt))}</p>
+  ${n.photoUrl?`<img src="${escapeHTML(n.photoUrl)}" alt="">`:""}
+  <h3>${escapeHTML(n.summary||"")}</h3>
+  <div class="article-content">${escapeHTML(n.content||"")}</div>`;
+ hide("accountSection");hide("writerSection");hide("adminSection");
+ show("articleSection");
+ window.scrollTo({top:0,behavior:"smooth"});
+};
+window.showHome=()=>{
+ hide("articleSection");
+ if(currentUser)show("writerSection");
+ if(currentRole==="Admin")show("adminSection");
+ window.scrollTo({top:0,behavior:"smooth"});
+};
+
+/* Cloudinary image upload */
+async function uploadPhoto(file){
+ if(!file) return "";
+ if(!["image/jpeg","image/png","image/webp"].includes(file.type)){
+  throw new Error("JPG, PNG හෝ WebP ඡායාරූප පමණක් භාවිතා කරන්න.");
+ }
+ if(file.size>8*1024*1024)throw new Error("ඡායාරූපය 8MB ට වඩා අඩු විය යුතුය.");
+ const form=new FormData();
+ form.append("file",file);
+ form.append("upload_preset",CLOUDINARY_UPLOAD_PRESET);
+ form.append("folder",CLOUDINARY_FOLDER);
+ const response=await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`,{
+  method:"POST",body:form
+ });
+ const data=await response.json();
+ if(!response.ok)throw new Error(data.error?.message||"Cloudinary upload අසාර්ථකයි.");
+ return data.secure_url;
 }
+
+/* Writer submits news */
+window.submitNews=async()=>{
+ clearMessage("writerMessage");
+ if(!currentUser){message("writerMessage","පළමුව Login වන්න.",true);return;}
+ const title=$("newsTitle").value.trim();
+ const summary=$("newsSummary").value.trim();
+ const content=$("newsContent").value.trim();
+ const file=$("newsPhoto").files[0];
+ if(!title||!summary||!content){message("writerMessage","මාතෘකාව, කෙටි විස්තරය සහ සම්පූර්ණ පුවත ඇතුළත් කරන්න.",true);return;}
+ const btn=$("submitNewsBtn");btn.disabled=true;btn.textContent="ඉදිරිපත් කරමින්...";
+ try{
+  let photoUrl="";
+  if(file)photoUrl=await uploadPhoto(file);
+  await addDoc(collection(db,"news"),{
+   title,summary,content,
+   category:$("newsCategory").value,
+   language:$("newsLanguage").value,
+   photoUrl,
+   authorId:currentUser.uid,
+   authorName:currentUser.displayName||currentUser.email,
+   authorEmail:currentUser.email,
+   status:"Pending",
+   createdAt:serverTimestamp(),
+   reviewedAt:null,
+   reviewedBy:null
+  });
+  $("newsTitle").value="";$("newsSummary").value="";
+  $("newsContent").value="";$("newsPhoto").value="";
+  message("writerMessage","ඔබගේ පුවත සාර්ථකව ඉදිරිපත් කළා. Admin අනුමැතිය ලැබුණු පසු වෙබ් අඩවියේ පෙන්වයි.");
+  await loadNews();
+ }catch(e){message("writerMessage",friendlyError(e),true);}
+ finally{btn.disabled=false;btn.textContent="පුවත ඉදිරිපත් කරන්න";}
+};
+function renderSubmissions(items){
+ if(!currentUser)return;
+ const el=$("mySubmissions");
+ el.innerHTML="<h3>ඔබ ඉදිරිපත් කළ පුවත්</h3>"+(items.length?items.map(n=>`
+  <div class="adminrow">
+   <strong>${escapeHTML(n.title)}</strong>
+   <p class="small">තත්ත්වය: ${escapeHTML(n.status)} · ${escapeHTML(dateText(n.createdAt))}</p>
+  </div>`).join(""):"<p class='small'>ඔබ තවම පුවත් ඉදිරිපත් කර නැත.</p>");
+}
+
+/* Admin functions */
 async function loadAdminNews(){
-  if(!$("admin-content"))return;
-  $("admin-denied").style.display=isAdmin?"none":"block";$("admin-content").style.display=isAdmin?"block":"none";
-  if(!isAdmin)return;
-  $("admin-news").innerHTML='<tr><td colspan="4">Loading...</td></tr>';
-  try{
-    const snap=await db.collection("news").orderBy("createdAt","desc").limit(100).get();
-    if(snap.empty){$("admin-news").innerHTML='<tr><td colspan="4">No submissions.</td></tr>';return}
-    $("admin-news").innerHTML=snap.docs.map(d=>{
-      const n=d.data(),status=n.status||"Pending";
-      return `<tr><td><strong>${safeText(n.title)}</strong><br><small>${safeText(n.category||"")}</small></td><td>${safeText(n.author||n.authorEmail||"")}</td><td><span class="status ${safeText(status)}">${safeText(status)}</span></td><td><div class="table-actions">${status!=="Approved"?`<button class="btn btn-primary" onclick="moderateNews('${d.id}','Approved')">${tr("approve")}</button>`:""}${status!=="Rejected"?`<button class="btn btn-soft" onclick="moderateNews('${d.id}','Rejected')">${tr("reject")}</button>`:""}<button class="btn btn-danger" onclick="deleteNews('${d.id}')">${tr("delete")}</button></div></td></tr>`;
-    }).join("");
-  }catch(e){$("admin-news").innerHTML=`<tr><td colspan="4">${safeText(friendlyError(e))}</td></tr>`}
+ if(currentRole!=="Admin")return;
+ try{
+  const q=query(collection(db,"news"),orderBy("createdAt","desc"));
+  const snap=await getDocs(q);
+  const items=snap.docs.map(d=>({id:d.id,...d.data()}));
+  $("adminNewsList").innerHTML=items.length?items.map(n=>`
+   <div class="adminrow">
+    <strong>${escapeHTML(n.title)}</strong>
+    <p class="small">Writer: ${escapeHTML(n.authorName||"")} · ${escapeHTML(n.authorEmail||"")}</p>
+    <p class="small">Status: <b>${escapeHTML(n.status)}</b></p>
+    <div class="actions">
+     ${n.status!=="Approved"?`<button class="success" onclick="reviewNews('${n.id}','Approved')">Approve</button>`:""}
+     ${n.status!=="Rejected"?`<button class="secondary" onclick="reviewNews('${n.id}','Rejected')">Reject</button>`:""}
+     <button class="danger" onclick="removeNews('${n.id}')">Delete</button>
+    </div>
+   </div>`).join(""):"<p>පුවත් නොමැත.</p>";
+ }catch(e){$("adminNewsList").textContent=friendlyError(e);}
 }
-async function moderateNews(id,status){
-  if(!isAdmin){toast(tr("adminOnly"));return}
-  try{await db.collection("news").doc(id).update({status,reviewedAt:firebase.firestore.FieldValue.serverTimestamp(),reviewedBy:currentUser.uid});toast("Updated");loadAdminNews();loadPublicNews();}
-  catch(e){toast(tr("failed")+friendlyError(e))}
-}
-async function deleteNews(id){
-  if(!isAdmin){toast(tr("adminOnly"));return}
-  if(!confirm(tr("confirmDelete")))return;
-  try{await db.collection("news").doc(id).delete();toast("Deleted");loadAdminNews();loadPublicNews();}
-  catch(e){toast(tr("failed")+friendlyError(e))}
-}
+window.reviewNews=async(id,status)=>{
+ if(currentRole!=="Admin")return;
+ try{
+  await updateDoc(doc(db,"news",id),{
+   status,reviewedAt:serverTimestamp(),reviewedBy:currentUser.uid
+  });
+  message("adminMessage","පුවතේ තත්ත්වය වෙනස් කළා.");
+  await loadNews();
+ }catch(e){message("adminMessage",friendlyError(e),true);}
+};
+window.removeNews=async id=>{
+ if(currentRole!=="Admin"||!confirm("මෙම පුවත මකා දමන්නද?"))return;
+ try{
+  await deleteDoc(doc(db,"news",id));
+  message("adminMessage","පුවත මකා දැමුවා.");
+  await loadNews();
+ }catch(e){message("adminMessage",friendlyError(e),true);}
+};
+
+/* Basic language labels */
+window.changeLanguage=()=>{
+ activeLanguage=$("languageSelect").value;
+ const labels={
+  si:{hero:"නවතම පුවත් එකම තැනකින්",text:"ශ්‍රී ලංකාවේ සහ ලෝකයේ නවතම තොරතුරු දැන්ම කියවන්න.",latest:"නවතම පුවත්",search:"පුවත් සොයන්න..."},
+  en:{hero:"Latest News in One Place",text:"Read the latest updates from Sri Lanka and around the world.",latest:"Latest News",search:"Search news..."},
+  ta:{hero:"சமீபத்திய செய்திகள் ஒரே இடத்தில்",text:"இலங்கை மற்றும் உலகின் சமீபத்திய செய்திகளைப் படியுங்கள்.",latest:"சமீபத்திய செய்திகள்",search:"செய்திகளைத் தேடுங்கள்..."}
+ };
+ const t=labels[activeLanguage];
+ $("heroTitle").textContent=t.hero;$("heroText").textContent=t.text;
+ $("latestHeading").textContent=t.latest;$("searchInput").placeholder=t.search;
+};
 $("year").textContent=new Date().getFullYear();
-$("language").value=lang;setLanguage(lang);
-if(db)loadPublicNews();
 </script>
 </body>
 </html>
