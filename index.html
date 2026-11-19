@@ -26,8 +26,6 @@
   --bg:#070b1a; --surface:#0f172a; --surface-2:#111c33;
   --ink:#f1f5f9; --ink-2:#cbd5e1; --muted:#94a3b8;
   --line:#1e293b; --line-2:#334155;
-  --shadow:0 4px 16px rgba(0,0,0,.4);
-  --shadow-lg:0 20px 50px rgba(0,0,0,.6);
 }
 *{box-sizing:border-box;margin:0;padding:0}
 body{background:var(--bg);color:var(--ink);font-family:var(--font);line-height:1.6;transition:background .3s,color .3s;}
@@ -56,8 +54,6 @@ main{max-width:1240px;margin:0 auto;padding:24px 20px 60px}
 .btn:disabled{opacity:.5;cursor:not-allowed}
 .btn.secondary{background:var(--surface);color:var(--ink);border:1px solid var(--line-2);}
 .btn.ghost{background:transparent;color:var(--ink-2);border:1px solid var(--line);}
-.btn.danger{background:var(--danger);color:#fff}
-.btn.success{background:var(--success);color:#fff}
 .btn.block{width:100%}
 .panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-lg);padding:24px;margin-bottom:20px;box-shadow:var(--shadow-sm);}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px}
@@ -112,7 +108,6 @@ label{display:block;font-weight:600;font-size:14px;color:var(--ink-2);margin:14p
       <button class="nav-btn" onclick="showPage('home')">Home</button>
       <button class="nav-btn hidden" onclick="showPage('auth')" id="loginNav">Login / Register</button>
       <button class="nav-btn hidden" onclick="showPage('profile')" id="profileNav">Profile</button>
-      <!-- මේක තමයි අලුත් ඇඩ්මින් බටන් එක -->
       <a href="admin.html" class="nav-btn primary hidden" id="adminNav" target="_blank">Admin Panel</a>
       <button class="icon-btn" onclick="toggleTheme()">🌗</button>
     </nav>
@@ -311,11 +306,11 @@ async function handleUser(user){
     isAdmin = false; updateNav(); showPage('home'); return;
   }
   
-  // ලොග් වුනාම Admin ද කියලා බලනවා
   isAdmin = (user.email === ADMIN_EMAIL);
   updateNav();
   trackOnlineUser(user.uid);
   
+  // ලොග් වුනාම Profile එකට යවනවා
   showPage('profile');
 }
 
@@ -336,14 +331,18 @@ async function trackOnlineUser(uid) {
 async function loadProfile(){
   if(!currentUser) return;
   $('profileEmail').textContent = currentUser.email;
-  const s = await db.collection('users').doc(currentUser.uid).get();
-  const p = s.data() || {};
-  $('pName').value = p.name || currentUser.displayName || '';
-  $('pPhone').value = p.phone || '';
-  $('pLocation').value = p.location || '';
-  $('pOccupation').value = p.occupation || '';
-  $('pBio').value = p.bio || '';
-  updateProgress(p);
+  try {
+    const s = await db.collection('users').doc(currentUser.uid).get();
+    const p = s.data() || {};
+    $('pName').value = p.name || currentUser.displayName || '';
+    $('pPhone').value = p.phone || '';
+    $('pLocation').value = p.location || '';
+    $('pOccupation').value = p.occupation || '';
+    $('pBio').value = p.bio || '';
+    updateProgress(p);
+  } catch(e) {
+    console.error("Profile Load Error:", e);
+  }
 }
 
 function updateProgress(p){
@@ -356,8 +355,9 @@ function updateProgress(p){
 
 async function saveProfile(e){
   e.preventDefault();
-  if(!currentUser) return;
-  const btn = $('saveProfileBtn'); btn.disabled = true;
+  if(!currentUser) return toast('පළමුව Login වන්න.', 'error');
+  
+  const btn = $('saveProfileBtn'); btn.disabled = true; btn.textContent = 'Save වෙමින්...';
   try{
     const p = {
       uid: currentUser.uid, email: currentUser.email, name: $('pName').value.trim(), phone: $('pPhone').value.trim(),
@@ -367,7 +367,12 @@ async function saveProfile(e){
     await db.collection('users').doc(currentUser.uid).set(p, {merge: true});
     updateProgress(p);
     toast('Profile සාර්ථකව Save කළා!', 'success');
-  } catch(e) { toast(friendlyError(e), 'error'); } finally { btn.disabled = false; }
+  } catch(err) { 
+    console.error("Profile Error:", err);
+    alert("Error: " + friendlyError(err)); 
+  } finally { 
+    btn.disabled = false; btn.textContent = 'Profile Save කරන්න'; 
+  }
 }
 
 // Submit News
@@ -381,7 +386,6 @@ async function submitNews(e){
   try{
     const title = $('newsTitle').value.trim(), category = $('newsCategory').value, bodyHTML = quillEditor.root.innerHTML;
     
-    // HTML හිස්ද කියලා චෙක් කරනවා
     if(!title || bodyHTML === '<p><br></p>' || bodyHTML === '') {
       throw new Error('මාතෘකාව සහ විස්තරය අවශ්‍යයි.');
     }
@@ -389,7 +393,6 @@ async function submitNews(e){
     const imgMatch = bodyHTML.match(/<img[^>]+src="([^">]+)"/);
     const thumbnail = imgMatch ? imgMatch[1] : '';
 
-    // දත්ත Firestore එකට යවනවා
     await db.collection('news').add({
       title, category, body: bodyHTML, image: thumbnail,
       authorUid: currentUser.uid, authorEmail: currentUser.email || '',
@@ -399,14 +402,13 @@ async function submitNews(e){
 
     $('writerForm').reset(); 
     quillEditor.root.innerHTML = '';
-    toast('පුවත සාර්ථකව ඉදිරිපත් කළා! Admin අනුමැතියෙන් පසු පළවේ.', 'success');
+    toast('පුවත සාර්ථකව ඉදිරිපත් කළා!', 'success');
     loadMySubmissions();
   } catch(err) {
     console.error("Submit Error:", err); 
-    toast('දෝෂයක්: ' + friendlyError(err), 'error'); // එරර් එක තිරයේ පෙන්නනවා
+    alert("Error: " + friendlyError(err)); 
   } finally { 
-    btn.disabled = false; 
-    txt.textContent = 'පුවත Submit කරන්න'; 
+    btn.disabled = false; txt.textContent = 'පුවත Submit කරන්න'; 
   }
 }
 
@@ -428,8 +430,9 @@ async function loadMySubmissions(){
         <div class="row between"><b>${esc(n.title)}</b><span class="badge ${(n.status||'Pending').toLowerCase()}">${esc(n.status||'Pending')}</span></div>
       </div>
     `).join('');
-  } catch(e) { 
-    wrap.innerHTML = `<p style="color:var(--danger)">${esc(friendlyError(e))}</p>`; 
+  } catch(err) { 
+    console.error("Load Subs Error:", err);
+    wrap.innerHTML = `<p style="color:var(--danger);">දත්ත ලබාගැනීමේ දෝෂයක්: ${err.message}</p>`; 
   }
 }
 
