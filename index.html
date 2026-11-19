@@ -253,7 +253,9 @@ function toast(text, type='info'){
   $('toastContainer').appendChild(el);
   setTimeout(()=>el.remove(), 4000);
 }
+
 function friendlyError(e){ return e?.message || 'දෝෂයක් සිදුවිය.'; }
+
 function toggleTheme(){ document.documentElement.dataset.theme = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark'; }
 
 // Auth
@@ -275,11 +277,9 @@ async function submitAuth(){
     if(authMode === 'register'){
       const cred = await auth.createUserWithEmailAndPassword(email, pw);
       await cred.user.updateProfile({displayName: $('registerName').value.trim()});
-      
       await db.collection('users').doc(cred.user.uid).set({
         uid: cred.user.uid, email, name: $('registerName').value.trim(), role: 'Writer', createdAt: firebase.firestore.FieldValue.serverTimestamp()
       }, {merge: true});
-      
       toast('ගිණුම සාර්ථකව සාදන ලදී!', 'success');
     } else {
       await auth.signInWithEmailAndPassword(email, pw);
@@ -308,7 +308,6 @@ async function handleUser(user){
   isAdmin = (user.email === ADMIN_EMAIL);
   updateNav();
   trackOnlineUser(user.uid);
-  
   showPage('profile');
 }
 
@@ -338,7 +337,7 @@ async function loadProfile(){
     $('pOccupation').value = p.occupation || '';
     $('pBio').value = p.bio || '';
     updateProgress(p);
-  } catch(e) { console.error(e); }
+  } catch(e) { console.error("Load Error:", e); }
 }
 
 function updateProgress(p){
