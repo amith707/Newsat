@@ -222,7 +222,13 @@ label{display:block;font-weight:600;font-size:14px;color:var(--ink-2);margin:14p
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
 <script>
-const firebaseConfig={apiKey:"AIzaSyBMmZuPV3XKlYkGqjQYd7aJpFb8MZc-P9k",authDomain:"newsat-209f8.firebaseapp.com",projectId:"newsat-209f8",appId:"1:529324718671:web:0f45e89bf317cbb0c9083a"};
+// මෙතන Project ID එක 'newsat' විදියට වෙනස් කළා
+const firebaseConfig={
+  apiKey:"AIzaSyBMmZuPV3XKlYkGqjQYd7aJpFb8MZc-P9k",
+  authDomain:"newsat.firebaseapp.com",
+  projectId:"newsat",
+  appId:"1:529324718671:web:0f45e89bf317cbb0c9083a"
+};
 const ADMIN_EMAIL = "kularathnashac@gmail.com";
 
 let auth, db, currentUser=null, isAdmin=false, allNews=[], quillEditor, authMode='login';
@@ -277,9 +283,11 @@ async function submitAuth(){
     if(authMode === 'register'){
       const cred = await auth.createUserWithEmailAndPassword(email, pw);
       await cred.user.updateProfile({displayName: $('registerName').value.trim()});
+      
       await db.collection('users').doc(cred.user.uid).set({
         uid: cred.user.uid, email, name: $('registerName').value.trim(), role: 'Writer', createdAt: firebase.firestore.FieldValue.serverTimestamp()
       }, {merge: true});
+      
       toast('ගිණුම සාර්ථකව සාදන ලදී!', 'success');
     } else {
       await auth.signInWithEmailAndPassword(email, pw);
