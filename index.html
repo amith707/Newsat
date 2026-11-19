@@ -8,240 +8,91 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Noto+Sans+Sinhala:wght@400;600;700&family=Noto+Sans+Tamil:wght@400;600;700&display=swap" rel="stylesheet">
-<!-- Quill.js Rich Text Editor CSS -->
 <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
 <style>
 :root{
   --bg:#f4f6fb; --surface:#ffffff; --surface-2:#f8fafc;
   --ink:#0f172a; --ink-2:#334155; --muted:#64748b;
-  --primary:#2563eb; --primary-2:#1d4ed8; --primary-glow:#3b82f6;
-  --accent:#8b5cf6; --success:#10b981; --danger:#ef4444; --warning:#f59e0b;
+  --primary:#2563eb; --success:#10b981; --danger:#ef4444; --warning:#f59e0b;
   --line:#e2e8f0; --line-2:#cbd5e1;
   --radius:14px; --radius-lg:20px;
   --shadow-sm:0 1px 2px rgba(15,23,42,.05);
-  --shadow:0 4px 16px rgba(15,23,42,.08);
   --shadow-lg:0 20px 50px rgba(15,23,42,.15);
   --gradient:linear-gradient(135deg,#2563eb 0%,#8b5cf6 50%,#ec4899 100%);
   --gradient-2:linear-gradient(135deg,#0f172a 0%,#1e293b 100%);
-  --font:'Inter','Noto Sans Sinhala','Noto Sans Tamil',system-ui,-apple-system,sans-serif;
+  --font:'Inter','Noto Sans Sinhala','Noto Sans Tamil',system-ui,sans-serif;
 }
 [data-theme="dark"]{
   --bg:#070b1a; --surface:#0f172a; --surface-2:#111c33;
   --ink:#f1f5f9; --ink-2:#cbd5e1; --muted:#94a3b8;
   --line:#1e293b; --line-2:#334155;
-  --shadow:0 4px 16px rgba(0,0,0,.4);
-  --shadow-lg:0 20px 50px rgba(0,0,0,.6);
 }
 *{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
-body{
-  background:var(--bg);color:var(--ink);
-  font-family:var(--font);line-height:1.6;
-  -webkit-font-smoothing:antialiased;
-  transition:background .3s,color .3s;
-}
+body{background:var(--bg);color:var(--ink);font-family:var(--font);line-height:1.6;transition:background .3s;}
 img{max-width:100%;display:block}
 button,input,textarea,select{font:inherit}
 button{cursor:pointer;border:0;background:none;color:inherit}
 
-/* ===== HEADER ===== */
-header{
-  position:sticky;top:0;z-index:100;
-  background:rgba(10,14,39,.85);
-  backdrop-filter:blur(20px) saturate(180%);
-  -webkit-backdrop-filter:blur(20px) saturate(180%);
-  border-bottom:1px solid rgba(255,255,255,.08);
-  color:#fff;
-}
-[data-theme="dark"] header{background:rgba(7,11,26,.9)}
-.header-inner{
-  max-width:1240px;margin:0 auto;
-  display:flex;align-items:center;justify-content:space-between;
-  gap:16px;padding:14px 20px;flex-wrap:wrap;
-}
+/* HEADER */
+header{position:sticky;top:0;z-index:100;background:rgba(10,14,39,.85);backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,.08);color:#fff;}
+.header-inner{max-width:1240px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 20px;flex-wrap:wrap;}
 .logo{display:flex;align-items:center;gap:10px;text-decoration:none;color:#fff}
-.logo-mark{
-  width:38px;height:38px;border-radius:11px;
-  background:var(--gradient);
-  display:grid;place-items:center;
-  font-weight:900;font-size:18px;
-  box-shadow:0 4px 14px rgba(59,130,246,.4);
-}
-.logo-text{display:flex;flex-direction:column;line-height:1.1}
-.logo-text b{font-size:19px;font-weight:800;letter-spacing:-.3px}
-.logo-text small{font-size:11px;color:#94a3b8;font-weight:500}
+.logo-mark{width:38px;height:38px;border-radius:11px;background:var(--gradient);display:grid;place-items:center;font-weight:900;font-size:18px;}
 .nav{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
-.nav-btn{
-  padding:9px 16px;border-radius:10px;
-  font-weight:600;font-size:14px;color:#e2e8f0;
-  background:rgba(255,255,255,.06);
-  border:1px solid rgba(255,255,255,.08);
-  transition:all .2s;
-}
-.nav-btn:hover{background:rgba(255,255,255,.12);transform:translateY(-1px)}
-.nav-btn.primary{background:var(--gradient);border-color:transparent;box-shadow:0 4px 14px rgba(59,130,246,.35)}
-.icon-btn{
-  width:40px;height:40px;border-radius:10px;
-  display:grid;place-items:center;
-  background:rgba(255,255,255,.06);
-  border:1px solid rgba(255,255,255,.08);
-  color:#e2e8f0;font-size:18px;
-  transition:all .2s;
-}
-.icon-btn:hover{background:rgba(255,255,255,.12);transform:rotate(15deg)}
-.lang-select{
-  padding:9px 12px;border-radius:10px;
-  background:rgba(255,255,255,.06);
-  border:1px solid rgba(255,255,255,.08);
-  color:#e2e8f0;font-weight:600;font-size:14px;
-  cursor:pointer;
-}
-.lang-select option{background:#0f172a;color:#fff}
+.nav-btn{padding:9px 16px;border-radius:10px;font-weight:600;font-size:14px;color:#e2e8f0;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);transition:all .2s;text-decoration:none;display:inline-block;}
+.nav-btn:hover{background:rgba(255,255,255,.12)}
+.nav-btn.primary{background:var(--gradient);border-color:transparent;}
+.icon-btn{width:40px;height:40px;border-radius:10px;display:grid;place-items:center;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);color:#e2e8f0;font-size:18px;}
 
-/* ===== MAIN ===== */
+/* MAIN */
 main{max-width:1240px;margin:0 auto;padding:24px 20px 60px}
-
-/* ===== HERO ===== */
-.hero{
-  position:relative;overflow:hidden;
-  background:var(--gradient-2);
-  border-radius:24px;padding:56px 40px;
-  color:#fff;margin-bottom:28px;
-  box-shadow:var(--shadow-lg);
-}
-.hero::before{
-  content:'';position:absolute;inset:0;
-  background:radial-gradient(circle at 20% 20%,rgba(59,130,246,.4),transparent 50%),
-             radial-gradient(circle at 80% 80%,rgba(139,92,246,.35),transparent 50%);
-  opacity:.9;
-}
-.hero-content{position:relative;z-index:1;max-width:640px}
-.hero h1{font-size:clamp(28px,5vw,44px);font-weight:900;line-height:1.15;letter-spacing:-1px;margin-bottom:12px}
-.hero p{color:#cbd5e1;font-size:17px;max-width:520px}
-
-/* ===== BUTTONS ===== */
-.btn{
-  display:inline-flex;align-items:center;justify-content:center;gap:8px;
-  padding:11px 20px;border-radius:11px;font-weight:700;font-size:14px;
-  transition:all .2s;white-space:nowrap;
-  background:var(--gradient);color:#fff;
-  box-shadow:0 4px 14px rgba(59,130,246,.3);
-}
-.btn:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 8px 22px rgba(59,130,246,.45)}
-.btn:disabled{opacity:.5;cursor:not-allowed}
-.btn.secondary{background:var(--surface);color:var(--ink);border:1px solid var(--line-2);box-shadow:var(--shadow-sm)}
-.btn.success{background:linear-gradient(135deg,#10b981,#059669);box-shadow:0 4px 14px rgba(16,185,129,.3)}
-.btn.danger{background:linear-gradient(135deg,#ef4444,#dc2626);box-shadow:0 4px 14px rgba(239,68,68,.3)}
-.btn.ghost{background:transparent;color:var(--ink-2);border:1px solid var(--line)}
-.btn.sm{padding:7px 14px;font-size:13px;border-radius:9px}
+.hero{position:relative;overflow:hidden;background:var(--gradient-2);border-radius:24px;padding:56px 40px;color:#fff;margin-bottom:28px;}
+.hero h1{font-size:clamp(28px,5vw,44px);font-weight:900;line-height:1.15;margin-bottom:12px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:11px 20px;border-radius:11px;font-weight:700;font-size:14px;transition:all .2s;background:var(--gradient);color:#fff;text-decoration:none;}
+.btn:hover:not(:disabled){transform:translateY(-2px);}
+.btn.secondary{background:var(--surface);color:var(--ink);border:1px solid var(--line-2);}
+.btn.ghost{background:transparent;color:var(--ink-2);border:1px solid var(--line);}
+.btn.danger{background:var(--danger);color:#fff}
+.btn.success{background:var(--success);color:#fff}
 .btn.block{width:100%}
-
-/* ===== PANELS & CARDS ===== */
-.panel{
-  background:var(--surface);border:1px solid var(--line);
-  border-radius:var(--radius-lg);padding:24px;
-  box-shadow:var(--shadow-sm);margin-bottom:20px;
-}
-.toolbar{
-  display:flex;gap:12px;align-items:center;flex-wrap:wrap;
-  margin-bottom:24px;padding:14px;
-  background:var(--surface);border:1px solid var(--line);
-  border-radius:var(--radius);box-shadow:var(--shadow-sm);
-}
-.search-wrap{position:relative;flex:1;min-width:200px}
-.search-wrap::before{content:'🔍';position:absolute;left:14px;top:50%;transform:translateY(-50%);opacity:.6}
-.search-wrap input{padding-left:42px}
-
-/* ===== FORM INPUTS ===== */
-input,textarea,select{
-  width:100%;padding:12px 14px;
-  border:1.5px solid var(--line-2);border-radius:11px;
-  background:var(--surface);color:var(--ink);
-  font-family:inherit;font-size:14px;
-  transition:all .2s;
-}
-input:focus,textarea:focus,select:focus{
-  outline:none;border-color:var(--primary);
-  box-shadow:0 0 0 4px rgba(37,99,235,.12);
-}
-label{display:block;font-weight:600;font-size:14px;color:var(--ink-2);margin:14px 0 7px}
-input[type="file"]{padding:9px;font-size:13px;cursor:pointer}
-
-/* ===== GRID ===== */
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-lg);padding:24px;margin-bottom:20px;}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px}
 .grid-2{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px}
 
-/* ===== NEWS CARD ===== */
-.news-card{
-  background:var(--surface);border:1px solid var(--line);
-  border-radius:var(--radius-lg);overflow:hidden;
-  box-shadow:var(--shadow-sm);
-  transition:all .35s cubic-bezier(.4,0,.2,1);
-  display:flex;flex-direction:column;
-}
+/* NEWS CARD */
+.news-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-lg);overflow:hidden;transition:all .35s;cursor:pointer;box-shadow:var(--shadow-sm);}
 .news-card:hover{transform:translateY(-6px);box-shadow:var(--shadow-lg);border-color:var(--primary)}
-.news-card-img{
-  position:relative;width:100%;aspect-ratio:16/10;overflow:hidden;
-  background:linear-gradient(135deg,#dbeafe,#ede9fe);
-}
+.news-card-img{width:100%;aspect-ratio:16/10;overflow:hidden;background:#dbeafe;}
 .news-card-img img{width:100%;height:100%;object-fit:cover;transition:transform .5s}
 .news-card:hover .news-card-img img{transform:scale(1.06)}
-.news-card-img .badge{
-  position:absolute;top:12px;left:12px;
-  padding:6px 12px;border-radius:999px;
-  background:rgba(255,255,255,.95);
-  color:var(--primary);font-size:12px;font-weight:700;
-  backdrop-filter:blur(10px);box-shadow:var(--shadow-sm);
-}
-.news-card-body{padding:18px;flex:1;display:flex;flex-direction:column;gap:10px}
-.news-card-body h3{font-size:18px;font-weight:700;line-height:1.35;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+.news-card-body{padding:18px;}
+.news-card-body h3{font-size:18px;font-weight:700;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
 
-/* ===== BADGES / STATUS ===== */
-.badge{display:inline-flex;align-items:center;gap:5px;padding:5px 11px;border-radius:999px;font-size:12px;font-weight:700;}
-.badge::before{content:'';width:6px;height:6px;border-radius:50%;background:currentColor}
-.badge.approved{color:#059669;background:#d1fae5}
-.badge.pending{color:#b45309;background:#fef3c7}
-.badge.rejected{color:#dc2626;background:#fee2e2}
-
-/* ===== SPINNER & TOAST ===== */
-.spinner{width:18px;height:18px;border:2.5px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;display:inline-block}
-@keyframes spin{to{transform:rotate(360deg)}}
-.toast-container{position:fixed;top:88px;right:20px;z-index:9999;display:flex;flex-direction:column;gap:10px;pointer-events:none}
-.toast{padding:14px 18px;border-radius:12px;background:var(--surface);border:1px solid var(--line);box-shadow:var(--shadow-lg);font-weight:600;font-size:14px;display:flex;align-items:center;gap:10px;animation:slideIn .35s;border-left:4px solid var(--primary);pointer-events:auto;}
-.toast.success{border-left-color:var(--success)} .toast.error{border-left-color:var(--danger)}
-@keyframes slideIn{from{transform:translateX(120%);opacity:0}to{transform:translateX(0);opacity:1}}
-
-/* ===== USER GUIDE BOX ===== */
-.guide-box { background: #e0f2fe; border-left: 4px solid #0284c7; padding: 16px; border-radius: 8px; margin-bottom: 20px; color: #0c4a6e; font-size: 14px;}
-.guide-box b { color: #0369a1; }
-[data-theme="dark"] .guide-box { background: rgba(2, 132, 199, 0.15); border-left-color: #38bdf8; color: #bae6fd; }
-[data-theme="dark"] .guide-box b { color: #7dd3fc; }
-
-/* ===== QUILL EDITOR CUSTOMIZATION ===== */
-.ql-container { font-family: inherit; font-size: 16px; border-bottom-left-radius: 11px; border-bottom-right-radius: 11px; border-color: var(--line-2) !important; background: var(--surface); color: var(--ink);}
-.ql-toolbar { border-top-left-radius: 11px; border-top-right-radius: 11px; border-color: var(--line-2) !important; background: var(--surface-2);}
-.ql-editor { min-height: 300px; line-height: 1.6; }
-.ql-editor img { max-width: 100%; height: auto; border-radius: 8px; margin: 10px 0; display: block; }
-[data-theme="dark"] .ql-toolbar { background: var(--surface); }
-[data-theme="dark"] .ql-stroke { stroke: var(--ink-2); }
-[data-theme="dark"] .ql-fill { fill: var(--ink-2); }
-[data-theme="dark"] .ql-picker { color: var(--ink-2); }
-
-/* ===== ARTICLE BODY ===== */
-.article-body{font-size:17px;line-height:1.85;color:var(--ink-2);}
-.article-body img { max-width: 100%; border-radius: 8px; margin: 15px 0; display: block;}
-.article-body p { margin-bottom: 1em; }
-
-/* Misc */
-.hidden{display:none!important} .muted{color:var(--muted);font-size:14px}
+/* FORMS */
+input,textarea,select{width:100%;padding:12px 14px;border:1.5px solid var(--line-2);border-radius:11px;background:var(--surface);color:var(--ink);font-family:inherit;font-size:14px;}
+input:focus,textarea:focus,select:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 4px rgba(37,99,235,.12);}
+label{display:block;font-weight:600;font-size:14px;color:var(--ink-2);margin:14px 0 7px}
+.hidden{display:none!important}
+.muted{color:var(--muted);font-size:14px}
 .row{display:flex;gap:12px;align-items:center;flex-wrap:wrap} .row.between{justify-content:space-between}
-.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
 .divider{height:1px;background:var(--line);margin:20px 0}
-.progress{height:10px;background:var(--line);border-radius:999px;overflow:hidden;margin:10px 0}
-.progress span{display:block;height:100%;background:var(--gradient);width:0;transition:width .5s}
+.badge{display:inline-flex;padding:5px 11px;border-radius:999px;font-size:12px;font-weight:700;}
+.badge.pending{color:#b45309;background:#fef3c7}
+.badge.approved{color:#059669;background:#d1fae5}
 .tabs{display:flex;gap:4px;padding:4px;background:var(--surface-2);border-radius:12px;margin-bottom:22px}
 .tabs button{flex:1;padding:10px;border-radius:9px;font-weight:600;color:var(--muted);transition:all .2s}
 .tabs button.active{background:var(--surface);color:var(--ink);box-shadow:var(--shadow-sm)}
+.toast-container{position:fixed;top:88px;right:20px;z-index:9999;display:flex;flex-direction:column;gap:10px;}
+.toast{padding:14px 18px;border-radius:12px;background:var(--surface);border:1px solid var(--line);box-shadow:var(--shadow-lg);font-weight:600;font-size:14px;display:flex;align-items:center;gap:10px;border-left:4px solid var(--primary);}
+.toast.success{border-left-color:var(--success)} .toast.error{border-left-color:var(--danger)}
+.guide-box { background: #e0f2fe; border-left: 4px solid #0284c7; padding: 16px; border-radius: 8px; margin-bottom: 20px; color: #0c4a6e; font-size: 14px;}
+.ql-container{border-bottom-left-radius:11px;border-bottom-right-radius:11px;border-color:var(--line-2)!important;font-family:inherit;}
+.ql-toolbar{border-top-left-radius:11px;border-top-right-radius:11px;border-color:var(--line-2)!important;background:var(--surface-2);}
+.ql-editor{min-height:300px;font-size:16px;}
+.ql-editor img{max-width:100%;height:auto;border-radius:8px;margin:10px 0;display:block;}
+.article-body{font-size:17px;line-height:1.85;} .article-body img { max-width: 100%; border-radius: 8px; margin: 15px 0; display: block;}
+.progress{height:10px;background:var(--line);border-radius:999px;overflow:hidden;margin:10px 0}
+.progress span{display:block;height:100%;background:var(--gradient);width:0;transition:width .5s}
 </style>
 </head>
 <body>
@@ -250,35 +101,30 @@ input[type="file"]{padding:9px;font-size:13px;cursor:pointer}
   <div class="header-inner">
     <a href="#" class="logo" onclick="showPage('home');return false">
       <div class="logo-mark">N</div>
-      <div class="logo-text"><b>Newsat.space</b><small>ඔබේ විශ්වාසනීය පුවත් අඩවිය</small></div>
+      <div class="logo-text"><b>Newsat.space</b></div>
     </a>
     <nav class="nav">
-      <button class="nav-btn" onclick="showPage('home')">මුල් පිටුව</button>
-      <button class="nav-btn hidden" onclick="showPage('auth')" id="loginNav">Login</button>
+      <button class="nav-btn" onclick="showPage('home')">Home</button>
+      <button class="nav-btn hidden" onclick="showPage('auth')" id="loginNav">Login / Register</button>
       <button class="nav-btn hidden" onclick="showPage('profile')" id="profileNav">Profile</button>
-      <button class="nav-btn hidden" onclick="showPage('admin')" id="adminNav">Admin</button>
-      <button class="icon-btn" onclick="toggleTheme()" id="themeBtn">🌙</button>
+      <!-- මේක තමයි අලුත් ඇඩ්මින් බටන් එක -->
+      <a href="admin.html" class="nav-btn primary hidden" id="adminNav" target="_blank">Admin Panel</a>
+      <button class="icon-btn" onclick="toggleTheme()">🌗</button>
     </nav>
   </div>
 </header>
 
-<div class="toast-container" id="toastContainer"></div>
+<div id="toastContainer" class="toast-container"></div>
 
 <main>
   <!-- HOME -->
   <section id="homePage">
     <div class="hero">
-      <div class="hero-content">
-        <h1>නවතම පුවත්<br><span style="color:#60a5fa">එකම තැනකින්</span></h1>
-        <p>දේශීය හා විදේශීය පුවත් — විශ්වාසනීය මූලාශ්‍රවලින් Newsat.space වෙතින්.</p>
-      </div>
+      <h1>නවතම පුවත්<br><span style="color:#60a5fa">එකම තැනකින්</span></h1>
+      <p>දේශීය හා විදේශීය පුවත් — විශ්වාසනීය මූලාශ්‍රවලින් Newsat.space වෙතින්.</p>
     </div>
-    <div class="toolbar">
-      <div class="search-wrap"><input id="searchInput" placeholder="පුවත් සොයන්න..." oninput="renderNews()"></div>
-      <select id="categoryFilter" onchange="renderNews()" style="max-width:200px">
-        <option value="">සියලුම කාණ්ඩ</option><option>දේශීය</option><option>විදේශීය</option>
-        <option>ක්‍රීඩා</option><option>ව්‍යාපාර</option><option>තාක්ෂණය</option><option>විනෝදාස්වාදය</option>
-      </select>
+    <div class="row" style="margin-bottom:20px;">
+      <input id="searchInput" placeholder="පුවත් සොයන්න..." oninput="renderNews()" style="flex:1;">
     </div>
     <div id="newsList" class="grid"></div>
   </section>
@@ -294,9 +140,8 @@ input[type="file"]{padding:9px;font-size:13px;cursor:pointer}
       <label>Email</label><input id="authEmail" type="email" placeholder="name@example.com">
       <div id="registerExtra" class="hidden"><label>සම්පූර්ණ නම</label><input id="registerName" placeholder="John Doe"></div>
       <label>Password</label><input id="authPassword" type="password" placeholder="••••••••">
-      <div id="confirmExtra" class="hidden"><label>Password තහවුරු කරන්න</label><input id="authPasswordConfirm" type="password" placeholder="••••••••"></div>
-      <button class="btn block" style="margin-top:20px" onclick="submitAuth()" id="authSubmit"><span id="authBtnText">Login</span></button>
-      <p style="text-align:center;margin-top:14px;font-size:14px"><a href="#" onclick="forgotPassword();return false" style="color:var(--primary);font-weight:600;text-decoration:none">Password අමතකද?</a></p>
+      <button class="btn" style="margin-top:20px;width:100%" onclick="submitAuth()" id="authSubmit"><span id="authBtnText">Login</span></button>
+      <p style="text-align:center;margin-top:14px;font-size:14px"><a href="#" onclick="forgotPassword();return false" style="color:var(--primary);">Password අමතකද?</a></p>
     </div>
   </section>
 
@@ -304,14 +149,9 @@ input[type="file"]{padding:9px;font-size:13px;cursor:pointer}
   <section id="profilePage" class="hidden">
     <div class="panel">
       <div class="row between" style="margin-bottom:20px">
-        <div class="row">
-          <div style="width:56px;height:56px;border-radius:50%;background:var(--gradient);color:#fff;display:grid;place-items:center;font-weight:800;font-size:22px;" id="profileAvatar">U</div>
-          <div><h2 style="font-size:22px">මගේ Profile</h2><p class="muted" id="profileEmail"></p></div>
-        </div>
-        <button class="btn ghost sm" onclick="logout()">Logout</button>
+        <div><h2 style="font-size:22px">මගේ Profile</h2><p class="muted" id="profileEmail"></p></div>
+        <button class="btn ghost" onclick="logout()">Logout</button>
       </div>
-      
-      <!-- Profile Completion -->
       <div class="row between" style="margin-bottom:6px"><b>Profile සම්පූර්ණතාව</b><span id="progressText" class="muted">0%</span></div>
       <div class="progress"><span id="profileProgress"></span></div>
 
@@ -327,65 +167,52 @@ input[type="file"]{padding:9px;font-size:13px;cursor:pointer}
       </form>
     </div>
 
-    <!-- NEWS SUBMIT SECTION -->
     <div class="panel">
       <h3 style="font-size:20px;margin-bottom:10px">පුවතක් ඉදිරිපත් කරන්න</h3>
-      
-      <!-- USER GUIDE -->
       <div class="guide-box">
-        <b>📸 පින්තූර එකතු කරන ආකාරය (User Guide):</b><br>
-        1. ඔබට අවශ්‍ය පින්තූරය <b>Google Drive</b> එකට Upload කරන්න.<br>
-        2. එම පින්තූරය Right-Click කර <b>"Share"</b> (හෝ "Get Link") ක්ලික් කරන්න.<br>
-        3. එහි ඇති Access එක <b>"Anyone with the link"</b> ලෙස වෙනස් කරන්න.<br>
-        4. එම ලින්ක් එක Copy කරගන්න.<br>
-        5. පහත ඇති Editor එකේ ඔබට පින්තූරය අවශ්‍ය තැනට කර්සරය තබා, අපගේ <b>"🖼️ Google Drive Image"</b> බොක්ස් එකට එම ලින්ක් එක Paste කර <b>Add</b> කරන්න.<br>
-        <i>(ඔබට ලින්ක් කිහිපයක්ම මේ ආකාරයට එකතු කළ හැක. ඒවා පුවතේ අදාළ තැනින්ම පෙන්වනු ඇත.)</i>
+        <b>📸 පින්තූර එකතු කරන ආකාරය:</b><br>
+        1. පින්තූරය Google Drive එකට Upload කරන්න.<br>
+        2. Right-Click කර "Share" ක්ලික් කරන්න.<br>
+        3. Access එක "Anyone with the link" කරන්න.<br>
+        4. ලින්ක් එක Copy කරගන්න.<br>
+        5. පහත Editor එකේ අවශ්‍ය තැනට කර්සරය තබා, ලින්ක් එක Paste කර Add කරන්න.
       </div>
 
       <form id="writerForm" onsubmit="submitNews(event)">
         <label>පුවත් මාතෘකාව</label><input id="newsTitle" required maxlength="200">
         <label>කාණ්ඩය</label>
-        <select id="newsCategory">
-          <option>දේශීය</option><option>විදේශීය</option><option>ක්‍රීඩා</option>
-          <option>ව්‍යාපාර</option><option>තාක්ෂණය</option><option>විනෝදාස්වාදය</option>
-        </select>
-
-        <!-- Google Drive Image Link Adder -->
+        <select id="newsCategory"><option>දේශීය</option><option>විදේශීය</option><option>ක්‍රීඩා</option><option>ව්‍යාපාර</option><option>තාක්ෂණය</option><option>විනෝදාස්වාදය</option></select>
+        
         <div style="background:var(--surface-2);padding:16px;border-radius:12px;border:1px solid var(--line);margin-top:16px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
-          <input type="url" id="gdriveImageUrl" placeholder="Google Drive Image Link එක මෙතනට Paste කරන්න..." style="flex:1;min-width:200px;">
-          <button type="button" class="btn secondary" onclick="addGDriveImageToEditor()" style="flex-shrink:0;">🖼️ Add Image</button>
+          <input type="url" id="gdriveImageUrl" placeholder="Google Drive Image Link එක මෙතනට Paste කරන්න..." style="flex:1;">
+          <button type="button" class="btn secondary" onclick="addGDriveImageToEditor()">🖼️ Add Image</button>
         </div>
 
-        <label style="margin-top:16px;">පුවත් විස්තරය (MS Word වගේ - අකුරු ලිමිට් නැත)</label>
-        <!-- Quill Editor Container -->
+        <label style="margin-top:16px;">පුවත් විස්තරය</label>
         <div id="newsBodyEditor"></div>
-        <textarea id="newsBody" class="hidden"></textarea> <!-- Hidden textarea to store HTML -->
         
-        <button id="newsSubmitBtn" type="submit" class="btn" style="margin-top:16px;width:100%;">
-          <span id="newsBtnText">පුවත Submit කරන්න</span>
-        </button>
+        <button id="newsSubmitBtn" type="submit" class="btn" style="margin-top:16px;width:100%;"><span id="newsBtnText">පුවත Submit කරන්න</span></button>
       </form>
     </div>
     
-    <!-- MY SUBMISSIONS -->
     <div class="panel">
       <h3 style="font-size:20px;margin-bottom:10px">මගේ ඉදිරිපත් කළ පුවත්</h3>
       <div id="mySubmissions"></div>
     </div>
   </section>
 
-  <!-- ADMIN (Dashboard redirects to admin.html) -->
+  <!-- ADMIN REDIRECT -->
   <section id="adminPage" class="hidden">
     <div class="panel" style="text-align:center;padding:40px;">
       <h2 style="font-size:22px;margin-bottom:10px">Admin Dashboard</h2>
       <p class="muted" style="margin-bottom:20px">ඔබට සම්පූර්ණ Admin පැනලය භාවිතා කිරීමට පහත බටන් එක ඔබන්න.</p>
-      <a href="admin.html" class="btn" style="display:inline-flex;text-decoration:none;">Admin Panel එකට යන්න</a>
+      <a href="admin.html" class="btn">Admin Panel එකට යන්න</a>
     </div>
   </section>
 
   <!-- ARTICLE VIEW -->
   <section id="articlePage" class="hidden">
-    <button class="btn ghost sm" onclick="showPage('home')" style="margin-bottom:20px">← ආපසු</button>
+    <button class="btn ghost" onclick="showPage('home')" style="margin-bottom:20px">← ආපසු</button>
     <article id="articleContent" class="panel"></article>
   </section>
 </main>
@@ -395,116 +222,59 @@ input[type="file"]{padding:9px;font-size:13px;cursor:pointer}
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
 <script>
-/* ===== CONFIG ===== */
 const firebaseConfig={apiKey:"AIzaSyBMmZuPV3XKlYkGqjQYd7aJpFb8MZc-P9k",authDomain:"newsat-209f8.firebaseapp.com",projectId:"newsat-209f8",appId:"1:529324718671:web:0f45e89bf317cbb0c9083a"};
+const ADMIN_EMAIL = "kularathnashac@gmail.com";
 
-/* ===== STATE ===== */
-let auth, db, currentUser=null, isAdmin=false, allNews=[];
-let authMode = 'login'; // Fixed missing variable
-let quillEditor;
+let auth, db, currentUser=null, isAdmin=false, allNews=[], quillEditor, authMode='login';
 
-/* ===== INITIALIZE ===== */
-try {
-  firebase.initializeApp(firebaseConfig);
-  auth = firebase.auth();
-  db = firebase.firestore();
-  
-  // Track Traffic (Every visit)
-  db.collection('site_stats').doc('traffic').set({
-    views: firebase.firestore.FieldValue.increment(1)
-  }, { merge: true }).catch(()=>{});
+// Init Firebase & Quill
+firebase.initializeApp(firebaseConfig);
+auth = firebase.auth();
+db = firebase.firestore();
 
-  auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL)
-    .then(() => {
-      quillEditor = new Quill('#newsBodyEditor', {
-        theme: 'snow',
-        placeholder: 'ඔබේ පුවත මෙහි ලියන්න...',
-        modules: {
-          toolbar: [
-            [{ 'header': [1, 2, 3, false] }], ['bold', 'italic', 'underline', 'strike'],
-            [{ 'list': 'ordered'}, { 'list': 'bullet' }], [{ 'align': [] }],
-            ['link', 'blockquote'], ['clean']
-          ]
-        }
-      });
-      auth.onAuthStateChanged(handleUser);
-      loadPublicNews();
-    })
-    .catch(() => {
-      auth.onAuthStateChanged(handleUser);
-      loadPublicNews();
-    });
-} catch(e) { console.error("Firebase init error:", e); }
+db.collection('site_stats').doc('traffic').set({ views: firebase.firestore.FieldValue.increment(1) }, { merge: true }).catch(()=>{});
 
-/* ===== HELPERS ===== */
+auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL).then(() => {
+  quillEditor = new Quill('#newsBodyEditor', {
+    theme: 'snow',
+    placeholder: 'ඔබේ පුවත මෙහි ලියන්න...',
+    modules: { toolbar: [[{ 'header': [1, 2, 3, false] }], ['bold', 'italic', 'underline'], [{ 'list': 'ordered'}, { 'list': 'bullet' }], ['link', 'blockquote'], ['clean']] }
+  });
+  auth.onAuthStateChanged(handleUser);
+  loadPublicNews();
+});
+
 const $ = id => document.getElementById(id);
 const esc = s => String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const setBusy = (el, on, text) => { el.disabled = on; if(text !== undefined) el.textContent = text; };
 
 function toast(text, type='info'){
-  const c = $('toastContainer');
   const el = document.createElement('div');
   el.className = `toast ${type}`;
   el.innerHTML = `<span>${type==='success'?'✅':type==='error'?'❌':'ℹ️'}</span><span>${esc(text)}</span>`;
-  c.appendChild(el);
-  setTimeout(()=>{el.style.opacity='0'; setTimeout(()=>el.remove(), 300)}, 4000);
+  $('toastContainer').appendChild(el);
+  setTimeout(()=>el.remove(), 4000);
 }
 
-function friendlyError(e){
-  const code = e?.code || '';
-  const map = {
-    'auth/invalid-credential': 'Email හෝ Password වැරදියි.',
-    'auth/email-already-in-use': 'මෙම Email එක දැනටමත් භාවිතා කරයි.',
-    'auth/weak-password': 'වඩා ශක්තිමත් Password එකක් යොදන්න.',
-    'permission-denied': 'අවසර නැත. Firebase Rules පරීක්ෂා කරන්න.'
-  };
-  return map[code] || e?.message || 'දෝෂයක් සිදුවිය.';
-}
+function friendlyError(e){ return e?.message || 'දෝෂයක් සිදුවිය.'; }
 
-/* ===== GOOGLE DRIVE LINK ===== */
-function convertGoogleDriveLink(url) {
-  if (!url) return '';
-  const match = url.match(/\/d\/([a-zA-Z0-9_-]+)/) || url.match(/id=([a-zA-Z0-9_-]+)/);
-  if (match && match[1]) return `https://lh3.googleusercontent.com/d/${match[1]}`;
-  return url;
-}
+// Theme
+function toggleTheme(){ document.documentElement.dataset.theme = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark'; }
 
-function addGDriveImageToEditor() {
-  const input = $('gdriveImageUrl');
-  const rawUrl = input.value.trim();
-  if (!rawUrl) return toast('කරුණාකර Google Drive ලින්ක් එකක් ඇතුළත් කරන්න.', 'warning');
-  
-  const directUrl = convertGoogleDriveLink(rawUrl);
-  const range = quillEditor.getSelection(true);
-  const index = range ? range.index : quillEditor.getLength();
-  quillEditor.insertEmbed(index, 'image', directUrl, 'user');
-  quillEditor.setSelection(index + 1, 0);
-  input.value = '';
-  toast('පින්තූරය එඩිටරයට එකතු කරන ලදී!', 'success');
-}
-
-/* ===== AUTH ===== */
+// Auth
 function setAuthMode(mode){
   authMode = mode;
-  const reg = mode === 'register';
-  $('loginTab').classList.toggle('active', !reg);
-  $('registerTab').classList.toggle('active', reg);
-  $('registerExtra').classList.toggle('hidden', !reg);
-  $('confirmExtra').classList.toggle('hidden', !reg);
-  $('authTitle').textContent = reg ? 'Create account 🚀' : 'Welcome back 👋';
-  $('authBtnText').textContent = reg ? 'Create Account' : 'Login';
+  $('loginTab').className = mode === 'login' ? 'active' : '';
+  $('registerTab').className = mode === 'register' ? 'active' : '';
+  $('registerExtra').classList.toggle('hidden', mode === 'login');
+  $('authTitle').textContent = mode === 'register' ? 'Create account 🚀' : 'Welcome back 👋';
+  $('authBtnText').textContent = mode === 'register' ? 'Create Account' : 'Login';
 }
 
 async function submitAuth(){
   const email = $('authEmail').value.trim(), pw = $('authPassword').value;
   if(!email || !pw) return toast('Email සහ Password ඇතුළත් කරන්න.', 'error');
   
-  if(authMode === 'register'){
-    if(pw.length < 6) return toast('Password අවම අකුරු 6 විය යුතුයි.', 'error');
-    if(pw !== $('authPasswordConfirm').value) return toast('Password දෙකම සමාන නැත.', 'error');
-  }
-  
-  const btn = $('authSubmit'); setBusy(btn, true);
+  const btn = $('authSubmit'); btn.disabled = true;
   try{
     if(authMode === 'register'){
       const cred = await auth.createUserWithEmailAndPassword(email, pw);
@@ -512,51 +282,38 @@ async function submitAuth(){
       await db.collection('users').doc(cred.user.uid).set({
         uid: cred.user.uid, email, name: $('registerName').value.trim(), role: 'Writer', createdAt: firebase.firestore.FieldValue.serverTimestamp()
       }, {merge: true});
+      toast('ගිණුම සාර්ථකව සාදන ලදී! දැන් ලොග් වී ඇත.', 'success');
     } else {
       await auth.signInWithEmailAndPassword(email, pw);
+      toast('සාර්ථකව පිවිසුණි!', 'success');
     }
-    toast('සාර්ථකව පිවිසුණි!', 'success');
   } catch(e) {
     toast(friendlyError(e), 'error');
-  } finally {
-    setBusy(btn, false);
-  }
+  } finally { btn.disabled = false; }
 }
 
 async function forgotPassword(){
   const email = $('authEmail').value.trim();
-  if(!email) return toast('පළමුව Email ලිපිනය ඇතුළත් කරන්න.', 'warning');
+  if(!email) return toast('කරුණාකර Email එක ඇතුළත් කරන්න.', 'warning');
   try { await auth.sendPasswordResetEmail(email); toast('Reset link Email එකට යවන ලදී.', 'success'); }
   catch(e) { toast(friendlyError(e), 'error'); }
 }
 
-// Track Online Users (Heartbeat)
-function trackOnlineUser(uid) {
-  const userRef = db.collection('online_users').doc(uid);
-  userRef.set({ lastSeen: firebase.firestore.FieldValue.serverTimestamp() }).catch(()=>{});
-  setInterval(() => {
-    if(navigator.onLine) userRef.update({ lastSeen: firebase.firestore.FieldValue.serverTimestamp() }).catch(()=>{});
-  }, 60000);
-}
+async function logout(){ await auth.signOut(); toast('Logout විය.', 'success'); }
 
 async function handleUser(user){
   currentUser = user;
   if(!user){
     isAdmin = false; updateNav(); showPage('home'); return;
   }
-  try{
-    const token = await user.getIdTokenResult(true);
-    isAdmin = token.claims.admin === true;
-    updateNav();
-    trackOnlineUser(user.uid); // Track user as online
-    
-    const currentPage = document.querySelector('section:not(.hidden)')?.id;
-    if (currentPage === 'homePage' || !currentPage) {
-       showPage(isAdmin ? 'admin' : 'profile');
-    }
-  } catch(e) {
-    toast(friendlyError(e), 'error'); updateNav(); showPage('home');
-  }
+  
+  // මෙතනදි අපි චෙක් කරනවා ලොග් වුනේ ඇඩ්මින් ඊමේල් එකෙන්ද කියලා
+  isAdmin = (user.email === ADMIN_EMAIL);
+  updateNav();
+  trackOnlineUser(user.uid);
+  
+  // ලොග් වුනාම Profile එකට යවනවා
+  showPage('profile');
 }
 
 function updateNav(){
@@ -566,9 +323,13 @@ function updateNav(){
   $('adminNav').classList.toggle('hidden', !isAdmin);
 }
 
-async function logout(){ await auth.signOut(); toast('Logout විය.', 'success'); }
+async function trackOnlineUser(uid) {
+  const userRef = db.collection('online_users').doc(uid);
+  await userRef.set({ lastSeen: firebase.firestore.FieldValue.serverTimestamp() }).catch(()=>{});
+  setInterval(() => { if(navigator.onLine) userRef.update({ lastSeen: firebase.firestore.FieldValue.serverTimestamp() }).catch(()=>{}); }, 60000);
+}
 
-/* ===== PROFILE ===== */
+// Profile
 async function loadProfile(){
   if(!currentUser) return;
   $('profileEmail').textContent = currentUser.email;
@@ -579,9 +340,6 @@ async function loadProfile(){
   $('pLocation').value = p.location || '';
   $('pOccupation').value = p.occupation || '';
   $('pBio').value = p.bio || '';
-  
-  const initial = (p.name || currentUser.email || 'U').trim()[0].toUpperCase();
-  $('profileAvatar').textContent = initial;
   updateProgress(p);
 }
 
@@ -596,64 +354,47 @@ function updateProgress(p){
 async function saveProfile(e){
   e.preventDefault();
   if(!currentUser) return;
-  const btn = $('saveProfileBtn'); setBusy(btn, true);
+  const btn = $('saveProfileBtn'); btn.disabled = true;
   try{
     const p = {
-      uid: currentUser.uid, email: currentUser.email,
-      name: $('pName').value.trim(), phone: $('pPhone').value.trim(),
-      location: $('pLocation').value.trim(), occupation: $('pOccupation').value.trim(),
-      bio: $('pBio').value.trim(), updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+      uid: currentUser.uid, email: currentUser.email, name: $('pName').value.trim(), phone: $('pPhone').value.trim(),
+      location: $('pLocation').value.trim(), occupation: $('pOccupation').value.trim(), bio: $('pBio').value.trim(),
+      updatedAt: firebase.firestore.FieldValue.serverTimestamp()
     };
     await db.collection('users').doc(currentUser.uid).set(p, {merge: true});
     updateProgress(p);
     toast('Profile සාර්ථකව Save කළා!', 'success');
-  } catch(e) {
-    toast(friendlyError(e), 'error');
-  } finally {
-    setBusy(btn, false);
-  }
+  } catch(e) { toast(friendlyError(e), 'error'); } finally { btn.disabled = false; }
 }
 
-/* ===== SUBMIT NEWS ===== */
+// Submit News
 async function submitNews(e){
   e.preventDefault();
   if(!currentUser) return toast('පළමුව Login වන්න.', 'error');
   
   const btn = $('newsSubmitBtn'), txt = $('newsBtnText');
-  setBusy(btn, true);
-  txt.innerHTML = '<span class="spinner"></span> Submit වෙමින්...';
+  btn.disabled = true; txt.textContent = 'Submit වෙමින්...';
 
   try{
-    const title = $('newsTitle').value.trim();
-    const category = $('newsCategory').value;
-    const bodyHTML = quillEditor.root.innerHTML;
-    
-    if(!title || bodyHTML === '<p><br></p>') {
-      throw new Error('මාතෘකාව සහ විස්තරය අවශ්‍යයි.');
-    }
+    const title = $('newsTitle').value.trim(), category = $('newsCategory').value, bodyHTML = quillEditor.root.innerHTML;
+    if(!title || bodyHTML === '<p><br></p>') throw new Error('මාතෘකාව සහ විස්තරය අවශ්‍යයි.');
 
     const imgMatch = bodyHTML.match(/<img[^>]+src="([^">]+)"/);
     const thumbnail = imgMatch ? imgMatch[1] : '';
 
-    const ref = db.collection('news').doc();
-    await ref.set({
+    await db.collection('news').add({
       title, category, body: bodyHTML, image: thumbnail,
       authorUid: currentUser.uid, authorEmail: currentUser.email || '',
       status: 'Pending',
       createdAt: firebase.firestore.FieldValue.serverTimestamp()
     });
 
-    $('writerForm').reset();
-    quillEditor.root.innerHTML = '';
+    $('writerForm').reset(); quillEditor.root.innerHTML = '';
     toast('පුවත සාර්ථකව ඉදිරිපත් කළා! Admin අනුමැතියෙන් පසු පළවේ.', 'success');
     loadMySubmissions();
   } catch(err) {
-    console.error(err);
     toast(friendlyError(err), 'error');
-  } finally {
-    setBusy(btn, false);
-    txt.textContent = 'පුවත Submit කරන්න';
-  }
+  } finally { btn.disabled = false; txt.textContent = 'පුවත Submit කරන්න'; }
 }
 
 async function loadMySubmissions(){
@@ -663,66 +404,57 @@ async function loadMySubmissions(){
   try{
     const snap = await db.collection('news').where('authorUid', '==', currentUser.uid).get();
     const arr = snap.docs.map(d => ({id: d.id, ...d.data()})).sort((a,b) => (b.createdAt?.seconds||0) - (a.createdAt?.seconds||0));
-    if(!arr.length){
-      wrap.innerHTML = '<p class="muted">තවම පුවත් ඉදිරිපත් කර නැත.</p>';
-      return;
-    }
-    wrap.innerHTML = arr.map(n => `
+    wrap.innerHTML = arr.length ? arr.map(n => `
       <div style="padding:16px;border:1px solid var(--line);border-radius:12px;margin-bottom:10px">
         <div class="row between"><b>${esc(n.title)}</b><span class="badge ${(n.status||'Pending').toLowerCase()}">${esc(n.status||'Pending')}</span></div>
       </div>
-    `).join('');
-  } catch(e) {
-    wrap.innerHTML = `<p class="error">${esc(friendlyError(e))}</p>`;
-  }
+    `).join('') : '<p class="muted">තවම පුවත් ඉදිරිපත් කර නැත.</p>';
+  } catch(e) { wrap.innerHTML = `<p class="error">${esc(friendlyError(e))}</p>`; }
 }
 
-/* ===== PUBLIC NEWS & ARTICLE ===== */
+// Public News
 async function loadPublicNews(){
-  const list = $('newsList');
-  list.innerHTML = '<p>Loading...</p>';
   try{
     const snap = await db.collection('news').where('status', '==', 'Approved').get();
     allNews = snap.docs.map(d => ({id: d.id, ...d.data()})).sort((a,b) => (b.createdAt?.seconds||0) - (a.createdAt?.seconds||0));
     renderNews();
-  } catch(e) {
-    list.innerHTML = `<p class="error">${esc(friendlyError(e))}</p>`;
-  }
+  } catch(e) { $('newsList').innerHTML = `<p class="error">${esc(friendlyError(e))}</p>`; }
 }
 
 function renderNews(){
-  const list = $('newsList');
-  const arr = allNews;
-  if(!arr.length){
-    list.innerHTML = '<p class="muted">පුවත් නොමැත.</p>';
-    return;
-  }
-  list.innerHTML = arr.map(n => `
-    <article class="news-card" onclick="openArticle('${n.id}')" style="cursor:pointer">
-      <div class="news-card-img">
-        ${n.image ? `<img src="${esc(n.image)}" alt="${esc(n.title)}" loading="lazy">` : '<div style="display:grid;place-items:center;height:100%;color:#94a3b8">No Image</div>'}
-        <span class="badge">${esc(n.category||'News')}</span>
-      </div>
-      <div class="news-card-body">
-        <h3>${esc(n.title)}</h3>
-      </div>
+  const q = $('searchInput').value.toLowerCase();
+  const arr = allNews.filter(n => (n.title||'').toLowerCase().includes(q));
+  $('newsList').innerHTML = arr.map(n => `
+    <article class="news-card" onclick="openArticle('${n.id}')">
+      <div class="news-card-img">${n.image ? `<img src="${esc(n.image)}">` : '<div style="display:grid;place-items:center;height:100%;color:#94a3b8">No Image</div>'}</div>
+      <div class="news-card-body"><h3>${esc(n.title)}</h3></div>
     </article>
-  `).join('');
+  `).join('') || '<p class="muted">පුවත් නොමැත.</p>';
 }
 
 function openArticle(id){
   const n = allNews.find(x => x.id === id);
   if(!n) return;
-  $('articleContent').innerHTML = `
-    <h1 style="font-size:28px;margin-bottom:10px;">${esc(n.title)}</h1>
-    <p class="muted" style="margin-bottom:20px">${esc(n.category||'')} · ${new Date((n.createdAt?.seconds||0)*1000).toLocaleDateString()}</p>
-    <div class="divider"></div>
-    <div class="article-body">${n.body || ''}</div>
-  `;
+  $('articleContent').innerHTML = `<h1>${esc(n.title)}</h1><div class="article-body">${n.body}</div>`;
   showPage('article');
 }
 
-/* ===== NAVIGATION ===== */
+// Google Drive Image
+function addGDriveImageToEditor() {
+  const input = $('gdriveImageUrl'); const rawUrl = input.value.trim();
+  if (!rawUrl) return toast('කරුණාකර ලින්ක් එකක් ඇතුළත් කරන්න.', 'warning');
+  const match = rawUrl.match(/\/d\/([a-zA-Z0-9_-]+)/) || rawUrl.match(/id=([a-zA-Z0-9_-]+)/);
+  const directUrl = match ? `https://lh3.googleusercontent.com/d/${match[1]}` : rawUrl;
+  
+  const range = quillEditor.getSelection(true);
+  const index = range ? range.index : quillEditor.getLength();
+  quillEditor.insertEmbed(index, 'image', directUrl, 'user');
+  quillEditor.setSelection(index + 1, 0);
+  input.value = '';
+  toast('පින්තූරය එකතු කරන ලදී!', 'success');
+}
+
+// Navigation
 function showPage(name){
   ['home','auth','profile','admin','article'].forEach(p => $(p+'Page').classList.toggle('hidden', p !== name));
   window.scrollTo(0,0);
