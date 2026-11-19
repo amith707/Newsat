@@ -6,64 +6,156 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#101b35">
 <title>Newsat.space | Latest News</title>
+
 <style>
-:root{--navy:#101b35;--blue:#1d4ed8;--red:#e11d48;--bg:#f3f5f9;--text:#182235}
+:root{
+ --navy:#101b35;
+ --blue:#1d4ed8;
+ --red:#e11d48;
+ --bg:#f3f5f9;
+ --text:#182235;
+}
 *{box-sizing:border-box}
-body{margin:0;font-family:Arial,"Noto Sans Sinhala",sans-serif;background:var(--bg);color:var(--text)}
-header{background:var(--navy);color:white;position:sticky;top:0;z-index:5}
-.top{max-width:1150px;margin:auto;padding:15px 18px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
-.logo{font-size:25px;font-weight:900}.logo span{color:#fb7185}
+body{
+ margin:0;
+ font-family:Arial,"Noto Sans Sinhala",sans-serif;
+ background:var(--bg);
+ color:var(--text);
+}
+header{
+ background:var(--navy);
+ color:white;
+ position:sticky;
+ top:0;
+ z-index:5;
+}
+.top{
+ max-width:1150px;
+ margin:auto;
+ padding:15px 18px;
+ display:flex;
+ align-items:center;
+ justify-content:space-between;
+ gap:12px;
+ flex-wrap:wrap;
+}
+.logo{font-size:25px;font-weight:900}
+.logo span{color:#fb7185}
 nav{display:flex;gap:8px;flex-wrap:wrap}
-button{border:0;border-radius:8px;padding:10px 14px;background:var(--blue);color:white;font-weight:700;cursor:pointer}
+button{
+ border:0;
+ border-radius:8px;
+ padding:10px 14px;
+ background:var(--blue);
+ color:white;
+ font-weight:700;
+ cursor:pointer;
+}
 button.secondary{background:#e5e7eb;color:#182235}
 button.danger{background:#dc2626}
 button.success{background:#15803d}
 button:disabled{opacity:.55}
 .ticker{background:#e11d48;color:white;padding:9px 16px}
 main{max-width:1150px;margin:24px auto;padding:0 16px}
-.hero{background:linear-gradient(120deg,#101b35,#244b88);color:white;border-radius:16px;padding:30px;margin-bottom:20px}
+.hero{
+ background:linear-gradient(120deg,#101b35,#244b88);
+ color:white;border-radius:16px;padding:30px;margin-bottom:20px
+}
 .hero h1{font-size:clamp(25px,5vw,40px);margin:0 0 10px}
 .hero p{margin:0;color:#dbeafe}
 .toolbar{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0}
-input,textarea,select{width:100%;padding:12px;border:1px solid #cbd5e1;border-radius:8px;font:inherit;background:white}
+input,textarea,select{
+ width:100%;padding:12px;border:1px solid #cbd5e1;
+ border-radius:8px;font:inherit;background:white
+}
 .toolbar input{flex:1;min-width:180px}
 .toolbar select{width:auto;min-width:130px}
-.section{background:white;border-radius:14px;padding:18px;margin:20px 0;box-shadow:0 2px 12px #0f172a0a}
+.section{
+ background:white;border-radius:14px;padding:18px;margin:20px 0;
+ box-shadow:0 2px 12px #0f172a0a
+}
 .section h2{margin:0 0 15px;font-size:21px}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(245px,1fr));gap:16px}
-.card{background:white;border:1px solid #e2e8f0;border-radius:13px;overflow:hidden;cursor:pointer}
+.grid{
+ display:grid;grid-template-columns:repeat(auto-fill,minmax(245px,1fr));
+ gap:16px
+}
+.card{
+ background:white;border:1px solid #e2e8f0;
+ border-radius:13px;overflow:hidden;cursor:pointer
+}
 .card img{width:100%;height:175px;object-fit:cover;background:#e2e8f0}
 .cardbody{padding:14px}
 .card h3{margin:7px 0;font-size:18px;line-height:1.5}
 .card p{color:#64748b;line-height:1.6}
 .meta{font-size:12px;color:#64748b}
-.tag{display:inline-block;background:#dbeafe;color:#1e40af;padding:4px 8px;border-radius:20px;font-size:12px}
+.tag{
+ display:inline-block;background:#dbeafe;color:#1e40af;
+ padding:4px 8px;border-radius:20px;font-size:12px
+}
 .formgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .full{grid-column:1/-1}
 label{display:block;font-size:14px;font-weight:700;margin-bottom:6px}
 .field{margin-bottom:12px}
 .actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
 .hidden{display:none!important}
-.notice{padding:12px;border-radius:8px;background:#eff6ff;color:#1e40af;margin:10px 0}
+.notice{
+ padding:12px;border-radius:8px;background:#eff6ff;
+ color:#1e40af;margin:10px 0
+}
 .error{background:#fef2f2;color:#991b1b}
 .successmsg{background:#f0fdf4;color:#166534}
-.article img{width:100%;max-height:460px;object-fit:cover;border-radius:12px}
+.article img{
+ width:100%;max-height:460px;object-fit:cover;border-radius:12px
+}
 .article h1{font-size:clamp(24px,5vw,36px);line-height:1.45}
 .article-content{white-space:pre-wrap;line-height:1.9;font-size:17px}
-.adminrow{border:1px solid #e2e8f0;padding:12px;border-radius:9px;margin:10px 0}
-footer{text-align:center;background:var(--navy);color:#cbd5e1;padding:25px;margin-top:40px}
+.adminrow{
+ border:1px solid #e2e8f0;padding:12px;border-radius:9px;margin:10px 0
+}
+footer{
+ text-align:center;background:var(--navy);color:#cbd5e1;
+ padding:25px;margin-top:40px
+}
 .small{font-size:12px;color:#64748b}
 #loading{text-align:center;padding:25px;color:#64748b}
-@media(max-width:600px){.top{align-items:flex-start}.logo{font-size:22px}.formgrid{grid-template-columns:1fr}.full{grid-column:auto}.hero{padding:22px}.toolbar select{flex:1}}
+.profile-header{
+ display:flex;align-items:center;gap:16px;flex-wrap:wrap;
+ margin-bottom:20px
+}
+.avatar{
+ width:75px;height:75px;border-radius:50%;object-fit:cover;
+ background:#dbeafe;border:3px solid #dbeafe
+}
+.progress{
+ height:13px;background:#e2e8f0;border-radius:20px;
+ overflow:hidden;margin:10px 0
+}
+.progress-bar{
+ height:100%;width:0;background:#16a34a;
+ transition:width .3s
+}
+.profile-percent{font-size:25px;font-weight:900;color:#15803d}
+footer p{margin:8px}
+@media(max-width:600px){
+ .top{align-items:flex-start}
+ .logo{font-size:22px}
+ .formgrid{grid-template-columns:1fr}
+ .full{grid-column:auto}
+ .hero{padding:22px}
+ .toolbar select{flex:1}
+}
 </style>
 </head>
+
 <body>
+
 <header>
  <div class="top">
   <div class="logo">NEWSAT<span>.SPACE</span></div>
   <nav>
    <button class="secondary" onclick="showHome()">Home</button>
-   <button onclick="showAccount()">Login / Register</button>
+   <button onclick="showAccount()" id="loginBtn">Login / Register</button>
+   <button onclick="showProfile()" id="profileBtn" hidden>My Profile</button>
    <button class="secondary" onclick="logoutUser()" id="logoutBtn" hidden>Logout</button>
   </nav>
  </div>
@@ -72,106 +164,223 @@ footer{text-align:center;background:var(--navy);color:#cbd5e1;padding:25px;margi
 <div class="ticker">NEWSAT.SPACE — ඔබේ විශ්වාසනීය පුවත් වෙබ් අඩවිය</div>
 
 <main>
- <section class="hero">
-  <h1 id="heroTitle">නවතම පුවත් එකම තැනකින්</h1>
-  <p id="heroText">ශ්‍රී ලංකාවේ සහ ලෝකයේ නවතම තොරතුරු දැන්ම කියවන්න.</p>
- </section>
 
- <div class="toolbar">
-  <input id="searchInput" placeholder="පුවත් සොයන්න..." oninput="renderNews()">
-  <select id="categoryFilter" onchange="renderNews()">
-   <option value="">සියලු Categories</option>
-   <option>දේශීය</option><option>විදේශීය</option><option>ක්‍රීඩා</option>
-   <option>ව්‍යාපාර</option><option>තාක්ෂණය</option><option>විනෝදාස්වාදය</option>
-  </select>
-  <select id="languageSelect" onchange="changeLanguage()">
-   <option value="si">සිංහල</option>
-   <option value="en">English</option>
-   <option value="ta">தமிழ்</option>
-  </select>
+<section class="hero">
+ <h1 id="heroTitle">නවතම පුවත් එකම තැනකින්</h1>
+ <p id="heroText">ශ්‍රී ලංකාවේ සහ ලෝකයේ නවතම තොරතුරු දැන්ම කියවන්න.</p>
+</section>
+
+<div class="toolbar">
+ <input id="searchInput" placeholder="පුවත් සොයන්න..." oninput="renderNews()">
+ <select id="categoryFilter" onchange="renderNews()">
+  <option value="">සියලු Categories</option>
+  <option>දේශීය</option>
+  <option>විදේශීය</option>
+  <option>ක්‍රීඩා</option>
+  <option>ව්‍යාපාර</option>
+  <option>තාක්ෂණය</option>
+  <option>විනෝදාස්වාදය</option>
+ </select>
+ <select id="languageSelect" onchange="changeLanguage()">
+  <option value="si">සිංහල</option>
+  <option value="en">English</option>
+  <option value="ta">தமிழ்</option>
+ </select>
+</div>
+
+<!-- NEWS -->
+<section class="section" id="homeSection">
+ <h2 id="latestHeading">නවතම පුවත්</h2>
+ <div id="loading">පුවත් ලබාගනිමින්...</div>
+ <div class="grid" id="newsGrid"></div>
+ <p id="emptyNews" class="small hidden">දැනට පුවත් නොමැත.</p>
+</section>
+
+<!-- ACCOUNT -->
+<section class="section hidden" id="accountSection">
+ <h2>ගිණුමට ඇතුළු වන්න / නව ගිණුමක් සාදන්න</h2>
+ <div id="accountMessage" class="notice hidden"></div>
+
+ <div class="formgrid">
+  <div class="field full">
+   <label>සම්පූර්ණ නම</label>
+   <input id="displayName" placeholder="ඔබගේ නම">
+  </div>
+
+  <div class="field full">
+   <label>Email ලිපිනය</label>
+   <input id="email" type="email" autocomplete="email">
+  </div>
+
+  <div class="field full">
+   <label>Password</label>
+   <input id="password" type="password" autocomplete="current-password">
+  </div>
  </div>
 
- <section class="section">
-  <h2 id="latestHeading">නවතම පුවත්</h2>
-  <div id="loading">පුවත් ලබාගනිමින්...</div>
-  <div class="grid" id="newsGrid"></div>
-  <p id="emptyNews" class="small hidden">දැනට පුවත් නොමැත.</p>
- </section>
+ <div class="actions">
+  <button onclick="registerUser()">Register</button>
+  <button class="secondary" onclick="loginUser()">Login</button>
+ </div>
 
- <section class="section hidden" id="accountSection">
-  <h2>ගිණුමට ඇතුළු වන්න / නව ගිණුමක් සාදන්න</h2>
-  <div id="accountMessage" class="notice hidden"></div>
-  <div class="formgrid">
-   <div class="field full">
-    <label>සම්පූර්ණ නම</label>
-    <input id="displayName" placeholder="ඔබගේ නම">
-   </div>
-   <div class="field full">
-    <label>Email ලිපිනය</label>
-    <input id="email" type="email" autocomplete="email" placeholder="name@example.com">
-   </div>
-   <div class="field full">
-    <label>Password</label>
-    <input id="password" type="password" autocomplete="current-password" placeholder="අවම අක්ෂර 6">
-   </div>
+ <p class="small">නව ගිණුම් Writer ලෙස සාදනු ලැබේ. Admin අවසරය ආරක්ෂිතව ලබාදෙන්නේ Firebase Admin SDK මගිනි.</p>
+</section>
+
+<!-- PROFILE -->
+<section class="section hidden" id="profileSection">
+ <h2>මගේ Profile එක</h2>
+
+ <div id="profileMessage" class="notice hidden"></div>
+
+ <div class="profile-header">
+  <img id="profileAvatar"
+       class="avatar"
+       src="https://placehold.co/150x150?text=USER"
+       alt="Profile">
+  <div>
+   <h3 id="profileNameHeading">My Profile</h3>
+   <p class="small" id="profileEmailHeading"></p>
+   <div class="profile-percent" id="profilePercent">0%</div>
+   <p class="small">Profile Completion</p>
   </div>
-  <div class="actions">
-   <button onclick="registerUser()">Register</button>
-   <button class="secondary" onclick="loginUser()">Login</button>
+ </div>
+
+ <div class="progress">
+  <div class="progress-bar" id="profileProgress"></div>
+ </div>
+
+ <p class="small">ඔබගේ Profile විස්තර සම්පූර්ණ කරන්න.</p>
+
+ <div class="formgrid">
+  <div class="field">
+   <label>සම්පූර්ණ නම *</label>
+   <input id="pName" placeholder="සම්පූර්ණ නම">
   </div>
-  <p class="small">නව ගිණුම් Writer ලෙස සාදනු ලැබේ. Admin අවසරය Firebase Console එකෙන් ලබාදෙන්න.</p>
- </section>
 
- <section class="section hidden" id="writerSection">
-  <h2>පුවතක් ඉදිරිපත් කරන්න</h2>
-  <div id="writerMessage" class="notice hidden"></div>
-  <div class="formgrid">
-   <div class="field full">
-    <label>පුවත් මාතෘකාව</label>
-    <input id="newsTitle" maxlength="180" placeholder="පුවත් මාතෘකාව">
-   </div>
-   <div class="field">
-    <label>Category</label>
-    <select id="newsCategory">
-     <option>දේශීය</option><option>විදේශීය</option><option>ක්‍රීඩා</option>
-     <option>ව්‍යාපාර</option><option>තාක්ෂණය</option><option>විනෝදාස්වාදය</option>
-    </select>
-   </div>
-   <div class="field">
-    <label>භාෂාව</label>
-    <select id="newsLanguage">
-     <option value="si">සිංහල</option><option value="en">English</option><option value="ta">தமிழ்</option>
-    </select>
-   </div>
-   <div class="field full">
-    <label>කෙටි විස්තරය</label>
-    <textarea id="newsSummary" rows="3" maxlength="500" placeholder="කෙටි විස්තරයක්"></textarea>
-   </div>
-   <div class="field full">
-    <label>සම්පූර්ණ පුවත</label>
-    <textarea id="newsContent" rows="9" placeholder="සම්පූර්ණ පුවත මෙතැන ලියන්න"></textarea>
-   </div>
-   <div class="field full">
-    <label>පුවතේ ඡායාරූපය</label>
-    <input id="newsPhoto" type="file" accept="image/jpeg,image/png,image/webp">
-    <p class="small">JPG, PNG හෝ WebP ඡායාරූපයක්. උපරිම 8MB.</p>
-   </div>
+  <div class="field">
+   <label>දුරකථන අංකය</label>
+   <input id="pPhone" type="tel" placeholder="07XXXXXXXX">
   </div>
-  <button onclick="submitNews()" id="submitNewsBtn">පුවත ඉදිරිපත් කරන්න</button>
-  <div id="mySubmissions"></div>
- </section>
 
- <section class="section hidden" id="adminSection">
-  <h2>Admin Dashboard</h2>
-  <p class="small">පුවත් අනුමත කිරීම, ප්‍රතික්ෂේප කිරීම සහ මකා දැමීම.</p>
-  <div id="adminMessage" class="notice hidden"></div>
-  <div id="adminNewsList">පුවත් ලබාගනිමින්...</div>
- </section>
+  <div class="field">
+   <label>නගරය</label>
+   <input id="pCity" placeholder="ඔබගේ නගරය">
+  </div>
 
- <section class="section hidden" id="articleSection">
-  <button class="secondary" onclick="showHome()">← නැවත පුවත් වෙත</button>
-  <div class="article" id="articleContent"></div>
- </section>
+  <div class="field">
+   <label>රැකියාව</label>
+   <input id="pJob" placeholder="ඔබගේ රැකියාව">
+  </div>
+
+  <div class="field">
+   <label>වෙබ් අඩවිය</label>
+   <input id="pWebsite" type="url" placeholder="https://example.com">
+  </div>
+
+  <div class="field">
+   <label>භාෂාව</label>
+   <select id="pLanguage">
+    <option value="">තෝරන්න</option>
+    <option>සිංහල</option>
+    <option>English</option>
+    <option>தமிழ்</option>
+   </select>
+  </div>
+
+  <div class="field full">
+   <label>ඔබ ගැන කෙටි විස්තරයක්</label>
+   <textarea id="pBio" rows="4" maxlength="500"
+   placeholder="ඔබ ගැන විස්තරයක් ලියන්න"></textarea>
+  </div>
+
+  <div class="field full">
+   <label>Profile Photo URL</label>
+   <input id="pPhoto" type="url" placeholder="https://...">
+   <p class="small">ඔබගේ Profile ඡායාරූපයේ URL එක ඇතුළත් කරන්න.</p>
+  </div>
+ </div>
+
+ <div class="actions">
+  <button onclick="saveProfile()" id="saveProfileBtn">Profile Save කරන්න</button>
+  <button class="secondary" onclick="showHome()">Home වෙත යන්න</button>
+ </div>
+</section>
+
+<!-- WRITER -->
+<section class="section hidden" id="writerSection">
+ <h2>පුවතක් ඉදිරිපත් කරන්න</h2>
+ <div id="writerMessage" class="notice hidden"></div>
+
+ <div class="formgrid">
+  <div class="field full">
+   <label>පුවත් මාතෘකාව</label>
+   <input id="newsTitle" maxlength="180">
+  </div>
+
+  <div class="field">
+   <label>Category</label>
+   <select id="newsCategory">
+    <option>දේශීය</option>
+    <option>විදේශීය</option>
+    <option>ක්‍රීඩා</option>
+    <option>ව්‍යාපාර</option>
+    <option>තාක්ෂණය</option>
+    <option>විනෝදාස්වාදය</option>
+   </select>
+  </div>
+
+  <div class="field">
+   <label>භාෂාව</label>
+   <select id="newsLanguage">
+    <option value="si">සිංහල</option>
+    <option value="en">English</option>
+    <option value="ta">தமிழ்</option>
+   </select>
+  </div>
+
+  <div class="field full">
+   <label>කෙටි විස්තරය</label>
+   <textarea id="newsSummary" rows="3" maxlength="500"></textarea>
+  </div>
+
+  <div class="field full">
+   <label>සම්පූර්ණ පුවත</label>
+   <textarea id="newsContent" rows="9"></textarea>
+  </div>
+
+  <div class="field full">
+   <label>පුවතේ ඡායාරූපය</label>
+   <input id="newsPhoto" type="file"
+   accept="image/jpeg,image/png,image/webp">
+   <p class="small">JPG, PNG හෝ WebP. උපරිම 8MB.</p>
+  </div>
+ </div>
+
+ <button onclick="submitNews()" id="submitNewsBtn">පුවත ඉදිරිපත් කරන්න</button>
+ <div id="mySubmissions"></div>
+</section>
+
+<!-- ADMIN -->
+<section class="section hidden" id="adminSection">
+ <h2>Admin Dashboard</h2>
+ <p>Welcome to Newsat.space Administration.</p>
+
+ <div id="adminMessage" class="notice hidden"></div>
+
+ <div class="actions">
+  <button onclick="loadAdminNews()">Refresh News</button>
+  <button class="secondary" onclick="showProfile()">My Profile</button>
+ </div>
+
+ <div id="adminNewsList">පුවත් ලබාගනිමින්...</div>
+</section>
+
+<!-- ARTICLE -->
+<section class="section hidden" id="articleSection">
+ <button class="secondary" onclick="showHome()">← නැවත පුවත් වෙත</button>
+ <div class="article" id="articleContent"></div>
+</section>
+
 </main>
 
 <footer>
@@ -181,19 +390,39 @@ footer{text-align:center;background:var(--navy);color:#cbd5e1;padding:25px;margi
 </footer>
 
 <script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
+
+import { initializeApp } from
+"https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
 
 import {
- getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword,
- signOut, onAuthStateChanged, updateProfile
-} from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
+ getAuth,
+ createUserWithEmailAndPassword,
+ signInWithEmailAndPassword,
+ signOut,
+ onAuthStateChanged,
+ updateProfile
+} from
+"https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
 
 import {
- getFirestore, collection, doc, getDoc, getDocs, addDoc,
- setDoc, query, where, orderBy, updateDoc, deleteDoc, serverTimestamp
-} from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
+ getFirestore,
+ collection,
+ doc,
+ getDoc,
+ getDocs,
+ addDoc,
+ setDoc,
+ query,
+ where,
+ orderBy,
+ updateDoc,
+ deleteDoc,
+ serverTimestamp
+} from
+"https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
 
 /* FIREBASE CONFIGURATION */
+
 const firebaseConfig = {
  apiKey: "AIzaSyBMmZuPV3XKlYkGqjQYd7aJpFb8MZc-P9k",
  authDomain: "newsat-209f8.firebaseapp.com",
@@ -201,10 +430,17 @@ const firebaseConfig = {
  appId: "1:529324718671:web:0f45e89bf317cbb0c9083a"
 };
 
-/* CLOUDINARY CONFIGURATION */
+/* CLOUDINARY */
+
 const CLOUDINARY_CLOUD_NAME = "afyjcb5r";
 const CLOUDINARY_UPLOAD_PRESET = "newsat_upload";
 const CLOUDINARY_FOLDER = "newsat";
+
+/* ADMIN EMAIL */
+
+const ADMIN_EMAIL = "kularathnashac@gmail.com";
+
+/* INITIALIZE */
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
@@ -225,15 +461,22 @@ function message(id,text,isError=false){
  el.classList.remove("hidden","error","successmsg");
  el.classList.add(isError?"error":"successmsg");
 }
+
 function clearMessage(id){
  hide(id);
  $(id).textContent="";
 }
+
 function escapeHTML(value=""){
  return String(value).replace(/[&<>"']/g,c=>({
-  "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+  "&":"&amp;",
+  "<":"&lt;",
+  ">":"&gt;",
+  '"':"&quot;",
+  "'":"&#39;"
  }[c]));
 }
+
 function dateText(value){
  if(!value)return "";
  try{
@@ -241,6 +484,7 @@ function dateText(value){
   return d.toLocaleString();
  }catch{return ""}
 }
+
 function friendlyError(e){
  const code=e?.code||"";
  const errors={
@@ -250,21 +494,30 @@ function friendlyError(e){
   "auth/invalid-credential":"Email හෝ Password වැරදියි.",
   "auth/user-not-found":"මෙම ගිණුම සොයාගත නොහැක.",
   "auth/wrong-password":"Password එක වැරදියි.",
-  "auth/api-key-not-valid":"Firebase API key එක වැරදියි. Firebase Web App config පරීක්ෂා කරන්න.",
-  "permission-denied":"Firestore Rules අවසරය ලබා නොදේ. Rules පරීක්ෂා කරන්න."
+  "permission-denied":"Firestore Rules අවසරය ලබා නොදේ.",
+  "auth/api-key-not-valid":"Firebase API Key පරීක්ෂා කරන්න."
  };
  return errors[code]||e?.message||"දෝෂයක් සිදුවිය.";
 }
 
-/* CREATE USER PROFILE */
+/* USER PROFILE DOCUMENT */
+
 async function ensureProfile(user,name=""){
  const ref=doc(db,"users",user.uid);
  const snap=await getDoc(ref);
+
  if(!snap.exists()){
   await setDoc(ref,{
    uid:user.uid,
    name:name||user.displayName||"Writer",
    email:user.email||"",
+   phone:"",
+   city:"",
+   job:"",
+   website:"",
+   language:"",
+   bio:"",
+   photo:"",
    role:"Writer",
    createdAt:serverTimestamp()
   });
@@ -272,6 +525,7 @@ async function ensureProfile(user,name=""){
 }
 
 /* REGISTER */
+
 window.registerUser=async()=>{
  clearMessage("accountMessage");
 
@@ -280,21 +534,28 @@ window.registerUser=async()=>{
  const password=$("password").value;
 
  if(!name||!email||password.length<6){
-  message("accountMessage","නම, නිවැරදි Email එක සහ අවම අක්ෂර 6ක Password එකක් ඇතුළත් කරන්න.",true);
+  message("accountMessage",
+   "නම, නිවැරදි Email එක සහ අවම අක්ෂර 6ක Password එකක් ඇතුළත් කරන්න.",true);
   return;
  }
 
  try{
-  const result=await createUserWithEmailAndPassword(auth,email,password);
+  const result=await createUserWithEmailAndPassword(
+   auth,email,password
+  );
+
   await updateProfile(result.user,{displayName:name});
   await ensureProfile(result.user,name);
+
   message("accountMessage","ගිණුම සාර්ථකව සෑදුවා.");
+
  }catch(e){
   message("accountMessage",friendlyError(e),true);
  }
 };
 
 /* LOGIN */
+
 window.loginUser=async()=>{
  clearMessage("accountMessage");
 
@@ -314,15 +575,19 @@ window.loginUser=async()=>{
  }
 };
 
+/* LOGOUT */
+
 window.logoutUser=async()=>{
  try{
   await signOut(auth);
+  window.scrollTo({top:0,behavior:"smooth"});
  }catch(e){
   alert(friendlyError(e));
  }
 };
 
-/* AUTH STATE */
+/* AUTH STATE AND ADMIN VERIFICATION */
+
 onAuthStateChanged(auth,async user=>{
  currentUser=user;
  currentRole="Guest";
@@ -330,42 +595,234 @@ onAuthStateChanged(auth,async user=>{
  if(user){
   try{
    await ensureProfile(user);
-   const snap=await getDoc(doc(db,"users",user.uid));
-   currentRole=snap.exists()?snap.data().role:"Writer";
+
+   // Force refresh Firebase security token
+   const tokenResult=await user.getIdTokenResult(true);
+
+   const isAdmin=
+    user.email?.toLowerCase()===ADMIN_EMAIL.toLowerCase() &&
+    tokenResult.claims.admin===true;
+
+   currentRole=isAdmin?"Admin":"Writer";
+
+   updateAccountUI();
+
+   if(isAdmin){
+    show("adminSection");
+    hide("writerSection");
+    hide("profileSection");
+    hide("accountSection");
+
+    await loadAdminNews();
+
+   }else{
+    show("writerSection");
+    hide("adminSection");
+   }
+
+   await loadProfile();
+
   }catch(e){
    console.error(e);
    message("accountMessage",friendlyError(e),true);
   }
+
+ }else{
+  currentRole="Guest";
+  updateAccountUI();
  }
 
- updateAccountUI();
  await loadNews();
 });
 
+/* ACCOUNT UI */
+
 function updateAccountUI(){
  $("logoutBtn").hidden=!currentUser;
+ $("loginBtn").hidden=!!currentUser;
+ $("profileBtn").hidden=!currentUser;
 
- if(currentUser){
-  hide("accountSection");
-  show("writerSection");
-
-  if(currentRole==="Admin"){
-   show("adminSection");
-  }else{
-   hide("adminSection");
-  }
- }else{
+ if(!currentUser){
   hide("writerSection");
   hide("adminSection");
+  hide("profileSection");
  }
 }
 
+/* NAVIGATION */
+
 window.showAccount=()=>{
+ hideAllSections();
  show("accountSection");
  $("accountSection").scrollIntoView({behavior:"smooth"});
 };
 
-/* LOAD APPROVED NEWS AND USER SUBMISSIONS */
+window.showProfile=async()=>{
+ if(!currentUser){
+  showAccount();
+  return;
+ }
+
+ hideAllSections();
+ show("profileSection");
+ await loadProfile();
+
+ $("profileSection").scrollIntoView({behavior:"smooth"});
+};
+
+window.showHome=()=>{
+ hideAllSections();
+ show("homeSection");
+
+ if(currentUser){
+  if(currentRole==="Admin"){
+   show("adminSection");
+  }else{
+   show("writerSection");
+  }
+ }
+
+ window.scrollTo({top:0,behavior:"smooth"});
+};
+
+function hideAllSections(){
+ [
+  "homeSection",
+  "accountSection",
+  "profileSection",
+  "writerSection",
+  "adminSection",
+  "articleSection"
+ ].forEach(hide);
+}
+
+/* PROFILE COMPLETION */
+
+function calculateProfileCompletion(data){
+ const fields=[
+  "name",
+  "phone",
+  "city",
+  "job",
+  "website",
+  "language",
+  "bio",
+  "photo"
+ ];
+
+ const completed=fields.filter(field=>
+  String(data[field]||"").trim().length>0
+ ).length;
+
+ return Math.round(completed/fields.length*100);
+}
+
+/* LOAD PROFILE */
+
+async function loadProfile(){
+ if(!currentUser)return;
+
+ try{
+  const snap=await getDoc(doc(db,"users",currentUser.uid));
+
+  if(!snap.exists())return;
+
+  const data=snap.data();
+
+  $("pName").value=data.name||currentUser.displayName||"";
+  $("pPhone").value=data.phone||"";
+  $("pCity").value=data.city||"";
+  $("pJob").value=data.job||"";
+  $("pWebsite").value=data.website||"";
+  $("pLanguage").value=data.language||"";
+  $("pBio").value=data.bio||"";
+  $("pPhoto").value=data.photo||"";
+
+  $("profileNameHeading").textContent=
+   data.name||currentUser.displayName||"My Profile";
+
+  $("profileEmailHeading").textContent=
+   currentUser.email||"";
+
+  $("profileAvatar").src=
+   data.photo||"https://placehold.co/150x150?text=USER";
+
+  updateProfileProgress(data);
+
+ }catch(e){
+  message("profileMessage",friendlyError(e),true);
+ }
+}
+
+/* UPDATE PROFILE PROGRESS */
+
+function updateProfileProgress(data){
+ const percent=calculateProfileCompletion(data);
+
+ $("profilePercent").textContent=percent+"%";
+ $("profileProgress").style.width=percent+"%";
+}
+
+/* SAVE PROFILE */
+
+window.saveProfile=async()=>{
+ if(!currentUser)return;
+
+ clearMessage("profileMessage");
+
+ const data={
+  uid:currentUser.uid,
+  name:$("pName").value.trim(),
+  email:currentUser.email||"",
+  phone:$("pPhone").value.trim(),
+  city:$("pCity").value.trim(),
+  job:$("pJob").value.trim(),
+  website:$("pWebsite").value.trim(),
+  language:$("pLanguage").value,
+  bio:$("pBio").value.trim(),
+  photo:$("pPhoto").value.trim(),
+  updatedAt:serverTimestamp()
+ };
+
+ if(!data.name){
+  message("profileMessage","සම්පූර්ණ නම ඇතුළත් කරන්න.",true);
+  return;
+ }
+
+ const btn=$("saveProfileBtn");
+ btn.disabled=true;
+ btn.textContent="Saving...";
+
+ try{
+  await setDoc(
+   doc(db,"users",currentUser.uid),
+   data,
+   {merge:true}
+  );
+
+  if(currentUser.displayName!==data.name){
+   await updateProfile(currentUser,{displayName:data.name});
+  }
+
+  $("profileNameHeading").textContent=data.name;
+
+  $("profileAvatar").src=
+   data.photo||"https://placehold.co/150x150?text=USER";
+
+  updateProfileProgress(data);
+
+  message("profileMessage","ඔබගේ Profile එක සාර්ථකව Save කළා.");
+
+ }catch(e){
+  message("profileMessage",friendlyError(e),true);
+ }finally{
+  btn.disabled=false;
+  btn.textContent="Profile Save කරන්න";
+ }
+};
+
+/* LOAD NEWS */
+
 async function loadNews(){
  $("loading").classList.remove("hidden");
  $("newsGrid").innerHTML="";
@@ -378,7 +835,10 @@ async function loadNews(){
   );
 
   const publicSnap=await getDocs(publicQ);
-  const publicItems=publicSnap.docs.map(d=>({id:d.id,...d.data()}));
+
+  const publicItems=publicSnap.docs.map(d=>({
+   id:d.id,...d.data()
+  }));
 
   let ownItems=[];
 
@@ -390,11 +850,17 @@ async function loadNews(){
    );
 
    const ownSnap=await getDocs(ownQ);
-   ownItems=ownSnap.docs.map(d=>({id:d.id,...d.data()}));
+
+   ownItems=ownSnap.docs.map(d=>({
+    id:d.id,...d.data()
+   }));
   }
 
   const map=new Map();
-  [...publicItems,...ownItems].forEach(item=>map.set(item.id,item));
+
+  [...publicItems,...ownItems].forEach(item=>
+   map.set(item.id,item)
+  );
 
   allNews=[...map.values()].sort((a,b)=>{
    const ta=a.createdAt?.seconds||0;
@@ -412,13 +878,15 @@ async function loadNews(){
  }catch(e){
   console.error(e);
   $("newsGrid").innerHTML=
-   '<p class="notice error">පුවත් ලබාගැනීමට නොහැකි විය: '+escapeHTML(friendlyError(e))+'</p>';
+   '<p class="notice error">පුවත් ලබාගැනීමට නොහැකි විය: '+
+   escapeHTML(friendlyError(e))+'</p>';
  }finally{
   $("loading").classList.add("hidden");
  }
 }
 
 /* DISPLAY NEWS */
+
 window.renderNews=()=>{
  const search=$("searchInput").value.toLowerCase().trim();
  const category=$("categoryFilter").value;
@@ -426,21 +894,27 @@ window.renderNews=()=>{
  const items=allNews.filter(n=>{
   if(n.status!=="Approved")return false;
 
-  const text=[n.title,n.summary,n.content,n.category]
-   .join(" ").toLowerCase();
+  const text=[
+   n.title,n.summary,n.content,n.category
+  ].join(" ").toLowerCase();
 
   return (!search||text.includes(search))&&
-         (!category||n.category===category);
+   (!category||n.category===category);
  });
 
  $("newsGrid").innerHTML=items.map(n=>`
   <article class="card" onclick="openArticle('${n.id}')">
-   <img src="${escapeHTML(n.photoUrl||"https://placehold.co/700x400?text=NEWSAT")}" alt="" loading="lazy">
+   <img src="${escapeHTML(n.photoUrl||"https://placehold.co/700x400?text=NEWSAT")}"
+   alt="" loading="lazy">
+
    <div class="cardbody">
     <span class="tag">${escapeHTML(n.category||"News")}</span>
     <h3>${escapeHTML(n.title||"")}</h3>
     <p>${escapeHTML(n.summary||"")}</p>
-    <div class="meta">${escapeHTML(n.authorName||"Newsat")} · ${escapeHTML(dateText(n.createdAt))}</div>
+    <div class="meta">
+     ${escapeHTML(n.authorName||"Newsat")} ·
+     ${escapeHTML(dateText(n.createdAt))}
+    </div>
    </div>
   </article>
  `).join("");
@@ -449,35 +923,37 @@ window.renderNews=()=>{
 };
 
 /* OPEN ARTICLE */
+
 window.openArticle=id=>{
  const n=allNews.find(x=>x.id===id);
  if(!n)return;
 
+ hideAllSections();
+ show("articleSection");
+
  $("articleContent").innerHTML=`
   <h1>${escapeHTML(n.title)}</h1>
-  <p class="meta">${escapeHTML(n.category||"")} · ${escapeHTML(n.authorName||"")} · ${escapeHTML(dateText(n.createdAt))}</p>
-  ${n.photoUrl?`<img src="${escapeHTML(n.photoUrl)}" alt="">`:""}
+  <p class="meta">
+   ${escapeHTML(n.category||"")} ·
+   ${escapeHTML(n.authorName||"")} ·
+   ${escapeHTML(dateText(n.createdAt))}
+  </p>
+
+  ${n.photoUrl?
+   `<img src="${escapeHTML(n.photoUrl)}" alt="">`:""}
+
   <h3>${escapeHTML(n.summary||"")}</h3>
-  <div class="article-content">${escapeHTML(n.content||"")}</div>
+
+  <div class="article-content">
+   ${escapeHTML(n.content||"")}
+  </div>
  `;
 
- hide("accountSection");
- hide("writerSection");
- hide("adminSection");
- show("articleSection");
  window.scrollTo({top:0,behavior:"smooth"});
 };
 
-window.showHome=()=>{
- hide("articleSection");
+/* CLOUDINARY UPLOAD */
 
- if(currentUser)show("writerSection");
- if(currentRole==="Admin")show("adminSection");
-
- window.scrollTo({top:0,behavior:"smooth"});
-};
-
-/* CLOUDINARY IMAGE UPLOAD */
 async function uploadPhoto(file){
  if(!file)return "";
 
@@ -490,6 +966,7 @@ async function uploadPhoto(file){
  }
 
  const form=new FormData();
+
  form.append("file",file);
  form.append("upload_preset",CLOUDINARY_UPLOAD_PRESET);
  form.append("folder",CLOUDINARY_FOLDER);
@@ -509,6 +986,7 @@ async function uploadPhoto(file){
 }
 
 /* SUBMIT NEWS */
+
 window.submitNews=async()=>{
  clearMessage("writerMessage");
 
@@ -523,7 +1001,8 @@ window.submitNews=async()=>{
  const file=$("newsPhoto").files[0];
 
  if(!title||!summary||!content){
-  message("writerMessage","මාතෘකාව, කෙටි විස්තරය සහ සම්පූර්ණ පුවත ඇතුළත් කරන්න.",true);
+  message("writerMessage",
+   "මාතෘකාව, කෙටි විස්තරය සහ සම්පූර්ණ පුවත ඇතුළත් කරන්න.",true);
   return;
  }
 
@@ -559,7 +1038,8 @@ window.submitNews=async()=>{
   $("newsContent").value="";
   $("newsPhoto").value="";
 
-  message("writerMessage","ඔබගේ පුවත සාර්ථකව ඉදිරිපත් කළා. Admin අනුමැතිය ලැබුණු පසු පෙන්වයි.");
+  message("writerMessage",
+   "ඔබගේ පුවත සාර්ථකව ඉදිරිපත් කළා. Admin අනුමැතිය ලැබුණු පසු පෙන්වයි.");
 
   await loadNews();
 
@@ -572,6 +1052,7 @@ window.submitNews=async()=>{
 };
 
 /* USER SUBMISSIONS */
+
 function renderSubmissions(items){
  if(!currentUser)return;
 
@@ -581,32 +1062,60 @@ function renderSubmissions(items){
  (items.length?items.map(n=>`
   <div class="adminrow">
    <strong>${escapeHTML(n.title)}</strong>
-   <p class="small">තත්ත්වය: ${escapeHTML(n.status)} · ${escapeHTML(dateText(n.createdAt))}</p>
+   <p class="small">
+    තත්ත්වය: ${escapeHTML(n.status)} ·
+    ${escapeHTML(dateText(n.createdAt))}
+   </p>
   </div>
  `).join(""):"<p class='small'>ඔබ තවම පුවත් ඉදිරිපත් කර නැත.</p>");
 }
 
 /* ADMIN DASHBOARD */
+
 async function loadAdminNews(){
  if(currentRole!=="Admin")return;
 
  try{
-  const q=query(collection(db,"news"),orderBy("createdAt","desc"));
-  const snap=await getDocs(q);
-  const items=snap.docs.map(d=>({id:d.id,...d.data()}));
+  const q=query(
+   collection(db,"news"),
+   orderBy("createdAt","desc")
+  );
 
-  $("adminNewsList").innerHTML=items.length?items.map(n=>`
-   <div class="adminrow">
-    <strong>${escapeHTML(n.title)}</strong>
-    <p class="small">Writer: ${escapeHTML(n.authorName||"")} · ${escapeHTML(n.authorEmail||"")}</p>
-    <p class="small">Status: <b>${escapeHTML(n.status)}</b></p>
-    <div class="actions">
-     ${n.status!=="Approved"?`<button class="success" onclick="reviewNews('${n.id}','Approved')">Approve</button>`:""}
-     ${n.status!=="Rejected"?`<button class="secondary" onclick="reviewNews('${n.id}','Rejected')">Reject</button>`:""}
-     <button class="danger" onclick="removeNews('${n.id}')">Delete</button>
+  const snap=await getDocs(q);
+
+  const items=snap.docs.map(d=>({
+   id:d.id,...d.data()
+  }));
+
+  $("adminNewsList").innerHTML=items.length?
+   items.map(n=>`
+    <div class="adminrow">
+     <strong>${escapeHTML(n.title)}</strong>
+
+     <p class="small">
+      Writer: ${escapeHTML(n.authorName||"")} ·
+      ${escapeHTML(n.authorEmail||"")}
+     </p>
+
+     <p class="small">
+      Status: <b>${escapeHTML(n.status)}</b>
+     </p>
+
+     <div class="actions">
+      ${n.status!=="Approved"?
+       `<button class="success"
+       onclick="reviewNews('${n.id}','Approved')">Approve</button>`:""}
+
+      ${n.status!=="Rejected"?
+       `<button class="secondary"
+       onclick="reviewNews('${n.id}','Rejected')">Reject</button>`:""}
+
+      <button class="danger"
+       onclick="removeNews('${n.id}')">Delete</button>
+     </div>
     </div>
-   </div>
-  `).join(""):"<p>පුවත් නොමැත.</p>";
+   `).join("")
+   :"<p>පුවත් නොමැත.</p>";
 
  }catch(e){
   $("adminNewsList").textContent=friendlyError(e);
@@ -614,6 +1123,7 @@ async function loadAdminNews(){
 }
 
 /* APPROVE OR REJECT */
+
 window.reviewNews=async(id,status)=>{
  if(currentRole!=="Admin")return;
 
@@ -625,6 +1135,7 @@ window.reviewNews=async(id,status)=>{
   });
 
   message("adminMessage","පුවතේ තත්ත්වය වෙනස් කළා.");
+
   await loadNews();
 
  }catch(e){
@@ -633,13 +1144,17 @@ window.reviewNews=async(id,status)=>{
 };
 
 /* DELETE NEWS */
+
 window.removeNews=async id=>{
  if(currentRole!=="Admin")return;
+
  if(!confirm("මෙම පුවත මකා දමන්නද?"))return;
 
  try{
   await deleteDoc(doc(db,"news",id));
+
   message("adminMessage","පුවත මකා දැමුවා.");
+
   await loadNews();
 
  }catch(e){
@@ -648,6 +1163,7 @@ window.removeNews=async id=>{
 };
 
 /* LANGUAGE SELECTOR */
+
 window.changeLanguage=()=>{
  const language=$("languageSelect").value;
 
@@ -680,7 +1196,20 @@ window.changeLanguage=()=>{
  $("searchInput").placeholder=t.search;
 };
 
+/* PROFILE PHOTO PREVIEW */
+
+$("pPhoto").addEventListener("input",()=>{
+ const url=$("pPhoto").value.trim();
+
+ if(url){
+  $("profileAvatar").src=url;
+ }
+});
+
+/* INITIAL */
+
 $("year").textContent=new Date().getFullYear();
+
 </script>
 </body>
 </html>
