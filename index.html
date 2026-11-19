@@ -10,17 +10,16 @@
 :root{--navy:#101b35;--blue:#1d4ed8;--red:#e11d48;--bg:#f3f5f9;--text:#182235}
 *{box-sizing:border-box}
 body{margin:0;font-family:Arial,"Noto Sans Sinhala",sans-serif;background:var(--bg);color:var(--text)}
-header{background:var(--navy);color:white;position:sticky;top:0;z-index:5;box-shadow:0 3px 12px #0002}
+header{background:var(--navy);color:white;position:sticky;top:0;z-index:5}
 .top{max-width:1150px;margin:auto;padding:15px 18px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
-.logo{font-size:25px;font-weight:900;letter-spacing:-1px}.logo span{color:#fb7185}
+.logo{font-size:25px;font-weight:900}.logo span{color:#fb7185}
 nav{display:flex;gap:8px;flex-wrap:wrap}
-button,.btn{border:0;border-radius:8px;padding:10px 14px;background:var(--blue);color:white;font-weight:700;cursor:pointer}
-button:hover,.btn:hover{filter:brightness(1.1)}
+button{border:0;border-radius:8px;padding:10px 14px;background:var(--blue);color:white;font-weight:700;cursor:pointer}
 button.secondary{background:#e5e7eb;color:#182235}
 button.danger{background:#dc2626}
 button.success{background:#15803d}
-button:disabled{opacity:.55;cursor:not-allowed}
-.ticker{background:#e11d48;color:white;padding:9px 16px;font-size:14px}
+button:disabled{opacity:.55}
+.ticker{background:#e11d48;color:white;padding:9px 16px}
 main{max-width:1150px;margin:24px auto;padding:0 16px}
 .hero{background:linear-gradient(120deg,#101b35,#244b88);color:white;border-radius:16px;padding:30px;margin-bottom:20px}
 .hero h1{font-size:clamp(25px,5vw,40px);margin:0 0 10px}
@@ -32,12 +31,11 @@ input,textarea,select{width:100%;padding:12px;border:1px solid #cbd5e1;border-ra
 .section{background:white;border-radius:14px;padding:18px;margin:20px 0;box-shadow:0 2px 12px #0f172a0a}
 .section h2{margin:0 0 15px;font-size:21px}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(245px,1fr));gap:16px}
-.card{background:white;border:1px solid #e2e8f0;border-radius:13px;overflow:hidden;cursor:pointer;transition:.2s}
-.card:hover{transform:translateY(-3px);box-shadow:0 7px 20px #0f172a14}
+.card{background:white;border:1px solid #e2e8f0;border-radius:13px;overflow:hidden;cursor:pointer}
 .card img{width:100%;height:175px;object-fit:cover;background:#e2e8f0}
 .cardbody{padding:14px}
 .card h3{margin:7px 0;font-size:18px;line-height:1.5}
-.card p{color:#64748b;line-height:1.6;margin:8px 0}
+.card p{color:#64748b;line-height:1.6}
 .meta{font-size:12px;color:#64748b}
 .tag{display:inline-block;background:#dbeafe;color:#1e40af;padding:4px 8px;border-radius:20px;font-size:12px}
 .formgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
@@ -56,11 +54,7 @@ label{display:block;font-size:14px;font-weight:700;margin-bottom:6px}
 footer{text-align:center;background:var(--navy);color:#cbd5e1;padding:25px;margin-top:40px}
 .small{font-size:12px;color:#64748b}
 #loading{text-align:center;padding:25px;color:#64748b}
-@media(max-width:600px){
- .top{align-items:flex-start}.logo{font-size:22px}
- .formgrid{grid-template-columns:1fr}.full{grid-column:auto}
- .hero{padding:22px}.toolbar select{flex:1}
-}
+@media(max-width:600px){.top{align-items:flex-start}.logo{font-size:22px}.formgrid{grid-template-columns:1fr}.full{grid-column:auto}.hero{padding:22px}.toolbar select{flex:1}}
 </style>
 </head>
 <body>
@@ -108,7 +102,7 @@ footer{text-align:center;background:var(--navy);color:#cbd5e1;padding:25px;margi
   <h2>ගිණුමට ඇතුළු වන්න / නව ගිණුමක් සාදන්න</h2>
   <div id="accountMessage" class="notice hidden"></div>
   <div class="formgrid">
-   <div class="field full" id="nameField">
+   <div class="field full">
     <label>සම්පූර්ණ නම</label>
     <input id="displayName" placeholder="ඔබගේ නම">
    </div>
@@ -125,7 +119,7 @@ footer{text-align:center;background:var(--navy);color:#cbd5e1;padding:25px;margi
    <button onclick="registerUser()">Register</button>
    <button class="secondary" onclick="loginUser()">Login</button>
   </div>
-  <p class="small">නව ගිණුම් Writer ලෙස සාදනු ලැබේ. Admin අවසරය ලබාදෙන්නේ Firebase Console එකෙන් පමණි.</p>
+  <p class="small">නව ගිණුම් Writer ලෙස සාදනු ලැබේ. Admin අවසරය Firebase Console එකෙන් ලබාදෙන්න.</p>
  </section>
 
  <section class="section hidden" id="writerSection">
@@ -151,7 +145,7 @@ footer{text-align:center;background:var(--navy);color:#cbd5e1;padding:25px;margi
    </div>
    <div class="field full">
     <label>කෙටි විස්තරය</label>
-    <textarea id="newsSummary" rows="3" maxlength="500" placeholder="පුවත පිළිබඳ කෙටි විස්තරයක්"></textarea>
+    <textarea id="newsSummary" rows="3" maxlength="500" placeholder="කෙටි විස්තරයක්"></textarea>
    </div>
    <div class="field full">
     <label>සම්පූර්ණ පුවත</label>
@@ -160,7 +154,7 @@ footer{text-align:center;background:var(--navy);color:#cbd5e1;padding:25px;margi
    <div class="field full">
     <label>පුවතේ ඡායාරූපය</label>
     <input id="newsPhoto" type="file" accept="image/jpeg,image/png,image/webp">
-    <p class="small">JPG, PNG හෝ WebP ඡායාරූපයක් තෝරන්න. උපරිම 8MB.</p>
+    <p class="small">JPG, PNG හෝ WebP ඡායාරූපයක්. උපරිම 8MB.</p>
    </div>
   </div>
   <button onclick="submitNews()" id="submitNewsBtn">පුවත ඉදිරිපත් කරන්න</button>
@@ -169,7 +163,7 @@ footer{text-align:center;background:var(--navy);color:#cbd5e1;padding:25px;margi
 
  <section class="section hidden" id="adminSection">
   <h2>Admin Dashboard</h2>
-  <p class="small">මෙහිදී පුවත් අනුමත කිරීම, ප්‍රතික්ෂේප කිරීම සහ මකා දැමීම කළ හැකිය.</p>
+  <p class="small">පුවත් අනුමත කිරීම, ප්‍රතික්ෂේප කිරීම සහ මකා දැමීම.</p>
   <div id="adminMessage" class="notice hidden"></div>
   <div id="adminNewsList">පුවත් ලබාගනිමින්...</div>
  </section>
@@ -188,24 +182,26 @@ footer{text-align:center;background:var(--navy);color:#cbd5e1;padding:25px;margi
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
+
 import {
  getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword,
  signOut, onAuthStateChanged, updateProfile
 } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
+
 import {
  getFirestore, collection, doc, getDoc, getDocs, addDoc,
- query, where, orderBy, updateDoc, deleteDoc, serverTimestamp
+ setDoc, query, where, orderBy, updateDoc, deleteDoc, serverTimestamp
 } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
 
-/* 1. Firebase Console එකෙන් ලබාගත් නිවැරදි Web App details මෙතැන දාන්න */
+/* FIREBASE CONFIGURATION */
 const firebaseConfig = {
- apiKey: "PASTE_YOUR_FIREBASE_API_KEY",
+ apiKey: "AIzaSyBMmZuPV3XKlYkGqjQYd7aJpFb8MZc-P9k",
  authDomain: "newsat-209f8.firebaseapp.com",
  projectId: "newsat-209f8",
- appId: "PASTE_YOUR_FIREBASE_APP_ID"
+ appId: "1:529324718671:web:0f45e89bf317cbb0c9083a"
 };
 
-/* 2. ඔබගේ Cloudinary විස්තර */
+/* CLOUDINARY CONFIGURATION */
 const CLOUDINARY_CLOUD_NAME = "afyjcb5r";
 const CLOUDINARY_UPLOAD_PRESET = "newsat_upload";
 const CLOUDINARY_FOLDER = "newsat";
@@ -217,11 +213,11 @@ const db = getFirestore(app);
 let currentUser = null;
 let currentRole = "Guest";
 let allNews = [];
-let activeLanguage = "si";
 
 const $ = id => document.getElementById(id);
-const show = id => $(id).classList.remove("hidden");
-const hide = id => $(id).classList.add("hidden");
+
+function show(id){$(id).classList.remove("hidden")}
+function hide(id){$(id).classList.add("hidden")}
 
 function message(id,text,isError=false){
  const el=$(id);
@@ -229,8 +225,10 @@ function message(id,text,isError=false){
  el.classList.remove("hidden","error","successmsg");
  el.classList.add(isError?"error":"successmsg");
 }
-function clearMessage(id){hide(id);$(id).textContent="";}
-
+function clearMessage(id){
+ hide(id);
+ $(id).textContent="";
+}
 function escapeHTML(value=""){
  return String(value).replace(/[&<>"']/g,c=>({
   "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
@@ -241,45 +239,8 @@ function dateText(value){
  try{
   const d=value.toDate?value.toDate():new Date(value);
   return d.toLocaleString();
- }catch{return "";}
+ }catch{return ""}
 }
-
-/* Account */
-window.showAccount=()=>{
- show("accountSection");
- $("accountSection").scrollIntoView({behavior:"smooth"});
-};
-window.registerUser=async()=>{
- clearMessage("accountMessage");
- const name=$("displayName").value.trim();
- const email=$("email").value.trim();
- const password=$("password").value;
- if(!name||!email||password.length<6){
-  message("accountMessage","නම, නිවැරදි Email එක සහ අවම අක්ෂර 6ක Password එකක් ඇතුළත් කරන්න.",true);return;
- }
- try{
-  const result=await createUserWithEmailAndPassword(auth,email,password);
-  await updateProfile(result.user,{displayName:name});
-  await addDoc(collection(db,"_registration_log"),{
-   uid:result.user.uid,createdAt:serverTimestamp()
-  }).catch(()=>{});
-  await ensureProfile(result.user,name);
-  message("accountMessage","ගිණුම සාර්ථකව සෑදුවා. දැන් ඔබට පුවත් ඉදිරිපත් කළ හැකිය.");
- }catch(e){message("accountMessage",friendlyError(e),true);}
-};
-window.loginUser=async()=>{
- clearMessage("accountMessage");
- const email=$("email").value.trim();
- const password=$("password").value;
- if(!email||!password){message("accountMessage","Email සහ Password ඇතුළත් කරන්න.",true);return;}
- try{
-  await signInWithEmailAndPassword(auth,email,password);
-  message("accountMessage","සාර්ථකව Login වුණා.");
- }catch(e){message("accountMessage",friendlyError(e),true);}
-};
-window.logoutUser=async()=>{
- try{await signOut(auth);}catch(e){alert(friendlyError(e));}
-};
 function friendlyError(e){
  const code=e?.code||"";
  const errors={
@@ -289,84 +250,189 @@ function friendlyError(e){
   "auth/invalid-credential":"Email හෝ Password වැරදියි.",
   "auth/user-not-found":"මෙම ගිණුම සොයාගත නොහැක.",
   "auth/wrong-password":"Password එක වැරදියි.",
-  "auth/api-key-not-valid":"Firebase API key එක වැරදියි. Firebase Web App config එක නැවත පරීක්ෂා කරන්න.",
-  "permission-denied":"Firebase Firestore Rules අවසරය ලබා නොදේ. Rules පරීක්ෂා කරන්න."
+  "auth/api-key-not-valid":"Firebase API key එක වැරදියි. Firebase Web App config පරීක්ෂා කරන්න.",
+  "permission-denied":"Firestore Rules අවසරය ලබා නොදේ. Rules පරීක්ෂා කරන්න."
  };
  return errors[code]||e?.message||"දෝෂයක් සිදුවිය.";
 }
+
+/* CREATE USER PROFILE */
 async function ensureProfile(user,name=""){
  const ref=doc(db,"users",user.uid);
  const snap=await getDoc(ref);
  if(!snap.exists()){
-  await importSetProfile(ref,{
-   uid:user.uid,name:name||user.displayName||"Writer",
-   email:user.email||"",role:"Writer",createdAt:serverTimestamp()
+  await setDoc(ref,{
+   uid:user.uid,
+   name:name||user.displayName||"Writer",
+   email:user.email||"",
+   role:"Writer",
+   createdAt:serverTimestamp()
   });
  }
 }
-async function importSetProfile(ref,data){
- const {setDoc}=await import("https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js");
- await setDoc(ref,data);
-}
+
+/* REGISTER */
+window.registerUser=async()=>{
+ clearMessage("accountMessage");
+
+ const name=$("displayName").value.trim();
+ const email=$("email").value.trim();
+ const password=$("password").value;
+
+ if(!name||!email||password.length<6){
+  message("accountMessage","නම, නිවැරදි Email එක සහ අවම අක්ෂර 6ක Password එකක් ඇතුළත් කරන්න.",true);
+  return;
+ }
+
+ try{
+  const result=await createUserWithEmailAndPassword(auth,email,password);
+  await updateProfile(result.user,{displayName:name});
+  await ensureProfile(result.user,name);
+  message("accountMessage","ගිණුම සාර්ථකව සෑදුවා.");
+ }catch(e){
+  message("accountMessage",friendlyError(e),true);
+ }
+};
+
+/* LOGIN */
+window.loginUser=async()=>{
+ clearMessage("accountMessage");
+
+ const email=$("email").value.trim();
+ const password=$("password").value;
+
+ if(!email||!password){
+  message("accountMessage","Email සහ Password ඇතුළත් කරන්න.",true);
+  return;
+ }
+
+ try{
+  await signInWithEmailAndPassword(auth,email,password);
+  message("accountMessage","සාර්ථකව Login වුණා.");
+ }catch(e){
+  message("accountMessage",friendlyError(e),true);
+ }
+};
+
+window.logoutUser=async()=>{
+ try{
+  await signOut(auth);
+ }catch(e){
+  alert(friendlyError(e));
+ }
+};
+
+/* AUTH STATE */
 onAuthStateChanged(auth,async user=>{
  currentUser=user;
  currentRole="Guest";
+
  if(user){
   try{
    await ensureProfile(user);
    const snap=await getDoc(doc(db,"users",user.uid));
    currentRole=snap.exists()?snap.data().role:"Writer";
-  }catch(e){console.error(e);message("accountMessage",friendlyError(e),true);}
+  }catch(e){
+   console.error(e);
+   message("accountMessage",friendlyError(e),true);
+  }
  }
+
  updateAccountUI();
  await loadNews();
 });
+
 function updateAccountUI(){
  $("logoutBtn").hidden=!currentUser;
+
  if(currentUser){
   hide("accountSection");
   show("writerSection");
-  if(currentRole==="Admin")show("adminSection");else hide("adminSection");
+
+  if(currentRole==="Admin"){
+   show("adminSection");
+  }else{
+   hide("adminSection");
+  }
  }else{
-  hide("writerSection");hide("adminSection");
+  hide("writerSection");
+  hide("adminSection");
  }
 }
 
-/* Load public news and own submissions */
+window.showAccount=()=>{
+ show("accountSection");
+ $("accountSection").scrollIntoView({behavior:"smooth"});
+};
+
+/* LOAD APPROVED NEWS AND USER SUBMISSIONS */
 async function loadNews(){
  $("loading").classList.remove("hidden");
  $("newsGrid").innerHTML="";
+
  try{
-  const q=query(collection(db,"news"),where("status","==","Approved"),orderBy("createdAt","desc"));
-  const snap=await getDocs(q);
-  const publicItems=snap.docs.map(d=>({id:d.id,...d.data()}));
+  const publicQ=query(
+   collection(db,"news"),
+   where("status","==","Approved"),
+   orderBy("createdAt","desc")
+  );
+
+  const publicSnap=await getDocs(publicQ);
+  const publicItems=publicSnap.docs.map(d=>({id:d.id,...d.data()}));
+
   let ownItems=[];
+
   if(currentUser){
-   const ownQ=query(collection(db,"news"),where("authorId","==",currentUser.uid),orderBy("createdAt","desc"));
+   const ownQ=query(
+    collection(db,"news"),
+    where("authorId","==",currentUser.uid),
+    orderBy("createdAt","desc")
+   );
+
    const ownSnap=await getDocs(ownQ);
    ownItems=ownSnap.docs.map(d=>({id:d.id,...d.data()}));
   }
+
   const map=new Map();
   [...publicItems,...ownItems].forEach(item=>map.set(item.id,item));
+
   allNews=[...map.values()].sort((a,b)=>{
-   const ta=a.createdAt?.seconds||0,tb=b.createdAt?.seconds||0;return tb-ta;
+   const ta=a.createdAt?.seconds||0;
+   const tb=b.createdAt?.seconds||0;
+   return tb-ta;
   });
+
   renderNews();
   renderSubmissions(ownItems);
-  if(currentRole==="Admin")await loadAdminNews();
+
+  if(currentRole==="Admin"){
+   await loadAdminNews();
+  }
+
  }catch(e){
   console.error(e);
-  $("newsGrid").innerHTML='<p class="notice error">පුවත් ලබාගැනීමට නොහැකි විය: '+escapeHTML(friendlyError(e))+'</p>';
- }finally{$("loading").classList.add("hidden");}
+  $("newsGrid").innerHTML=
+   '<p class="notice error">පුවත් ලබාගැනීමට නොහැකි විය: '+escapeHTML(friendlyError(e))+'</p>';
+ }finally{
+  $("loading").classList.add("hidden");
+ }
 }
+
+/* DISPLAY NEWS */
 window.renderNews=()=>{
  const search=$("searchInput").value.toLowerCase().trim();
  const category=$("categoryFilter").value;
+
  const items=allNews.filter(n=>{
   if(n.status!=="Approved")return false;
-  const text=[n.title,n.summary,n.content,n.category].join(" ").toLowerCase();
-  return (!search||text.includes(search))&&(!category||n.category===category);
+
+  const text=[n.title,n.summary,n.content,n.category]
+   .join(" ").toLowerCase();
+
+  return (!search||text.includes(search))&&
+         (!category||n.category===category);
  });
+
  $("newsGrid").innerHTML=items.map(n=>`
   <article class="card" onclick="openArticle('${n.id}')">
    <img src="${escapeHTML(n.photoUrl||"https://placehold.co/700x400?text=NEWSAT")}" alt="" loading="lazy">
@@ -376,63 +442,106 @@ window.renderNews=()=>{
     <p>${escapeHTML(n.summary||"")}</p>
     <div class="meta">${escapeHTML(n.authorName||"Newsat")} · ${escapeHTML(dateText(n.createdAt))}</div>
    </div>
-  </article>`).join("");
+  </article>
+ `).join("");
+
  $("emptyNews").classList.toggle("hidden",items.length!==0);
 };
+
+/* OPEN ARTICLE */
 window.openArticle=id=>{
  const n=allNews.find(x=>x.id===id);
  if(!n)return;
+
  $("articleContent").innerHTML=`
   <h1>${escapeHTML(n.title)}</h1>
   <p class="meta">${escapeHTML(n.category||"")} · ${escapeHTML(n.authorName||"")} · ${escapeHTML(dateText(n.createdAt))}</p>
   ${n.photoUrl?`<img src="${escapeHTML(n.photoUrl)}" alt="">`:""}
   <h3>${escapeHTML(n.summary||"")}</h3>
-  <div class="article-content">${escapeHTML(n.content||"")}</div>`;
- hide("accountSection");hide("writerSection");hide("adminSection");
+  <div class="article-content">${escapeHTML(n.content||"")}</div>
+ `;
+
+ hide("accountSection");
+ hide("writerSection");
+ hide("adminSection");
  show("articleSection");
  window.scrollTo({top:0,behavior:"smooth"});
 };
+
 window.showHome=()=>{
  hide("articleSection");
+
  if(currentUser)show("writerSection");
  if(currentRole==="Admin")show("adminSection");
+
  window.scrollTo({top:0,behavior:"smooth"});
 };
 
-/* Cloudinary image upload */
+/* CLOUDINARY IMAGE UPLOAD */
 async function uploadPhoto(file){
- if(!file) return "";
+ if(!file)return "";
+
  if(!["image/jpeg","image/png","image/webp"].includes(file.type)){
   throw new Error("JPG, PNG හෝ WebP ඡායාරූප පමණක් භාවිතා කරන්න.");
  }
- if(file.size>8*1024*1024)throw new Error("ඡායාරූපය 8MB ට වඩා අඩු විය යුතුය.");
+
+ if(file.size>8*1024*1024){
+  throw new Error("ඡායාරූපය 8MB ට වඩා අඩු විය යුතුය.");
+ }
+
  const form=new FormData();
  form.append("file",file);
  form.append("upload_preset",CLOUDINARY_UPLOAD_PRESET);
  form.append("folder",CLOUDINARY_FOLDER);
- const response=await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`,{
-  method:"POST",body:form
- });
+
+ const response=await fetch(
+  `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`,
+  {method:"POST",body:form}
+ );
+
  const data=await response.json();
- if(!response.ok)throw new Error(data.error?.message||"Cloudinary upload අසාර්ථකයි.");
+
+ if(!response.ok){
+  throw new Error(data.error?.message||"Cloudinary upload අසාර්ථකයි.");
+ }
+
  return data.secure_url;
 }
 
-/* Writer submits news */
+/* SUBMIT NEWS */
 window.submitNews=async()=>{
  clearMessage("writerMessage");
- if(!currentUser){message("writerMessage","පළමුව Login වන්න.",true);return;}
+
+ if(!currentUser){
+  message("writerMessage","පළමුව Login වන්න.",true);
+  return;
+ }
+
  const title=$("newsTitle").value.trim();
  const summary=$("newsSummary").value.trim();
  const content=$("newsContent").value.trim();
  const file=$("newsPhoto").files[0];
- if(!title||!summary||!content){message("writerMessage","මාතෘකාව, කෙටි විස්තරය සහ සම්පූර්ණ පුවත ඇතුළත් කරන්න.",true);return;}
- const btn=$("submitNewsBtn");btn.disabled=true;btn.textContent="ඉදිරිපත් කරමින්...";
+
+ if(!title||!summary||!content){
+  message("writerMessage","මාතෘකාව, කෙටි විස්තරය සහ සම්පූර්ණ පුවත ඇතුළත් කරන්න.",true);
+  return;
+ }
+
+ const btn=$("submitNewsBtn");
+ btn.disabled=true;
+ btn.textContent="ඉදිරිපත් කරමින්...";
+
  try{
   let photoUrl="";
-  if(file)photoUrl=await uploadPhoto(file);
+
+  if(file){
+   photoUrl=await uploadPhoto(file);
+  }
+
   await addDoc(collection(db,"news"),{
-   title,summary,content,
+   title,
+   summary,
+   content,
    category:$("newsCategory").value,
    language:$("newsLanguage").value,
    photoUrl,
@@ -444,30 +553,48 @@ window.submitNews=async()=>{
    reviewedAt:null,
    reviewedBy:null
   });
-  $("newsTitle").value="";$("newsSummary").value="";
-  $("newsContent").value="";$("newsPhoto").value="";
-  message("writerMessage","ඔබගේ පුවත සාර්ථකව ඉදිරිපත් කළා. Admin අනුමැතිය ලැබුණු පසු වෙබ් අඩවියේ පෙන්වයි.");
+
+  $("newsTitle").value="";
+  $("newsSummary").value="";
+  $("newsContent").value="";
+  $("newsPhoto").value="";
+
+  message("writerMessage","ඔබගේ පුවත සාර්ථකව ඉදිරිපත් කළා. Admin අනුමැතිය ලැබුණු පසු පෙන්වයි.");
+
   await loadNews();
- }catch(e){message("writerMessage",friendlyError(e),true);}
- finally{btn.disabled=false;btn.textContent="පුවත ඉදිරිපත් කරන්න";}
+
+ }catch(e){
+  message("writerMessage",friendlyError(e),true);
+ }finally{
+  btn.disabled=false;
+  btn.textContent="පුවත ඉදිරිපත් කරන්න";
+ }
 };
+
+/* USER SUBMISSIONS */
 function renderSubmissions(items){
  if(!currentUser)return;
+
  const el=$("mySubmissions");
- el.innerHTML="<h3>ඔබ ඉදිරිපත් කළ පුවත්</h3>"+(items.length?items.map(n=>`
+
+ el.innerHTML="<h3>ඔබ ඉදිරිපත් කළ පුවත්</h3>"+
+ (items.length?items.map(n=>`
   <div class="adminrow">
    <strong>${escapeHTML(n.title)}</strong>
    <p class="small">තත්ත්වය: ${escapeHTML(n.status)} · ${escapeHTML(dateText(n.createdAt))}</p>
-  </div>`).join(""):"<p class='small'>ඔබ තවම පුවත් ඉදිරිපත් කර නැත.</p>");
+  </div>
+ `).join(""):"<p class='small'>ඔබ තවම පුවත් ඉදිරිපත් කර නැත.</p>");
 }
 
-/* Admin functions */
+/* ADMIN DASHBOARD */
 async function loadAdminNews(){
  if(currentRole!=="Admin")return;
+
  try{
   const q=query(collection(db,"news"),orderBy("createdAt","desc"));
   const snap=await getDocs(q);
   const items=snap.docs.map(d=>({id:d.id,...d.data()}));
+
   $("adminNewsList").innerHTML=items.length?items.map(n=>`
    <div class="adminrow">
     <strong>${escapeHTML(n.title)}</strong>
@@ -478,40 +605,81 @@ async function loadAdminNews(){
      ${n.status!=="Rejected"?`<button class="secondary" onclick="reviewNews('${n.id}','Rejected')">Reject</button>`:""}
      <button class="danger" onclick="removeNews('${n.id}')">Delete</button>
     </div>
-   </div>`).join(""):"<p>පුවත් නොමැත.</p>";
- }catch(e){$("adminNewsList").textContent=friendlyError(e);}
+   </div>
+  `).join(""):"<p>පුවත් නොමැත.</p>";
+
+ }catch(e){
+  $("adminNewsList").textContent=friendlyError(e);
+ }
 }
+
+/* APPROVE OR REJECT */
 window.reviewNews=async(id,status)=>{
  if(currentRole!=="Admin")return;
+
  try{
   await updateDoc(doc(db,"news",id),{
-   status,reviewedAt:serverTimestamp(),reviewedBy:currentUser.uid
+   status,
+   reviewedAt:serverTimestamp(),
+   reviewedBy:currentUser.uid
   });
+
   message("adminMessage","පුවතේ තත්ත්වය වෙනස් කළා.");
   await loadNews();
- }catch(e){message("adminMessage",friendlyError(e),true);}
+
+ }catch(e){
+  message("adminMessage",friendlyError(e),true);
+ }
 };
+
+/* DELETE NEWS */
 window.removeNews=async id=>{
- if(currentRole!=="Admin"||!confirm("මෙම පුවත මකා දමන්නද?"))return;
+ if(currentRole!=="Admin")return;
+ if(!confirm("මෙම පුවත මකා දමන්නද?"))return;
+
  try{
   await deleteDoc(doc(db,"news",id));
   message("adminMessage","පුවත මකා දැමුවා.");
   await loadNews();
- }catch(e){message("adminMessage",friendlyError(e),true);}
+
+ }catch(e){
+  message("adminMessage",friendlyError(e),true);
+ }
 };
 
-/* Basic language labels */
+/* LANGUAGE SELECTOR */
 window.changeLanguage=()=>{
- activeLanguage=$("languageSelect").value;
+ const language=$("languageSelect").value;
+
  const labels={
-  si:{hero:"නවතම පුවත් එකම තැනකින්",text:"ශ්‍රී ලංකාවේ සහ ලෝකයේ නවතම තොරතුරු දැන්ම කියවන්න.",latest:"නවතම පුවත්",search:"පුවත් සොයන්න..."},
-  en:{hero:"Latest News in One Place",text:"Read the latest updates from Sri Lanka and around the world.",latest:"Latest News",search:"Search news..."},
-  ta:{hero:"சமீபத்திய செய்திகள் ஒரே இடத்தில்",text:"இலங்கை மற்றும் உலகின் சமீபத்திய செய்திகளைப் படியுங்கள்.",latest:"சமீபத்திய செய்திகள்",search:"செய்திகளைத் தேடுங்கள்..."}
+  si:{
+   hero:"නවතම පුවත් එකම තැනකින්",
+   text:"ශ්‍රී ලංකාවේ සහ ලෝකයේ නවතම තොරතුරු දැන්ම කියවන්න.",
+   latest:"නවතම පුවත්",
+   search:"පුවත් සොයන්න..."
+  },
+  en:{
+   hero:"Latest News in One Place",
+   text:"Read the latest updates from Sri Lanka and around the world.",
+   latest:"Latest News",
+   search:"Search news..."
+  },
+  ta:{
+   hero:"சமீபத்திய செய்திகள் ஒரே இடத்தில்",
+   text:"இலங்கை மற்றும் உலகின் சமீபத்திய செய்திகளைப் படியுங்கள்.",
+   latest:"சமீபத்திய செய்திகள்",
+   search:"செய்திகளைத் தேடுங்கள்..."
+  }
  };
- const t=labels[activeLanguage];
- $("heroTitle").textContent=t.hero;$("heroText").textContent=t.text;
- $("latestHeading").textContent=t.latest;$("searchInput").placeholder=t.search;
+
+ const t=labels[language];
+
+ $("heroTitle").textContent=t.hero;
+ $("heroText").textContent=t.text;
+ $("latestHeading").textContent=t.latest;
+ $("searchInput").placeholder=t.search;
 };
+
 $("year").textContent=new Date().getFullYear();
 </script>
 </body>
