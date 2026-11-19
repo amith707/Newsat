@@ -278,10 +278,12 @@ async function submitAuth(){
     if(authMode === 'register'){
       const cred = await auth.createUserWithEmailAndPassword(email, pw);
       await cred.user.updateProfile({displayName: $('registerName').value.trim()});
+      
       await db.collection('users').doc(cred.user.uid).set({
         uid: cred.user.uid, email, name: $('registerName').value.trim(), role: 'Writer', createdAt: firebase.firestore.FieldValue.serverTimestamp()
       }, {merge: true});
-      toast('ගිණුම සාර්ථකව සාදන ලදී! දැන් ලොග් වී ඇත.', 'success');
+      
+      toast('ගිණුම සාර්ථකව සාදන ලදී!', 'success');
     } else {
       await auth.signInWithEmailAndPassword(email, pw);
       toast('සාර්ථකව පිවිසුණි!', 'success');
@@ -303,14 +305,16 @@ async function logout(){ await auth.signOut(); toast('Logout විය.', 'succe
 async function handleUser(user){
   currentUser = user;
   if(!user){
-    isAdmin = false; updateNav(); showPage('home'); return;
+    isAdmin = false; 
+    updateNav(); 
+    showPage('home'); 
+    return;
   }
   
   isAdmin = (user.email === ADMIN_EMAIL);
   updateNav();
   trackOnlineUser(user.uid);
   
-  // ලොග් වුනාම Profile එකට යවනවා
   showPage('profile');
 }
 
