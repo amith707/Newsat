@@ -24,7 +24,7 @@
 </style>
 </head>
 <body>
-<section id="loginView" class="login-wrap"><div class="login-card"><div class="brand"><div class="brand-mark">N</div><div><b>Newsat<span style="color:#3867f4">.space</span></b><small>ADMIN CONTROL CENTER</small></div></div><h1>Admin Login</h1><p>Newsat.space පාලක පුවරුවට ආරක්ෂිතව පිවිසෙන්න.</p><form id="loginForm"><div class="field"><label>Email ලිපිනය</label><input id="loginEmail" type="email" placeholder="admin@newsat.space" autocomplete="username" required></div><div class="field"><label>Password</label><input id="loginPassword" type="password" autocomplete="current-password" required placeholder="ඔබේ මුරපදය"></div><button class="btn full" id="loginBtn" type="submit">ආරක්ෂිතව Login වන්න</button>
+<section id="loginView" class="login-wrap"><div class="login-card"><div class="brand"><div class="brand-mark">N</div><div><b>Newsat<span style="color:#3867f4">.space</span></b><small>ADMIN CONTROL CENTER</small></div></div><h1>Admin Login</h1><p>Newsat.space පාලක පුවරුවට ආරක්ෂිතව පිවිසෙන්න.</p><form id="loginForm"><div class="field"><label>Email ලිපිනය</label><input id="loginEmail" type="email" value="kularathnashac@gmail.com" readonly autocomplete="username" required></div><div class="field"><label>Password</label><input id="loginPassword" type="password" autocomplete="current-password" required placeholder="ඔබේ මුරපදය"></div><button class="btn full" id="loginBtn" type="submit">ආරක්ෂිතව Login වන්න</button>
 <div id="loginError" class="error" style="margin-top:12px"></div></form><div class="footnote">මෙම පැනලය භාවිතා කළ හැක්කේ Admin අවසර (Custom Claim) ලබා දී ඇති ගිණුම් සඳහා පමණි.</div></div></section>
 
 <div id="appView" class="shell hidden">
@@ -34,7 +34,6 @@
   <button class="nav-btn active" data-page="dashboard"><span class="ico">📊</span> Dashboard</button>
   <button class="nav-btn" data-page="users"><span class="ico">👥</span> පරිශීලකයින්</button>
   <button class="nav-btn" data-page="news"><span class="ico">📰</span> පුවත් කළමනාකරණය</button>
-  <button class="nav-btn" data-page="admins"><span class="ico">🛡️</span> Admin කළමනාකරණය</button>
   <div class="side-label" style="margin-top:18px">SYSTEM</div>
   <button class="nav-btn" id="refreshAll"><span class="ico">🔄</span> දත්ත Refresh</button>
   <div class="side-bottom"><div class="admin-mini" id="adminEmailLabel">Admin</div><button class="btn dark full" id="logoutBtn">↪ Logout</button></div>
@@ -62,18 +61,6 @@
 
     <!-- NEWS -->
     <section id="page-news" class="page"><div class="panel"><div class="panel-head"><div><h3>සියලුම පුවත්</h3><span class="muted">Publish, Edit, Delete සහ Status කළමනාකරණය</span></div></div><div class="toolbar"><input id="newsSearch" placeholder="පුවත් මාතෘකාව සොයන්න..."><select id="newsStatus"><option value="">සියලුම තත්ත්ව</option><option value="Approved">Published</option><option value="Pending">Pending</option><option value="Rejected">Rejected</option></select></div><div id="newsCards" class="news-grid"></div></div></section>
-
-    <!-- ADMINS -->
-    <section id="page-admins" class="page">
-      <div class="panel">
-        <div class="panel-head"><div><h3>Admin කළමනාකරණය</h3><span class="muted">අලුත් Admin කෙනෙක් එකතු කරන්න</span></div></div>
-        <div class="notice">⚠️ අලුත් Admin කෙනෙක් හදන්න, ඔහු පළමුව සාමාන්‍ය විදියට (index.html එකෙන්) රෙජිස්ටර් වෙලා තියෙන්න ඕනේ. ඊට පස්සේ ඔහුගේ Email එක මෙතන දාලා Admin කරන්න.</div>
-        <form id="adminForm" style="display:flex;gap:10px;align-items:flex-end;margin-top:15px;">
-          <div class="field" style="flex:1;margin:0;"><label>පරිශීලකයාගේ Email ලිපිනය</label><input id="newAdminEmail" type="email" placeholder="user@example.com" required></div>
-          <button class="btn" type="submit" id="makeAdminBtn">Admin කරන්න</button>
-        </form>
-      </div>
-    </section>
   </main>
 </div></div>
 
@@ -87,10 +74,11 @@
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-functions-compat.js"></script>
 <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
 <script>
 const firebaseConfig={apiKey:"AIzaSyBMmZuPV3XKlYkGqjQYd7aJpFb8MZc-P9k",authDomain:"newsat-209f8.firebaseapp.com",projectId:"newsat-209f8",appId:"1:529324718671:web:0f45e89bf317cbb0c9083a"};
+const ADMIN_EMAIL = "kularathnashac@gmail.com"; // ඔබේ ඇඩ්මින් ඊමේල් එක
+
 let auth,db,currentUser=null,isAdmin=false,usersCache=[],newsCache=[],statsCache={online:0,views:0};
 let adminQuill;
 
@@ -112,29 +100,34 @@ adminQuill = new Quill('#adminQuillEditor', {
 
 auth.onAuthStateChanged(async (user)=>{
   if(!user){ $('loginView').classList.remove('hidden'); $('appView').classList.add('hidden'); return; }
-  try {
-    const token = await user.getIdTokenResult(true);
-    if(token.claims.admin !== true) throw new Error("ඔබට Admin අවසර නැත.");
-    
-    currentUser = user; isAdmin = true;
-    $('loginView').classList.add('hidden'); $('appView').classList.remove('hidden');
-    $('adminEmailLabel').textContent = user.email; $('topAdminEmail').textContent = user.email;
-    $('adminAvatar').textContent = user.email[0].toUpperCase();
-    
-    trackOnlineUser(user.uid);
-    refreshAll();
-  } catch(e) {
-    toast(e.message); auth.signOut();
+  
+  // මෙතනදි අපි චෙක් කරනවා ලොග් වුනේ අපේ ඊමේල් එකෙන්ද කියලා
+  if(user.email !== ADMIN_EMAIL){
+    toast("ඔබට මෙම පැනලයට ඇතුළු වීමට අවසර නැත.");
+    auth.signOut();
+    return;
   }
+
+  currentUser = user; isAdmin = true;
+  $('loginView').classList.add('hidden'); $('appView').classList.remove('hidden');
+  $('adminEmailLabel').textContent = user.email; $('topAdminEmail').textContent = user.email;
+  $('adminAvatar').textContent = user.email[0].toUpperCase();
+  
+  trackOnlineUser(user.uid);
+  refreshAll();
 });
 
 $('loginForm').addEventListener('submit', async (e)=>{
   e.preventDefault();
   $('loginBtn').disabled = true;
+  $('loginError').textContent = '';
   try {
     await auth.signInWithEmailAndPassword($('loginEmail').value, $('loginPassword').value);
-  } catch(e) { $('loginError').textContent = 'Email එක හෝ Password එක වැරදියි.'; }
-  finally { $('loginBtn').disabled = false; }
+  } catch(e) { 
+    $('loginError').textContent = 'Email එක හෝ Password එක වැරදියි.'; 
+  } finally { 
+    $('loginBtn').disabled = false; 
+  }
 });
 
 $('logoutBtn').addEventListener('click', async ()=>{
@@ -257,33 +250,13 @@ async function deleteNews(id){
   await db.collection('news').doc(id).delete(); refreshAll(); toast('පුවත මකා දැමුවා.');
 }
 
-// MAKE ADMIN
-$('adminForm').addEventListener('submit', async (e)=>{
-  e.preventDefault();
-  const email = $('newAdminEmail').value;
-  const user = usersCache.find(u => u.email === email);
-  if(!user) return toast('මෙම Email එකෙන් රෙජිස්ටර් වුණු කෙනෙක් නැත. පළමුව ඔහුව වෙබ් එකෙන් රෙජිස්ටර් කරගන්න.');
-  
-  try {
-    $('makeAdminBtn').disabled = true;
-    const makeAdmin = firebase.functions().httpsCallable('makeAdmin');
-    await makeAdmin({ uid: user.id });
-    toast('සාර්ථකව Admin කරන ලදී! ඔහුට දැන් admin.html එකට ලොග් වෙන්න පුළුවන්.');
-    $('newAdminEmail').value = '';
-  } catch(e) {
-    toast('දෝෂයක්: ' + friendly(e));
-  } finally {
-    $('makeAdminBtn').disabled = false;
-  }
-});
-
 // NAVIGATION
 function navigate(page){
   document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
   $('page-'+page).classList.add('active');
   document.querySelectorAll('.nav-btn[data-page]').forEach(x=>x.classList.toggle('active', x.dataset.page===page));
   $('sidebar').classList.remove('open');
-  const titles = { dashboard:['Dashboard','සම්පූර්ණ තත්ත්වය'], users:['පරිශීලකයින්','ලියාපදිංචි සාමාජිකයින්'], news:['පුවත්','සියලුම පුවත් පාලනය කරන්න'], admins:['Admin කළමනාකරණය','අලුත් Admin කෙනෙක් එකතු කරන්න'] };
+  const titles = { dashboard:['Dashboard','සම්පූර්ණ තත්ත්වය'], users:['පරිශීලකයින්','ලියාපදිංචි සාමාජිකයින්'], news:['පුවත්','සියලුම පුවත් පාලනය කරන්න'] };
   $('pageTitle').textContent = titles[page][0];
   $('pageSubtitle').textContent = titles[page][1];
 }
