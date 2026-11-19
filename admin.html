@@ -25,7 +25,7 @@
 </head>
 <body>
 <section id="loginView" class="login-wrap"><div class="login-card"><div class="brand"><div class="brand-mark">N</div><div><b>Newsat<span style="color:#3867f4">.space</span></b><small>ADMIN CONTROL CENTER</small></div></div><h1>Admin Login</h1><p>Newsat.space පාලක පුවරුවට ආරක්ෂිතව පිවිසෙන්න.</p><form id="loginForm"><div class="field"><label>Email ලිපිනය</label><input id="loginEmail" type="email" value="kularathnashac@gmail.com" readonly autocomplete="username" required></div><div class="field"><label>Password</label><input id="loginPassword" type="password" autocomplete="current-password" required placeholder="ඔබේ මුරපදය"></div><button class="btn full" id="loginBtn" type="submit">ආරක්ෂිතව Login වන්න</button>
-<div id="loginError" class="error" style="margin-top:12px"></div></form><div class="footnote">මෙම පැනලය භාවිතා කළ හැක්කේ Admin අවසර (Custom Claim) ලබා දී ඇති ගිණුම් සඳහා පමණි.</div></div></section>
+<div id="loginError" class="error" style="margin-top:12px"></div></form><div class="footnote">මෙම පැනලය භාවිතා කළ හැක්කේ Admin අවසර ලබා දී ඇති ගිණුම් සඳහා පමණි.</div></div></section>
 
 <div id="appView" class="shell hidden">
 <aside class="sidebar" id="sidebar">
@@ -77,8 +77,6 @@
 <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
 <script>
 const firebaseConfig={apiKey:"AIzaSyBMmZuPV3XKlYkGqjQYd7aJpFb8MZc-P9k",authDomain:"newsat-209f8.firebaseapp.com",projectId:"newsat-209f8",appId:"1:529324718671:web:0f45e89bf317cbb0c9083a"};
-const ADMIN_EMAIL = "kularathnashac@gmail.com"; // ඔබේ ඇඩ්මින් ඊමේල් එක
-
 let auth,db,currentUser=null,isAdmin=false,usersCache=[],newsCache=[],statsCache={online:0,views:0};
 let adminQuill;
 
@@ -101,9 +99,9 @@ adminQuill = new Quill('#adminQuillEditor', {
 auth.onAuthStateChanged(async (user)=>{
   if(!user){ $('loginView').classList.remove('hidden'); $('appView').classList.add('hidden'); return; }
   
-  // මෙතනදි අපි චෙක් කරනවා ලොග් වුනේ අපේ ඊමේල් එකෙන්ද කියලා
-  if(user.email !== ADMIN_EMAIL){
-    toast("ඔබට මෙම පැනලයට ඇතුළු වීමට අවසර නැත.");
+  // ලොග් වුනේ අපේ ඊමේල් එකෙන්ද බලනවා
+  if(user.email !== 'kularathnashac@gmail.com'){
+    toast("ඔබට අවසර නැත. වෙනත් ගිණුමකින් ලොග් වී ඇත.");
     auth.signOut();
     return;
   }
@@ -131,13 +129,13 @@ $('loginForm').addEventListener('submit', async (e)=>{
 });
 
 $('logoutBtn').addEventListener('click', async ()=>{
-  if(currentUser) await db.collection('online_users').doc(currentUser.uid).delete();
+  if(currentUser) await db.collection('online_users').doc(currentUser.uid).delete().catch(()=>{});
   auth.signOut();
 });
 
 async function trackOnlineUser(uid) {
   const userRef = db.collection('online_users').doc(uid);
-  await userRef.set({ lastSeen: firebase.firestore.FieldValue.serverTimestamp() });
+  await userRef.set({ lastSeen: firebase.firestore.FieldValue.serverTimestamp() }).catch(()=>{});
   setInterval(() => {
     if(navigator.onLine) userRef.update({ lastSeen: firebase.firestore.FieldValue.serverTimestamp() }).catch(()=>{});
   }, 60000);
@@ -162,7 +160,11 @@ async function refreshAll(){
     updateDashboard();
     renderUsers();
     renderNews();
-  } catch(e) { toast(friendly(e)); }
+  } catch(e) { 
+    console.error("Admin Error:", e);
+    alert("Admin Panel Error: " + friendly(e)); 
+    document.getElementById('recentNews').innerHTML = `<div class="empty" style="color:red;">දෝෂයක්: ${friendly(e)}</div>`;
+  }
 }
 
 function updateDashboard(){
