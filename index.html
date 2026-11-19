@@ -374,18 +374,12 @@ input[type="file"]{padding:9px;font-size:13px;cursor:pointer}
     </div>
   </section>
 
-  <!-- ADMIN -->
+  <!-- ADMIN (Dashboard redirects to admin.html) -->
   <section id="adminPage" class="hidden">
-    <div class="panel">
-      <div class="row between" style="margin-bottom:16px">
-        <div><h2 style="font-size:22px">Admin Dashboard</h2><p class="muted">පුවත් අනුමත / ප්‍රතික්ෂේප කරන්න</p></div>
-        <button class="btn ghost sm" onclick="logout()">Logout</button>
-      </div>
-      <div class="row" style="gap:10px">
-        <span class="badge pending" id="pendingCount">Pending: 0</span>
-        <span class="badge approved" id="approvedCount">Published: 0</span>
-      </div>
-      <div id="adminNews" style="margin-top:24px"></div>
+    <div class="panel" style="text-align:center;padding:40px;">
+      <h2 style="font-size:22px;margin-bottom:10px">Admin Dashboard</h2>
+      <p class="muted" style="margin-bottom:20px">ඔබට සම්පූර්ණ Admin පැනලය භාවිතා කිරීමට පහත බටන් එක ඔබන්න.</p>
+      <a href="admin.html" class="btn" style="display:inline-flex;text-decoration:none;">Admin Panel එකට යන්න</a>
     </div>
   </section>
 
@@ -406,46 +400,41 @@ const firebaseConfig={apiKey:"AIzaSyBMmZuPV3XKlYkGqjQYd7aJpFb8MZc-P9k",authDomai
 
 /* ===== STATE ===== */
 let auth, db, currentUser=null, isAdmin=false, allNews=[];
-let quillEditor; // Quill instance
+let authMode = 'login'; // Fixed missing variable
+let quillEditor;
 
-/* ===== INITIALIZE FIREBASE & QUILL ===== */
+/* ===== INITIALIZE ===== */
 try {
   firebase.initializeApp(firebaseConfig);
   auth = firebase.auth();
   db = firebase.firestore();
   
-  // **CRITICAL FIX**: Set Local Persistence so users stay logged in after refresh
+  // Track Traffic (Every visit)
+  db.collection('site_stats').doc('traffic').set({
+    views: firebase.firestore.FieldValue.increment(1)
+  }, { merge: true }).catch(()=>{});
+
   auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL)
     .then(() => {
-      // Initialize Quill Editor
       quillEditor = new Quill('#newsBodyEditor', {
         theme: 'snow',
         placeholder: 'ඔබේ පුවත මෙහි ලියන්න...',
         modules: {
           toolbar: [
-            [{ 'header': [1, 2, 3, false] }],
-            ['bold', 'italic', 'underline', 'strike'],
-            [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-            [{ 'align': [] }],
-            ['link', 'blockquote'],
-            ['clean']
+            [{ 'header': [1, 2, 3, false] }], ['bold', 'italic', 'underline', 'strike'],
+            [{ 'list': 'ordered'}, { 'list': 'bullet' }], [{ 'align': [] }],
+            ['link', 'blockquote'], ['clean']
           ]
         }
       });
-      
-      // Firebase Auth Listener
       auth.onAuthStateChanged(handleUser);
       loadPublicNews();
     })
-    .catch((error) => {
-      console.error("Auth persistence error:", error);
-      // Fallback if persistence fails
+    .catch(() => {
       auth.onAuthStateChanged(handleUser);
       loadPublicNews();
     });
-} catch(e) {
-  console.error("Firebase init error:", e);
-}
+} catch(e) { console.error("Firebase init error:", e); }
 
 /* ===== HELPERS ===== */
 const $ = id => document.getElementById(id);
@@ -472,45 +461,31 @@ function friendlyError(e){
   return map[code] || e?.message || 'දෝෂයක් සිදුවිය.';
 }
 
-/* ===== GOOGLE DRIVE LINK CONVERTER ===== */
+/* ===== GOOGLE DRIVE LINK ===== */
 function convertGoogleDriveLink(url) {
   if (!url) return '';
-  // Extract file ID from typical Google Drive links
   const match = url.match(/\/d\/([a-zA-Z0-9_-]+)/) || url.match(/id=([a-zA-Z0-9_-]+)/);
-  if (match && match[1]) {
-    // Return direct image link
-    return `https://lh3.googleusercontent.com/d/${match[1]}`;
-  }
-  return url; // Return original if it's not a recognized GDrive link
+  if (match && match[1]) return `https://lh3.googleusercontent.com/d/${match[1]}`;
+  return url;
 }
 
-/* ===== ADD IMAGE TO QUILL EDITOR ===== */
 function addGDriveImageToEditor() {
   const input = $('gdriveImageUrl');
   const rawUrl = input.value.trim();
-  
-  if (!rawUrl) {
-    toast('කරුණාකර Google Drive ලින්ක් එකක් ඇතුළත් කරන්න.', 'warning');
-    return;
-  }
+  if (!rawUrl) return toast('කරුණාකර Google Drive ලින්ක් එකක් ඇතුළත් කරන්න.', 'warning');
   
   const directUrl = convertGoogleDriveLink(rawUrl);
-  
-  // Get current cursor position in Quill
   const range = quillEditor.getSelection(true);
   const index = range ? range.index : quillEditor.getLength();
-  
-  // Insert image
   quillEditor.insertEmbed(index, 'image', directUrl, 'user');
   quillEditor.setSelection(index + 1, 0);
-  
-  // Clear input
   input.value = '';
   toast('පින්තූරය එඩිටරයට එකතු කරන ලදී!', 'success');
 }
 
-/* ===== AUTHENTICATION ===== */
+/* ===== AUTH ===== */
 function setAuthMode(mode){
+  authMode = mode;
   const reg = mode === 'register';
   $('loginTab').classList.toggle('active', !reg);
   $('registerTab').classList.toggle('active', reg);
@@ -555,6 +530,15 @@ async function forgotPassword(){
   catch(e) { toast(friendlyError(e), 'error'); }
 }
 
+// Track Online Users (Heartbeat)
+function trackOnlineUser(uid) {
+  const userRef = db.collection('online_users').doc(uid);
+  userRef.set({ lastSeen: firebase.firestore.FieldValue.serverTimestamp() }).catch(()=>{});
+  setInterval(() => {
+    if(navigator.onLine) userRef.update({ lastSeen: firebase.firestore.FieldValue.serverTimestamp() }).catch(()=>{});
+  }, 60000);
+}
+
 async function handleUser(user){
   currentUser = user;
   if(!user){
@@ -564,7 +548,8 @@ async function handleUser(user){
     const token = await user.getIdTokenResult(true);
     isAdmin = token.claims.admin === true;
     updateNav();
-    // Keep the user on their current page if they were on profile/admin, otherwise default
+    trackOnlineUser(user.uid); // Track user as online
+    
     const currentPage = document.querySelector('section:not(.hidden)')?.id;
     if (currentPage === 'homePage' || !currentPage) {
        showPage(isAdmin ? 'admin' : 'profile');
@@ -641,34 +626,25 @@ async function submitNews(e){
   try{
     const title = $('newsTitle').value.trim();
     const category = $('newsCategory').value;
-    // Get HTML content from Quill
     const bodyHTML = quillEditor.root.innerHTML;
     
-    // Validate if empty (Quill leaves '<p><br></p>' when empty)
     if(!title || bodyHTML === '<p><br></p>') {
       throw new Error('මාතෘකාව සහ විස්තරය අවශ්‍යයි.');
     }
 
-    // Extract first image from content to use as thumbnail
     const imgMatch = bodyHTML.match(/<img[^>]+src="([^">]+)"/);
     const thumbnail = imgMatch ? imgMatch[1] : '';
 
     const ref = db.collection('news').doc();
     await ref.set({
-      title,
-      category,
-      body: bodyHTML,       // Save rich HTML
-      image: thumbnail,     // Save thumbnail for homepage
-      authorUid: currentUser.uid,
-      authorEmail: currentUser.email || '',
+      title, category, body: bodyHTML, image: thumbnail,
+      authorUid: currentUser.uid, authorEmail: currentUser.email || '',
       status: 'Pending',
       createdAt: firebase.firestore.FieldValue.serverTimestamp()
     });
 
-    // Reset form
     $('writerForm').reset();
-    quillEditor.root.innerHTML = ''; // Clear editor
-    
+    quillEditor.root.innerHTML = '';
     toast('පුවත සාර්ථකව ඉදිරිපත් කළා! Admin අනුමැතියෙන් පසු පළවේ.', 'success');
     loadMySubmissions();
   } catch(err) {
@@ -741,53 +717,9 @@ function openArticle(id){
     <h1 style="font-size:28px;margin-bottom:10px;">${esc(n.title)}</h1>
     <p class="muted" style="margin-bottom:20px">${esc(n.category||'')} · ${new Date((n.createdAt?.seconds||0)*1000).toLocaleDateString()}</p>
     <div class="divider"></div>
-    <!-- Render the rich HTML content directly -->
     <div class="article-body">${n.body || ''}</div>
   `;
   showPage('article');
-}
-
-/* ===== ADMIN ===== */
-async function loadAdminNews(){
-  if(!isAdmin) return;
-  const wrap = $('adminNews');
-  wrap.innerHTML = '<p>Loading...</p>';
-  try{
-    const snap = await db.collection('news').get();
-    const arr = snap.docs.map(d => ({id: d.id, ...d.data()})).sort((a,b) => (b.createdAt?.seconds||0) - (a.createdAt?.seconds||0));
-    
-    $('pendingCount').textContent = 'Pending: ' + arr.filter(n => (n.status||'Pending') === 'Pending').length;
-    $('approvedCount').textContent = 'Published: ' + arr.filter(n => n.status === 'Approved').length;
-
-    wrap.innerHTML = arr.map(n => `
-      <div class="panel" style="margin-bottom:15px">
-        <div class="row between">
-          <h3 style="font-size:18px">${esc(n.title)}</h3>
-          <span class="badge ${(n.status||'Pending').toLowerCase()}">${esc(n.status||'Pending')}</span>
-        </div>
-        <div style="max-height:100px;overflow:hidden;margin:10px 0;color:var(--muted)">${n.body}</div>
-        <div class="actions">
-          <button class="btn success sm" onclick="moderateNews('${n.id}', 'Approved')">✅ Approve</button>
-          <button class="btn danger sm" onclick="moderateNews('${n.id}', 'Rejected')">❌ Reject</button>
-        </div>
-      </div>
-    `).join('');
-  } catch(e) {
-    wrap.innerHTML = `<p class="error">${esc(friendlyError(e))}</p>`;
-  }
-}
-
-async function moderateNews(id, status){
-  try{
-    await db.collection('news').doc(id).update({
-      status, moderatedAt: firebase.firestore.FieldValue.serverTimestamp()
-    });
-    toast(`පුවත ${status} කළා.`, 'success');
-    loadAdminNews();
-    loadPublicNews();
-  } catch(e) {
-    toast(friendlyError(e), 'error');
-  }
 }
 
 /* ===== NAVIGATION ===== */
@@ -795,7 +727,6 @@ function showPage(name){
   ['home','auth','profile','admin','article'].forEach(p => $(p+'Page').classList.toggle('hidden', p !== name));
   window.scrollTo(0,0);
   if(name === 'profile' && currentUser) { loadProfile(); loadMySubmissions(); }
-  if(name === 'admin' && isAdmin) loadAdminNews();
   if(name === 'home') renderNews();
 }
 </script>
