@@ -11,7 +11,6 @@
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
 <style>
 :root{--navy:#101b35;--navy2:#172747;--blue:#2563eb;--cyan:#38bdf8;--red:#ef476f;--ink:#172033;--muted:#6b7890;--line:#e7ebf2;--paper:#f4f6fa;--white:#fff;--green:#0f9d75;--shadow:0 14px 40px rgba(16,27,53,.09)}
 *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:"DM Sans","Noto Sans Sinhala","Noto Sans Tamil",sans-serif}button,input,select,textarea{font:inherit}button{cursor:pointer}.topline{height:4px;background:linear-gradient(90deg,var(--red),#ff9f43,var(--cyan),var(--blue))}.site-header{background:var(--navy);color:#fff;position:sticky;top:0;z-index:20;box-shadow:0 8px 24px #0b173033}.head-inner{max-width:1180px;margin:auto;padding:15px 22px;display:flex;align-items:center;justify-content:space-between;gap:18px}.brand{display:flex;align-items:center;gap:10px;color:white;text-decoration:none;font-size:24px;font-weight:800;letter-spacing:-1px}.brand-mark{width:38px;height:38px;border-radius:12px;background:linear-gradient(135deg,#38bdf8,#2563eb);display:grid;place-items:center;font-size:20px;box-shadow:0 6px 18px #2563eb55}.brand span{color:#ff6685}.head-actions{display:flex;align-items:center;gap:10px}.lang{background:#1d2b49;border:1px solid #3a4967;color:#fff;padding:9px 12px;border-radius:10px}.nav{display:flex;gap:7px}.nav button,.mobile-menu{border:0;background:transparent;color:#d9e2f4;padding:10px 13px;border-radius:9px;font-weight:600}.nav button.active,.nav button:hover{background:#ffffff18;color:#fff}.btn{border:0;border-radius:10px;padding:11px 16px;font-weight:700;transition:.2s}.btn-primary{background:linear-gradient(135deg,#3478f6,#1d55d8);color:white;box-shadow:0 7px 18px #2563eb35}.btn-primary:hover{transform:translateY(-1px);filter:brightness(1.06)}.btn-dark{background:var(--navy);color:#fff}.btn-soft{background:#edf3ff;color:#2458bf}.btn-danger{background:#fff0f3;color:#d72d53}.btn:disabled{opacity:.55;cursor:not-allowed}.wrap{max-width:1180px;margin:0 auto;padding:26px 22px 55px}.ticker{background:#fff;border:1px solid var(--line);border-radius:12px;display:flex;align-items:center;gap:12px;padding:10px 14px;margin-bottom:23px;overflow:hidden}.ticker-label{background:var(--red);color:white;border-radius:7px;padding:6px 9px;font-size:11px;font-weight:800;white-space:nowrap;letter-spacing:.5px}.ticker-text{font-size:13px;color:#536078;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.hero{display:grid;grid-template-columns:1.45fr .8fr;gap:20px;margin-bottom:34px}.hero-main{position:relative;min-height:380px;border-radius:20px;overflow:hidden;background:var(--navy);color:white;box-shadow:var(--shadow)}.hero-main img{position:absolute;width:100%;height:100%;object-fit:cover;inset:0;opacity:.65}.hero-main:after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,#081329 0%,#081329a8 43%,transparent 100%)}.hero-copy{position:absolute;z-index:1;left:30px;right:30px;bottom:28px}.eyebrow{display:inline-flex;align-items:center;gap:7px;color:#fff;background:var(--red);padding:6px 10px;border-radius:6px;font-size:11px;font-weight:800;letter-spacing:.5px}.hero-copy h1{font-size:clamp(25px,4vw,39px);line-height:1.25;margin:13px 0 10px;max-width:760px}.hero-copy p{color:#dce5f5;margin:0 0 15px;font-size:14px;line-height:1.7;max-width:650px}.hero-meta{font-size:12px;color:#dce5f5}.hero-side{display:flex;flex-direction:column;gap:15px}.side-card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:19px;display:flex;gap:14px;align-items:flex-start;flex:1;cursor:pointer;transition:.2s}.side-card:hover,.news-card:hover{transform:translateY(-3px);box-shadow:var(--shadow)}.side-num{font-size:25px;font-weight:800;color:#c8d5eb}.side-card h3{font-size:15px;line-height:1.45;margin:0 0 7px}.side-card small{color:var(--muted)}.section-head{display:flex;justify-content:space-between;align-items:end;gap:16px;margin:30px 0 17px}.section-head h2{font-size:23px;margin:0 0 5px;letter-spacing:-.5px}.section-head p{color:var(--muted);font-size:13px;margin:0}.search{display:flex;gap:9px;max-width:380px;width:100%}.search input{width:100%;padding:12px 14px;border:1px solid var(--line);border-radius:10px;background:white;outline:none}.search input:focus,.field input:focus,.field select:focus,.field textarea:focus{border-color:#76a2ff;box-shadow:0 0 0 3px #2563eb13}.category-row{display:flex;gap:8px;overflow:auto;padding:2px 0 15px}.chip{border:1px solid var(--line);background:#fff;color:#536078;padding:8px 13px;border-radius:99px;font-size:12px;font-weight:700;white-space:nowrap}.chip.active,.chip:hover{background:var(--navy);color:white;border-color:var(--navy)}.news-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}.news-card{background:white;border:1px solid var(--line);border-radius:15px;overflow:hidden;cursor:pointer;transition:.2s;min-width:0}.news-img{height:190px;background:#dce5f3;position:relative;overflow:hidden}.news-img img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .35s}.news-card:hover .news-img img{transform:scale(1.04)}.category-tag{position:absolute;left:13px;top:13px;background:#101b35e8;color:white;border-radius:6px;padding:6px 9px;font-size:10px;font-weight:800}.news-body{padding:16px}.news-body h3{font-size:16px;line-height:1.45;margin:0 0 9px}.news-body p{font-size:13px;color:var(--muted);line-height:1.6;margin:0 0 15px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}.meta{border-top:1px solid var(--line);padding-top:11px;display:flex;justify-content:space-between;gap:8px;color:#8993a6;font-size:11px}.read{color:var(--blue);font-weight:800}.empty{grid-column:1/-1;text-align:center;background:white;padding:45px 20px;border:1px dashed #ccd5e4;border-radius:15px;color:var(--muted)}.panel{display:none;background:white;border:1px solid var(--line);border-radius:18px;padding:24px;box-shadow:var(--shadow);margin:20px auto;max-width:850px}.panel.active{display:block}.panel h2{margin:0 0 7px;font-size:23px}.muted{color:var(--muted);font-size:13px;line-height:1.6}.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.field{margin-top:13px}.field.full{grid-column:1/-1}.field label{display:block;font-size:12px;font-weight:800;color:#536078;margin-bottom:7px}.field input,.field select,.field textarea{width:100%;padding:12px 13px;border:1px solid var(--line);border-radius:9px;background:#fbfcfe;outline:none;color:var(--ink)}.field textarea{min-height:160px;resize:vertical;line-height:1.6}.field input[type=file]{padding:10px;background:#fff}.hint{font-size:11px;color:#8792a5;margin-top:6px}.auth-switch{display:flex;gap:8px;margin:18px 0}.auth-switch button{flex:1}.status-box{padding:13px 15px;border-radius:10px;background:#eff5ff;border:1px solid #d8e6ff;color:#254e9a;font-size:13px;margin:15px 0}.userbar{display:flex;align-items:center;justify-content:space-between;gap:15px;background:#f1f6ff;border:1px solid #dce8ff;padding:14px;border-radius:12px;margin-bottom:20px}.userbar strong{display:block}.userbar small{color:var(--muted)}.profile-list{display:grid;gap:10px;margin-top:15px}.profile-item{border:1px solid var(--line);border-radius:10px;padding:13px;display:flex;justify-content:space-between;gap:12px;align-items:center}.status{font-size:11px;font-weight:800;border-radius:30px;padding:6px 9px;background:#fff4df;color:#a86600}.status.Approved{background:#e8f8f1;color:#087b59}.status.Rejected{background:#fff0f3;color:#c52d50}.admin-table-wrap{overflow:auto;margin-top:15px}table{width:100%;border-collapse:collapse;min-width:650px}th,td{text-align:left;padding:12px;border-bottom:1px solid var(--line);font-size:13px}th{background:#f7f9fc;color:#58657d;font-size:11px;text-transform:uppercase;letter-spacing:.4px}.table-actions{display:flex;gap:6px;flex-wrap:wrap}.table-actions .btn{padding:7px 10px;font-size:11px}.article-panel{max-width:900px}.article-cover{width:100%;max-height:440px;object-fit:cover;border-radius:13px;margin:17px 0}.article-title{font-size:clamp(25px,4vw,38px);line-height:1.3;margin:12px 0}.article-content{font-size:16px;line-height:1.9;color:#344158;overflow-wrap:anywhere}.article-content img{max-width:100%;height:auto;border-radius:10px}.article-content a{color:var(--blue)}.back{margin-bottom:14px}.footer{background:var(--navy);color:#d4deef;padding:34px 22px}.footer-inner{max-width:1180px;margin:auto;display:flex;justify-content:space-between;gap:20px;align-items:center}.footer p{font-size:12px;color:#a9b8d1;margin:6px 0 0}.toast{position:fixed;right:20px;bottom:20px;z-index:60;background:#152440;color:white;padding:13px 17px;border-radius:11px;box-shadow:var(--shadow);max-width:min(400px,calc(100% - 40px));font-size:13px;display:none}.toast.show{display:block;animation:pop .2s ease}@keyframes pop{from{transform:translateY(8px);opacity:0}to{transform:none;opacity:1}}.loading{padding:35px;text-align:center;color:var(--muted);grid-column:1/-1}.mobile-menu{display:none}
@@ -149,10 +148,12 @@ let lang = localStorage.getItem("newsat_lang") || "si";
 let authMode = "login", currentUser = null, isAdmin = false, allNews = [], activeCategory = "all", currentArticle = null;
 const $ = id => document.getElementById(id);
 const tr = key => (I18N[lang] && I18N[lang][key]) || I18N.en[key] || key;
-let app, auth, db, storage;
+const CLOUDINARY_CLOUD_NAME = "afyjcb5r";
+const CLOUDINARY_UPLOAD_PRESET = "newsat_upload";
+let app, auth, db;
 try {
   if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
-  app = firebase.app(); auth = firebase.auth(); db = firebase.firestore(); storage = firebase.storage();
+  app = firebase.app(); auth = firebase.auth(); db = firebase.firestore();
   auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL).catch(console.warn);
 } catch (e) { console.error(e); toast("Firebase setup error: " + e.message); }
 
@@ -248,21 +249,30 @@ $("news-photo").addEventListener("change",()=>{
   if(!["image/jpeg","image/png","image/webp"].includes(file.type)||file.size>5*1024*1024){$("news-photo").value="";preview.style.display="none";toast(tr("invalidImage"));return}
   preview.src=URL.createObjectURL(file);preview.style.display="block";
 });
+async function uploadToCloudinary(file){
+  const endpoint = `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`;
+  const formData = new FormData();
+  formData.append("file", file);
+  formData.append("upload_preset", CLOUDINARY_UPLOAD_PRESET);
+  formData.append("folder", "newsat");
+  const response = await fetch(endpoint, { method: "POST", body: formData });
+  const result = await response.json();
+  if (!response.ok) throw new Error(result?.error?.message || "Cloudinary photo upload failed.");
+  if (!result.secure_url) throw new Error("Cloudinary did not return an image URL.");
+  return { secure_url: result.secure_url, public_id: result.public_id || "" };
+}
 async function submitNews(event){
-  event.preventDefault();if(!currentUser||!db||!storage)return;
+  event.preventDefault();if(!currentUser||!db){toast("Please sign in first.");return;}
   const title=$("news-title").value.trim(),summary=$("news-summary").value.trim(),content=$("news-content").value.trim(),file=$("news-photo").files[0];
   if(!title||!summary||!content||!file){toast(tr("required"));return}
   if(file.size>5*1024*1024||!["image/jpeg","image/png","image/webp"].includes(file.type)){toast(tr("invalidImage"));return}
   const btn=$("news-submit");btn.disabled=true;btn.textContent=tr("uploading");
   try{
-    const ext=file.type==="image/png"?"png":file.type==="image/webp"?"webp":"jpg";
-    const path=`news/${currentUser.uid}/${Date.now()}_${Math.random().toString(36).slice(2)}.${ext}`;
-    const ref=storage.ref().child(path);
-    await ref.put(file,{contentType:file.type});
-    const photoURL=await ref.getDownloadURL();
+    const uploaded = await uploadToCloudinary(file);
     await db.collection("news").add({
       title,summary,content,category:$("news-category").value,language:$("news-language").value,
-      photoURL,storagePath:path,author:currentUser.displayName||currentUser.email,authorEmail:currentUser.email,
+      photoURL:uploaded.secure_url,cloudinaryPublicId:uploaded.public_id,
+      author:currentUser.displayName||currentUser.email,authorEmail:currentUser.email,
       authorUid:currentUser.uid,status:"Pending",createdAt:firebase.firestore.FieldValue.serverTimestamp()
     });
     $("news-form").reset();$("photo-preview").style.display="none";toast(tr("sent"));loadMyNews();
@@ -300,7 +310,7 @@ async function moderateNews(id,status){
 async function deleteNews(id){
   if(!isAdmin){toast(tr("adminOnly"));return}
   if(!confirm(tr("confirmDelete")))return;
-  try{const doc=await db.collection("news").doc(id).get();const path=doc.data()?.storagePath;await db.collection("news").doc(id).delete();if(path){try{await storage.ref().child(path).delete()}catch(e){console.warn("Photo cleanup failed",e)}}toast("Deleted");loadAdminNews();loadPublicNews();}
+  try{await db.collection("news").doc(id).delete();toast("Deleted");loadAdminNews();loadPublicNews();}
   catch(e){toast(tr("failed")+friendlyError(e))}
 }
 $("year").textContent=new Date().getFullYear();
