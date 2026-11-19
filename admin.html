@@ -1,390 +1,309 @@
 <!doctype html>
 <html lang="si">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#0a0e27">
-<title>Newsat.space | ඔබේ විශ්වාසනීය පුවත් අඩවිය</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Noto+Sans+Sinhala:wght@400;600;700&display=swap" rel="stylesheet">
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#0b1224">
+<title>Newsat.space | Admin Control Center</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Noto+Sans+Sinhala:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
 <style>
-:root{
-  --bg:#f4f6fb; --surface:#ffffff; --surface-2:#f8fafc;
-  --ink:#0f172a; --ink-2:#334155; --muted:#64748b;
-  --primary:#2563eb; --primary-2:#1d4ed8; --primary-glow:#3b82f6;
-  --accent:#8b5cf6; --success:#10b981; --danger:#ef4444; --warning:#f59e0b;
-  --line:#e2e8f0; --line-2:#cbd5e1;
-  --radius:14px; --radius-lg:20px;
-  --shadow-sm:0 1px 2px rgba(15,23,42,.05);
-  --shadow:0 4px 16px rgba(15,23,42,.08);
-  --shadow-lg:0 20px 50px rgba(15,23,42,.15);
-  --gradient:linear-gradient(135deg,#2563eb 0%,#8b5cf6 50%,#ec4899 100%);
-  --gradient-2:linear-gradient(135deg,#0f172a 0%,#1e293b 100%);
-  --font:'Inter','Noto Sans Sinhala',system-ui,-apple-system,sans-serif;
-}
-[data-theme="dark"]{
-  --bg:#070b1a; --surface:#0f172a; --surface-2:#111c33;
-  --ink:#f1f5f9; --ink-2:#cbd5e1; --muted:#94a3b8;
-  --line:#1e293b; --line-2:#334155;
-  --shadow:0 4px 16px rgba(0,0,0,.4);
-  --shadow-lg:0 20px 50px rgba(0,0,0,.6);
-}
-*{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
-body{background:var(--bg);color:var(--ink);font-family:var(--font);line-height:1.6;-webkit-font-smoothing:antialiased;transition:background .3s,color .3s;}
-img{max-width:100%;display:block}
-button,input,textarea,select{font:inherit}
-button{cursor:pointer;border:0;background:none;color:inherit}
-
-/* HEADER */
-header{position:sticky;top:0;z-index:100;background:rgba(10,14,39,.85);backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,.08);color:#fff;}
-.header-inner{max-width:1240px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 20px;flex-wrap:wrap;}
-.logo{display:flex;align-items:center;gap:10px;text-decoration:none;color:#fff}
-.logo-mark{width:38px;height:38px;border-radius:11px;background:var(--gradient);display:grid;place-items:center;font-weight:900;font-size:18px;box-shadow:0 4px 14px rgba(59,130,246,.4);}
-.logo-text{display:flex;flex-direction:column;line-height:1.1}
-.nav{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
-.nav-btn{padding:9px 16px;border-radius:10px;font-weight:600;font-size:14px;color:#e2e8f0;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);transition:all .2s;}
-.nav-btn:hover{background:rgba(255,255,255,.12)}
-.nav-btn.primary{background:var(--gradient);border-color:transparent;}
-.icon-btn{width:40px;height:40px;border-radius:10px;display:grid;place-items:center;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);color:#e2e8f0;font-size:18px;}
-
-/* MAIN */
-main{max-width:1240px;margin:0 auto;padding:24px 20px 60px}
-.hero{position:relative;overflow:hidden;background:var(--gradient-2);border-radius:24px;padding:56px 40px;color:#fff;margin-bottom:28px;box-shadow:var(--shadow-lg);}
-.hero h1{font-size:clamp(28px,5vw,44px);font-weight:900;line-height:1.15;margin-bottom:12px}
-.hero p{color:#cbd5e1;font-size:17px}
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:11px 20px;border-radius:11px;font-weight:700;font-size:14px;transition:all .2s;background:var(--gradient);color:#fff;}
-.btn.secondary{background:var(--surface);color:var(--ink);border:1px solid var(--line-2);}
-.btn.ghost{background:transparent;color:var(--ink-2);border:1px solid var(--line);}
-.btn.danger{background:var(--danger);color:#fff}
-.btn.success{background:var(--success);color:#fff}
-.panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-lg);padding:24px;margin-bottom:20px;}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px}
-.grid-2{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px}
-
-/* NEWS CARD */
-.news-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-lg);overflow:hidden;transition:all .35s;cursor:pointer;}
-.news-card:hover{transform:translateY(-6px);box-shadow:var(--shadow-lg);border-color:var(--primary)}
-.news-card-img{width:100%;aspect-ratio:16/10;overflow:hidden;background:#dbeafe;}
-.news-card-img img{width:100%;height:100%;object-fit:cover;transition:transform .5s}
-.news-card:hover .news-card-img img{transform:scale(1.06)}
-.news-card-body{padding:18px;}
-.news-card-body h3{font-size:18px;font-weight:700;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
-
-/* FORMS */
-input,textarea,select{width:100%;padding:12px 14px;border:1.5px solid var(--line-2);border-radius:11px;background:var(--surface);color:var(--ink);font-family:inherit;font-size:14px;}
-input:focus,textarea:focus,select:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 4px rgba(37,99,235,.12);}
-label{display:block;font-weight:600;font-size:14px;color:var(--ink-2);margin:14px 0 7px}
-.hidden{display:none!important}
-.muted{color:var(--muted);font-size:14px}
-.row{display:flex;gap:12px;align-items:center;flex-wrap:wrap} .row.between{justify-content:space-between}
-.toast{position:fixed;bottom:20px;right:20px;background:#0f172a;color:#fff;padding:12px 20px;border-radius:10px;z-index:9999;display:none;}
-.toast.show{display:block}
-.guide-box { background: #e0f2fe; border-left: 4px solid #0284c7; padding: 16px; border-radius: 8px; margin-bottom: 20px; color: #0c4a6e; font-size: 14px;}
-[data-theme="dark"] .guide-box { background: rgba(2, 132, 199, 0.15); border-left-color: #38bdf8; color: #bae6fd; }
-.ql-container{border-bottom-left-radius:11px;border-bottom-right-radius:11px;border-color:var(--line-2)!important;font-family:inherit;}
-.ql-toolbar{border-top-left-radius:11px;border-top-right-radius:11px;border-color:var(--line-2)!important;background:var(--surface-2);}
-.ql-editor{min-height:300px;font-size:16px;}
-.ql-editor img{max-width:100%;height:auto;border-radius:8px;margin:10px 0;display:block;}
-.article-body{font-size:17px;line-height:1.85;} .article-body img { max-width: 100%; border-radius: 8px; margin: 15px 0; display: block;}
+:root{--bg:#f3f6fc;--surface:#fff;--ink:#17233d;--muted:#71809a;--line:#e5eaf3;--nav:#0b1224;--nav2:#121e38;--blue:#3867f4;--blue2:#eaf0ff;--green:#138a58;--greenbg:#e5f7ef;--amber:#a66b00;--amberbg:#fff4d8;--red:#c13b4b;--redbg:#ffeaed;--shadow:0 12px 34px #17233d0b}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:"DM Sans","Noto Sans Sinhala",Arial,sans-serif}button,input,textarea,select{font:inherit}button{cursor:pointer;border:0}.hidden{display:none!important}.login-wrap{min-height:100vh;display:grid;place-items:center;padding:20px;background:radial-gradient(circle at 15% 15%,#243f7b 0,transparent 36%),linear-gradient(135deg,#0b1224,#14284e)}.login-card{width:min(440px,100%);background:white;border-radius:24px;padding:30px;box-shadow:0 24px 80px #0005}.brand{display:flex;align-items:center;gap:12px;margin-bottom:24px}.brand-mark{width:48px;height:48px;border-radius:15px;background:linear-gradient(135deg,#50b7ff,#3867f4);display:grid;place-items:center;color:#fff;font-weight:900;font-size:25px}.brand b{font-size:20px}.brand small{display:block;color:var(--muted);margin-top:2px}.login-card h1{font-size:25px;margin:0 0 7px}.login-card>p{color:var(--muted);margin:0 0 20px}.field{margin:13px 0}.field label{display:block;font-size:13px;font-weight:700;margin-bottom:7px}.field input,.field textarea,.field select,.toolbar input,.toolbar select{width:100%;border:1px solid #dbe2ee;border-radius:11px;padding:12px 13px;background:#fff;color:var(--ink);outline:none}.field input:focus,.field textarea:focus,.field select:focus,.toolbar input:focus{border-color:#7192ff;box-shadow:0 0 0 3px #3867f418}.field textarea{min-height:125px;resize:vertical}.btn{border-radius:10px;padding:10px 14px;font-weight:700;background:var(--blue);color:#fff;display:inline-flex;align-items:center;justify-content:center;gap:7px}.btn:disabled{opacity:.55;cursor:not-allowed}.btn.full{width:100%;padding:13px}.btn.soft{background:var(--blue2);color:#2d54c8}.btn.dark{background:#202d48;color:#fff}.btn.danger{background:var(--redbg);color:var(--red)}.btn.good{background:var(--greenbg);color:var(--green)}.btn.ghost{background:#f0f3f8;color:#34425b}.error{color:var(--red);font-size:13px;min-height:20px}.shell{min-height:100vh;display:grid;grid-template-columns:255px 1fr}.sidebar{background:var(--nav);color:#dbe5fa;padding:22px 15px;position:sticky;top:0;height:100vh;display:flex;flex-direction:column}.side-brand{display:flex;align-items:center;gap:10px;padding:5px 9px 26px}.side-brand .brand-mark{width:40px;height:40px;border-radius:12px;font-size:21px}.side-brand b{font-size:17px;color:#fff}.side-brand small{display:block;color:#91a2c2;font-size:11px}.side-label{font-size:10px;letter-spacing:1.5px;color:#7586a7;font-weight:800;padding:10px 12px}.nav-btn{width:100%;display:flex;align-items:center;gap:12px;padding:12px;border-radius:11px;color:#aebbd3;background:transparent;text-align:left;font-weight:600;margin:3px 0}.nav-btn .ico{width:22px;text-align:center;font-size:17px}.nav-btn.active,.nav-btn:hover{background:#1d3158;color:white}.side-bottom{margin-top:auto;border-top:1px solid #263552;padding:16px 8px 0}.admin-mini{font-size:12px;color:#91a2c2;overflow-wrap:anywhere;margin-bottom:12px}.main{min-width:0}.topbar{height:76px;background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 clamp(16px,3vw,36px);gap:15px}.topbar h1{font-size:20px;margin:0}.topbar p{font-size:12px;color:var(--muted);margin:4px 0 0}.top-actions{display:flex;align-items:center;gap:9px}.avatar{width:37px;height:37px;border-radius:50%;background:var(--blue2);color:#2c55d0;display:grid;place-items:center;font-weight:800}.content{padding:28px clamp(15px,3vw,36px);max-width:1500px;margin:auto}.page{display:none}.page.active{display:block}
+/* Dashboard Cards */
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin:18px 0 22px}.stat{background:#fff;border:1px solid var(--line);border-radius:16px;padding:17px;box-shadow:var(--shadow);position:relative;overflow:hidden}.stat-top{display:flex;justify-content:space-between;align-items:center;color:var(--muted);font-size:12px;font-weight:700}.stat-icon{width:35px;height:35px;border-radius:11px;background:var(--blue2);display:grid;place-items:center;font-size:17px}.stat strong{display:block;font-size:27px;margin-top:10px;letter-spacing:-1px}.stat small{color:var(--muted);font-size:11px}.stat.live::before{content:'';position:absolute;top:0;left:0;width:4px;height:100%;background:var(--green)}
+/* Panels & Tables */
+.panel{background:#fff;border:1px solid var(--line);border-radius:16px;padding:19px;box-shadow:var(--shadow);margin-bottom:17px}.panel-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:15px}.panel-head h3{margin:0;font-size:16px}.muted{color:var(--muted);font-size:12px}.toolbar{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:14px}.toolbar input{flex:1;min-width:180px}.toolbar select{width:auto;min-width:140px}.table-wrap{overflow:auto;border:1px solid var(--line);border-radius:12px}table{width:100%;border-collapse:collapse;min-width:720px}th,td{text-align:left;padding:13px 14px;border-bottom:1px solid var(--line);font-size:12px;vertical-align:middle}th{background:#f8faff;color:#687791;font-size:10px;text-transform:uppercase;letter-spacing:.6px}tr:last-child td{border-bottom:0}.user-cell{display:flex;align-items:center;gap:10px;min-width:180px}.user-pic{width:36px;height:36px;border-radius:50%;background:#eaf0ff;object-fit:cover;display:grid;place-items:center;color:#315fe2;font-weight:800;flex-shrink:0}.user-cell b{display:block;font-size:12px}.user-cell small{display:block;color:var(--muted);margin-top:3px}.pill{display:inline-flex;border-radius:30px;padding:5px 9px;font-size:10px;font-weight:800;background:#eef2f8;color:#596780}.pill.Approved,.pill.active{background:var(--greenbg);color:var(--green)}.pill.Pending{background:var(--amberbg);color:var(--amber)}.pill.Rejected,.pill.disabled{background:var(--redbg);color:var(--red)}.row-actions{display:flex;gap:6px;flex-wrap:wrap}.mini-btn{padding:7px 9px;border-radius:8px;font-size:11px;font-weight:700;background:var(--blue2);color:#3156c6}.mini-btn.red{background:var(--redbg);color:var(--red)}.mini-btn.green{background:var(--greenbg);color:var(--green)}.empty{text-align:center;padding:35px;color:var(--muted);font-size:13px}
+/* News Grid */
+.news-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}.news-item{border:1px solid var(--line);border-radius:13px;padding:14px;display:flex;gap:13px;min-width:0}.news-thumb{width:100px;height:90px;flex-shrink:0;border-radius:10px;background:#edf1f8;object-fit:cover}.news-item h4{margin:0 0 6px;font-size:14px;line-height:1.4}.news-item p{margin:0 0 8px;color:var(--muted);font-size:11px;line-height:1.5}.news-item .row-actions{margin-top:9px}
+/* Modals */
+.modal{position:fixed;inset:0;background:#0b1224a8;z-index:20;display:none;align-items:center;justify-content:center;padding:16px}.modal.open{display:flex}.modal-card{width:min(650px,100%);max-height:92vh;overflow:auto;background:#fff;border-radius:18px;padding:22px;box-shadow:0 25px 90px #0005}.modal-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:12px}.modal-head h2{font-size:18px;margin:0}.close{background:#f0f3f8;color:#33415b;border-radius:9px;width:34px;height:34px;font-size:20px}.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:0 13px}.span2{grid-column:1/-1}.notice{background:#fff5dd;border:1px solid #f4e3b5;color:#765200;border-radius:11px;padding:12px;font-size:12px;line-height:1.6;margin:12px 0}.toast{position:fixed;bottom:20px;right:20px;max-width:min(420px,calc(100vw - 40px));padding:13px 16px;background:#14213b;color:#fff;border-radius:12px;box-shadow:0 12px 35px #0003;z-index:50;font-size:13px;display:none}.toast.show{display:block}.loading{padding:25px;text-align:center;color:var(--muted)}.mobile-menu{display:none}.footnote{font-size:11px;color:var(--muted);line-height:1.6;margin-top:14px}
+@media(max-width:1000px){.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.news-grid{grid-template-columns:1fr}}
+@media(max-width:720px){.shell{grid-template-columns:1fr}.sidebar{position:fixed;z-index:15;left:-270px;width:255px;transition:left .22s;box-shadow:10px 0 40px #0003}.sidebar.open{left:0}.mobile-menu{display:inline-flex}.topbar{height:66px}.content{padding-top:17px}.stats{gap:9px}.stat{padding:13px}.stat strong{font-size:23px}.panel{padding:14px}.form-grid{grid-template-columns:1fr}.span2{grid-column:auto}.topbar h1{font-size:17px}}
+/* Quill Custom */
+.ql-container{font-family:inherit;font-size:15px;border-bottom-left-radius:11px;border-bottom-right-radius:11px;border-color:#dbe2ee!important}
+.ql-toolbar{border-top-left-radius:11px;border-top-right-radius:11px;border-color:#dbe2ee!important;background:#f8faff}
+.ql-editor{min-height:200px}
 </style>
 </head>
 <body>
+<section id="loginView" class="login-wrap"><div class="login-card"><div class="brand"><div class="brand-mark">N</div><div><b>Newsat<span style="color:#3867f4">.space</span></b><small>ADMIN CONTROL CENTER</small></div></div><h1>Admin Login</h1><p>Newsat.space පාලක පුවරුවට ආරක්ෂිතව පිවිසෙන්න.</p><form id="loginForm"><div class="field"><label>Email ලිපිනය</label><input id="loginEmail" type="email" placeholder="admin@newsat.space" autocomplete="username" required></div><div class="field"><label>Password</label><input id="loginPassword" type="password" autocomplete="current-password" required placeholder="ඔබේ මුරපදය"></div><button class="btn full" id="loginBtn" type="submit">ආරක්ෂිතව Login වන්න</button>
+<div id="loginError" class="error" style="margin-top:12px"></div></form><div class="footnote">මෙම පැනලය භාවිතා කළ හැක්කේ Admin අවසර (Custom Claim) ලබා දී ඇති ගිණුම් සඳහා පමණි.</div></div></section>
 
-<header>
-  <div class="header-inner">
-    <a href="#" class="logo" onclick="showPage('home');return false">
-      <div class="logo-mark">N</div>
-      <div class="logo-text"><b>Newsat.space</b></div>
-    </a>
-    <nav class="nav">
-      <button class="nav-btn" onclick="showPage('home')">Home</button>
-      <button class="nav-btn hidden" onclick="showPage('auth')" id="loginNav">Login / Register</button>
-      <button class="nav-btn hidden" onclick="showPage('profile')" id="profileNav">Profile</button>
-      <a href="admin.html" class="nav-btn primary hidden" id="adminNav" target="_blank">Admin Panel</a>
-      <button class="icon-btn" onclick="toggleTheme()">🌗</button>
-    </nav>
-  </div>
-</header>
-
-<div id="toast" class="toast"></div>
-
-<main>
-  <!-- HOME -->
-  <section id="homePage">
-    <div class="hero">
-      <h1>නවතම පුවත්<br><span style="color:#60a5fa">එකම තැනකින්</span></h1>
-      <p>දේශීය හා විදේශීය පුවත් — විශ්වාසනීය මූලාශ්‍රවලින් Newsat.space වෙතින්.</p>
-    </div>
-    <div class="row" style="margin-bottom:20px;">
-      <input id="searchInput" placeholder="පුවත් සොයන්න..." oninput="renderNews()" style="flex:1;">
-    </div>
-    <div id="newsList" class="grid"></div>
-  </section>
-
-  <!-- AUTH -->
-  <section id="authPage" class="hidden">
-    <div class="panel" style="max-width:480px;margin:auto">
-      <div class="row" style="margin-bottom:20px;background:var(--surface-2);padding:5px;border-radius:12px">
-        <button id="loginTab" class="btn ghost" style="flex:1" onclick="setAuthMode('login')">Login</button>
-        <button id="registerTab" class="btn ghost" style="flex:1" onclick="setAuthMode('register')">Register</button>
+<div id="appView" class="shell hidden">
+<aside class="sidebar" id="sidebar">
+  <div class="side-brand"><div class="brand-mark">N</div><div><b>Newsat.space</b><small>ADMIN PANEL</small></div></div>
+  <div class="side-label">WORKSPACE</div>
+  <button class="nav-btn active" data-page="dashboard"><span class="ico">📊</span> Dashboard</button>
+  <button class="nav-btn" data-page="users"><span class="ico">👥</span> පරිශීලකයින්</button>
+  <button class="nav-btn" data-page="news"><span class="ico">📰</span> පුවත් කළමනාකරණය</button>
+  <button class="nav-btn" data-page="admins"><span class="ico">🛡️</span> Admin කළමනාකරණය</button>
+  <div class="side-label" style="margin-top:18px">SYSTEM</div>
+  <button class="nav-btn" id="refreshAll"><span class="ico">🔄</span> දත්ත Refresh</button>
+  <div class="side-bottom"><div class="admin-mini" id="adminEmailLabel">Admin</div><button class="btn dark full" id="logoutBtn">↪ Logout</button></div>
+</aside>
+<div class="main">
+  <header class="topbar">
+    <div style="display:flex;align-items:center;gap:12px"><button class="btn soft mobile-menu" id="menuBtn">☰</button><div><h1 id="pageTitle">Dashboard</h1><p id="pageSubtitle">ඔබේ වෙබ් අඩවියේ සම්පූර්ණ තත්ත්වය</p></div></div>
+    <div class="top-actions"><span class="admin-email muted" id="topAdminEmail"></span><div class="avatar" id="adminAvatar">A</div></div>
+  </header>
+  <main class="content">
+    <!-- DASHBOARD -->
+    <section id="page-dashboard" class="page active">
+      <div class="stats">
+        <div class="stat live"><div class="stat-top">Live Traffic (Online) <span class="stat-icon" style="background:var(--greenbg);color:var(--green)">🟢</span></div><strong id="statOnline">—</strong><small>දැන් වෙබ් අඩවියේ සිටින අය</small></div>
+        <div class="stat"><div class="stat-top">මුළු පරිශීලකයින් <span class="stat-icon">👥</span></div><strong id="statUsers">—</strong><small>ලියාපදිංචි ගිණුම්</small></div>
+        <div class="stat"><div class="stat-top">මුළු පුවත් <span class="stat-icon">📰</span></div><strong id="statNews">—</strong><small>Firestore පුවත්</small></div>
+        <div class="stat"><div class="stat-top">Traffic (Views) <span class="stat-icon" style="background:var(--amberbg);color:var(--amber)">👁️</span></div><strong id="statViews">—</strong><small>මුළු පිටු පෙන්වීම්</small></div>
       </div>
-      <h2 id="authTitle" style="margin-bottom:18px">Welcome back 👋</h2>
-      <label>Email</label><input id="authEmail" type="email" placeholder="name@example.com">
-      <div id="registerExtra" class="hidden"><label>සම්පූර්ණ නම</label><input id="registerName" placeholder="John Doe"></div>
-      <label>Password</label><input id="authPassword" type="password" placeholder="••••••••">
-      <button class="btn" style="margin-top:20px;width:100%" onclick="submitAuth()" id="authSubmit"><span id="authBtnText">Login</span></button>
-      <p style="text-align:center;margin-top:14px;font-size:14px"><a href="#" onclick="forgotPassword();return false" style="color:var(--primary);">Password අමතකද?</a></p>
-    </div>
-  </section>
+      <div class="panel"><div class="panel-head"><div><h3>අලුත්ම පුවත්</h3><span class="muted">අවසන් වරට එකතු කළ පුවත් 5</span></div><button class="btn soft" onclick="navigate('news')">සියලු පුවත් →</button></div><div id="recentNews" class="news-grid"><div class="loading">දත්ත ලබාගනිමින්...</div></div></div>
+      <div class="panel"><div class="panel-head"><div><h3>අලුත්ම සාමාජිකයින්</h3><span class="muted">අවසන් වරට ලියාපදිංචි වූ 5 දෙනා</span></div><button class="btn soft" onclick="navigate('users')">පරිශීලකයින් බලන්න →</button></div><div id="recentUsers"><div class="loading">දත්ත ලබාගනිමින්...</div></div></div>
+    </section>
 
-  <!-- PROFILE & WRITER -->
-  <section id="profilePage" class="hidden">
-    <div class="panel">
-      <div class="row between" style="margin-bottom:20px">
-        <div><h2 style="font-size:22px">මගේ Profile</h2><p class="muted" id="profileEmail"></p></div>
-        <button class="btn ghost" onclick="logout()">Logout</button>
+    <!-- USERS -->
+    <section id="page-users" class="page"><div class="panel"><div class="panel-head"><div><h3>පරිශීලක කළමනාකරණය</h3><span class="muted">ලියාපදිංචි සාමාජිකයින්ගේ Profile දත්ත</span></div></div><div class="toolbar"><input id="userSearch" placeholder="නම, Email, UID හෝ දුරකථනයෙන් සොයන්න..."></div><div class="table-wrap"><table><thead><tr><th>පරිශීලකයා</th><th>දුරකථනය</th><th>ප්‍රදේශය</th><th>Role</th><th>ලියාපදිංචි වූ දිනය</th><th>ක්‍රියාමාර්ග</th></tr></thead><tbody id="usersTable"></tbody></table></div></div></section>
+
+    <!-- NEWS -->
+    <section id="page-news" class="page"><div class="panel"><div class="panel-head"><div><h3>සියලුම පුවත්</h3><span class="muted">Publish, Edit, Delete සහ Status කළමනාකරණය</span></div></div><div class="toolbar"><input id="newsSearch" placeholder="පුවත් මාතෘකාව සොයන්න..."><select id="newsStatus"><option value="">සියලුම තත්ත්ව</option><option value="Approved">Published</option><option value="Pending">Pending</option><option value="Rejected">Rejected</option></select></div><div id="newsCards" class="news-grid"></div></div></section>
+
+    <!-- ADMINS -->
+    <section id="page-admins" class="page">
+      <div class="panel">
+        <div class="panel-head"><div><h3>Admin කළමනාකරණය</h3><span class="muted">අලුත් Admin කෙනෙක් එකතු කරන්න හෝ ඉවත් කරන්න</span></div></div>
+        <div class="notice">⚠️ අලුත් Admin කෙනෙක් හදන්න, ඔහු පළමුව සාමාන්‍ය විදියට (index.html එකෙන්) රෙජිස්ටර් වෙලා තියෙන්න ඕනේ. ඊට පස්සේ ඔහුගේ Email එක මෙතන දාලා Admin කරන්න.</div>
+        <form id="adminForm" style="display:flex;gap:10px;align-items:flex-end;margin-top:15px;">
+          <div class="field" style="flex:1;margin:0;"><label>පරිශීලකයාගේ Email ලිපිනය</label><input id="newAdminEmail" type="email" placeholder="user@example.com" required></div>
+          <button class="btn" type="submit" id="makeAdminBtn">Admin කරන්න</button>
+        </form>
       </div>
-    </div>
+    </section>
+  </main>
+</div></div>
 
-    <div class="panel">
-      <h3 style="font-size:20px;margin-bottom:10px">පුවතක් ඉදිරිපත් කරන්න</h3>
-      <div class="guide-box">
-        <b>📸 පින්තූර එකතු කරන ආකාරය (User Guide):</b><br>
-        1. ඔබට අවශ්‍ය පින්තූරය <b>Google Drive</b> එකට Upload කරන්න.<br>
-        2. එම පින්තූරය Right-Click කර <b>"Share"</b> ක්ලික් කරන්න.<br>
-        3. Access එක <b>"Anyone with the link"</b> ලෙස වෙනස් කරන්න.<br>
-        4. ලින්ක් එක Copy කරගන්න.<br>
-        5. පහත Editor එකේ අවශ්‍ය තැනට කර්සරය තබා, <b>"🖼️ Add Image"</b> බොක්ස් එකට ලින්ක් එක Paste කරන්න.
-      </div>
+<!-- User Edit Modal -->
+<div class="modal" id="userModal"><div class="modal-card"><div class="modal-head"><h2>පරිශීලක Profile සංස්කරණය</h2><button class="close" data-close="userModal">×</button></div><form id="userForm"><input type="hidden" id="editUserId"><div class="form-grid"><div class="field"><label>සම්පූර්ණ නම</label><input id="editUserName"></div><div class="field"><label>Email</label><input id="editUserEmail" disabled></div></div><div class="row-actions" style="justify-content:flex-end;margin-top:15px;"><button type="button" class="btn soft" data-close="userModal">අවලංගු කරන්න</button><button class="btn" id="saveUserBtn" type="submit">Save කරන්න</button></div></form></div></div>
 
-      <form id="writerForm" onsubmit="submitNews(event)">
-        <label>පුවත් මාතෘකාව</label><input id="newsTitle" required>
-        <label>කාණ්ඩය</label>
-        <select id="newsCategory"><option>දේශීය</option><option>විදේශීය</option><option>ක්‍රීඩා</option><option>ව්‍යාපාර</option><option>තාක්ෂණය</option><option>විනෝදාස්වාදය</option></select>
-        
-        <div style="background:var(--surface-2);padding:16px;border-radius:12px;border:1px solid var(--line);margin-top:16px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
-          <input type="url" id="gdriveImageUrl" placeholder="Google Drive Image Link එක මෙතනට Paste කරන්න..." style="flex:1;">
-          <button type="button" class="btn secondary" onclick="addGDriveImageToEditor()">🖼️ Add Image</button>
-        </div>
+<!-- News Edit Modal -->
+<div class="modal" id="newsModal"><div class="modal-card" style="width:min(800px,100%)"><div class="modal-head"><h2>පුවත සංස්කරණය</h2><button class="close" data-close="newsModal">×</button></div><form id="newsForm"><input type="hidden" id="editNewsId"><div class="field"><label>මාතෘකාව</label><input id="editNewsTitle" required></div><div class="form-grid"><div class="field"><label>කාණ්ඩය</label><select id="editNewsCategory"><option>දේශීය</option><option>විදේශීය</option><option>ක්‍රීඩා</option><option>ව්‍යාපාර</option><option>තාක්ෂණය</option><option>විනෝදාස්වාදය</option></select></div><div class="field"><label>තත්ත්වය</label><select id="editNewsStatus"><option value="Approved">Published</option><option value="Pending">Pending</option><option value="Rejected">Rejected</option></select></div></div><div class="field"><label>පුවත් විස්තරය (Quill Editor)</label><div id="adminQuillEditor"></div><textarea id="editNewsBody" class="hidden"></textarea></div><div class="row-actions" style="justify-content:flex-end;margin-top:15px;"><button type="button" class="btn soft" data-close="newsModal">අවලංගු කරන්න</button><button class="btn" id="saveNewsBtn" type="submit">Update කරන්න</button></div></form></div></div>
 
-        <label style="margin-top:16px;">පුවත් විස්තරය (MS Word වගේ)</label>
-        <div id="newsBodyEditor"></div>
-        <textarea id="newsBody" class="hidden"></textarea>
-        
-        <button id="newsSubmitBtn" type="submit" class="btn" style="margin-top:16px;width:100%;"><span id="newsBtnText">පුවත Submit කරන්න</span></button>
-      </form>
-    </div>
-  </section>
-
-  <!-- ARTICLE VIEW -->
-  <section id="articlePage" class="hidden">
-    <button class="btn ghost" onclick="showPage('home')" style="margin-bottom:20px">← ආපසු</button>
-    <article id="articleContent" class="panel"></article>
-  </section>
-</main>
-
+<div class="toast" id="toast"></div>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-functions-compat.js"></script>
 <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
 <script>
 const firebaseConfig={apiKey:"AIzaSyBMmZuPV3XKlYkGqjQYd7aJpFb8MZc-P9k",authDomain:"newsat-209f8.firebaseapp.com",projectId:"newsat-209f8",appId:"1:529324718671:web:0f45e89bf317cbb0c9083a"};
-const ADMIN_EMAIL = "kularathnashac@gmail.com";
+let auth,db,currentUser=null,isAdmin=false,usersCache=[],newsCache=[],statsCache={online:0,views:0};
+let adminQuill;
 
-let auth, db, currentUser=null, isAdmin=false, allNews=[], quillEditor;
+const $=id=>document.getElementById(id);
+function esc(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function toast(s){const el=$('toast');el.textContent=s;el.classList.add('show');clearTimeout(window.__toastTimer);window.__toastTimer=setTimeout(()=>el.classList.remove('show'),3600)}
+function friendly(e){return e?.message||'දෝෂයක් සිදුවිය.'}
 
-const $ = id => document.getElementById(id);
-const esc = s => String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-function toast(text, type='info'){
-  const el = $('toast');
-  el.textContent = text;
-  el.style.borderLeft = type === 'success' ? '4px solid var(--success)' : type === 'error' ? '4px solid var(--danger)' : '4px solid var(--primary)';
-  el.classList.add('show');
-  setTimeout(()=>el.classList.remove('show'), 4000);
-}
-function friendlyError(e){ return e?.message || 'දෝෂයක් සිදුවිය.'; }
-
-// INIT
+// INIT FIREBASE
 firebase.initializeApp(firebaseConfig);
-auth = firebase.auth();
-db = firebase.firestore();
+auth=firebase.auth();
+db=firebase.firestore();
 auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL);
 
-quillEditor = new Quill('#newsBodyEditor', {
+// INIT QUILL EDITOR
+adminQuill = new Quill('#adminQuillEditor', {
   theme: 'snow',
-  placeholder: 'ඔබේ පුවත මෙහි ලියන්න...',
-  modules: { toolbar: [[{ 'header': [1, 2, 3, false] }],['bold', 'italic', 'underline'], [{ 'list': 'ordered'}, { 'list': 'bullet' }], ['link', 'blockquote'], ['clean']] }
+  modules: { toolbar: [['bold', 'italic', 'underline'], [{ 'list': 'ordered'}, { 'list': 'bullet' }], ['link', 'image'], ['clean']] }
 });
 
-auth.onAuthStateChanged(async (user) => {
-  currentUser = user;
-  if(!user) {
-    isAdmin = false; updateNav(); showPage('home'); return;
-  }
-  const token = await user.getIdTokenResult(true);
-  isAdmin = token.claims.admin === true;
-  updateNav();
-  showPage('profile');
-  
-  // Track Traffic
-  trackOnlineUser(user.uid);
-});
-
-function updateNav() {
-  const signed = !!currentUser;
-  $('loginNav').classList.toggle('hidden', signed);
-  $('profileNav').classList.toggle('hidden', !signed);
-  $('adminNav').classList.toggle('hidden', !isAdmin);
-}
-
-// THEME
-function toggleTheme(){
-  const isDark = document.documentElement.dataset.theme === 'dark';
-  document.documentElement.dataset.theme = isDark ? 'light' : 'dark';
-}
-
-// AUTH
-function setAuthMode(mode){
-  const reg = mode === 'register';
-  $('loginTab').className = reg ? 'btn ghost' : 'btn';
-  $('registerTab').className = reg ? 'btn' : 'btn ghost';
-  $('registerExtra').classList.toggle('hidden', !reg);
-  $('authTitle').textContent = reg ? 'Create account 🚀' : 'Welcome back 👋';
-  $('authBtnText').textContent = reg ? 'Create Account' : 'Login';
-}
-
-async function submitAuth(){
-  const email = $('authEmail').value.trim(), pw = $('authPassword').value;
-  if(!email || !pw) return toast('Email සහ Password ඇතුළත් කරන්න.', 'error');
-  const isReg = !$('registerExtra').classList.contains('hidden');
-  
+// ADMIN AUTH
+auth.onAuthStateChanged(async (user)=>{
+  if(!user){ $('loginView').classList.remove('hidden'); $('appView').classList.add('hidden'); return; }
   try {
-    if(isReg) {
-      const cred = await auth.createUserWithEmailAndPassword(email, pw);
-      await db.collection('users').doc(cred.user.uid).set({
-        uid: cred.user.uid, email, name: $('registerName').value.trim(), role: 'Writer', createdAt: firebase.firestore.FieldValue.serverTimestamp()
-      });
-    } else {
-      await auth.signInWithEmailAndPassword(email, pw);
-    }
-    toast('සාර්ථකයි!', 'success');
-  } catch(e) { toast(friendlyError(e), 'error'); }
-}
+    const token = await user.getIdTokenResult(true);
+    if(token.claims.admin !== true) throw new Error("ඔබට Admin අවසර නැත.");
+    
+    currentUser = user; isAdmin = true;
+    $('loginView').classList.add('hidden'); $('appView').classList.remove('hidden');
+    $('adminEmailLabel').textContent = user.email; $('topAdminEmail').textContent = user.email;
+    $('adminAvatar').textContent = user.email[0].toUpperCase();
+    
+    // Update Traffic & Online status when admin logs in
+    trackOnlineUser(user.uid);
+    refreshAll();
 
-async function forgotPassword(){
-  const email = $('authEmail').value.trim();
-  if(!email) return toast('Email ලිපිනය ඇතුළත් කරන්න.', 'warning');
-  try { await auth.sendPasswordResetEmail(email); toast('Reset link Email එකට යවන ලදී.', 'success'); }
-  catch(e) { toast(friendlyError(e), 'error'); }
-}
+  } catch(e) {
+    toast(e.message);
+    auth.signOut();
+  }
+});
 
-async function logout(){ await auth.signOut(); toast('Logout විය.', 'success'); }
-
-// GOOGLE DRIVE LINK CONVERTER
-function convertGoogleDriveLink(url) {
-  if (!url) return '';
-  const match = url.match(/\/d\/([a-zA-Z0-9_-]+)/) || url.match(/id=([a-zA-Z0-9_-]+)/);
-  if (match && match[1]) return `https://lh3.googleusercontent.com/d/${match[1]}`;
-  return url;
-}
-
-function addGDriveImageToEditor() {
-  const input = $('gdriveImageUrl');
-  const rawUrl = input.value.trim();
-  if (!rawUrl) return toast('කරුණාකර ලින්ක් එකක් ඇතුළත් කරන්න.', 'warning');
-  
-  const directUrl = convertGoogleDriveLink(rawUrl);
-  const range = quillEditor.getSelection(true);
-  const index = range ? range.index : quillEditor.getLength();
-  quillEditor.insertEmbed(index, 'image', directUrl, 'user');
-  quillEditor.setSelection(index + 1, 0);
-  input.value = '';
-  toast('පින්තූරය එකතු කරන ලදී!', 'success');
-}
-
-// SUBMIT NEWS
-async function submitNews(e){
+$('loginForm').addEventListener('submit', async (e)=>{
   e.preventDefault();
-  if(!currentUser) return toast('පළමුව Login වන්න.', 'error');
-  
-  const btn = $('newsSubmitBtn'), txt = $('newsBtnText');
-  btn.disabled = true; txt.textContent = 'Submit වෙමින්...';
-
   try {
-    const title = $('newsTitle').value.trim();
-    const bodyHTML = quillEditor.root.innerHTML;
-    if(!title || bodyHTML === '<p><br></p>') throw new Error('මාතෘකාව සහ විස්තරය අවශ්‍යයි.');
+    await auth.signInWithEmailAndPassword($('loginEmail').value, $('loginPassword').value);
+  } catch(e) { $('loginError').textContent = friendly(e); }
+});
 
-    const imgMatch = bodyHTML.match(/<img[^>]+src="([^">]+)"/);
-    const thumbnail = imgMatch ? imgMatch[1] : '';
+// LOGOUT & ONLINE TRACKING
+$('logoutBtn').addEventListener('click', async ()=>{
+  // Remove from online list before logging out
+  if(currentUser) await db.collection('online_users').doc(currentUser.uid).delete();
+  auth.signOut();
+});
 
-    await db.collection('news').add({
-      title, category: $('newsCategory').value, body: bodyHTML, image: thumbnail,
-      authorUid: currentUser.uid, authorEmail: currentUser.email, status: 'Pending',
-      createdAt: firebase.firestore.FieldValue.serverTimestamp()
-    });
-
-    $('writerForm').reset(); quillEditor.root.innerHTML = '';
-    toast('පුවත ඉදිරිපත් කළා! Admin අනුමැතියෙන් පසු පළවේ.', 'success');
-  } catch(err) {
-    toast(err.message, 'error');
-  } finally {
-    btn.disabled = false; txt.textContent = 'පුවත Submit කරන්න';
-  }
-}
-
-// LOAD NEWS
-async function loadPublicNews(){
-  try {
-    const snap = await db.collection('news').where('status', '==', 'Approved').get();
-    allNews = snap.docs.map(d => ({id: d.id, ...d.data()})).sort((a,b) => (b.createdAt?.seconds||0) - (a.createdAt?.seconds||0));
-    renderNews();
-  } catch(e) { console.error(e); }
-}
-
-function renderNews(){
-  const q = $('searchInput').value.toLowerCase();
-  const arr = allNews.filter(n => (n.title||'').toLowerCase().includes(q));
-  $('newsList').innerHTML = arr.map(n => `
-    <article class="news-card" onclick="openArticle('${n.id}')">
-      <div class="news-card-img">${n.image ? `<img src="${esc(n.image)}">` : '<div style="display:grid;place-items:center;height:100%">No Image</div>'}</div>
-      <div class="news-card-body"><h3>${esc(n.title)}</h3></div>
-    </article>
-  `).join('');
-}
-
-function openArticle(id){
-  const n = allNews.find(x => x.id === id);
-  if(!n) return;
-  $('articleContent').innerHTML = `<h1>${esc(n.title)}</h1><div class="article-body">${n.body}</div>`;
-  showPage('article');
-}
-
-// TRACK ONLINE TRAFFIC
 async function trackOnlineUser(uid) {
   const userRef = db.collection('online_users').doc(uid);
   await userRef.set({ lastSeen: firebase.firestore.FieldValue.serverTimestamp() });
+  
+  // Heartbeat every 1 min
   setInterval(() => {
     if(navigator.onLine) userRef.update({ lastSeen: firebase.firestore.FieldValue.serverTimestamp() }).catch(()=>{});
   }, 60000);
-  
-  // Traffic Count
-  db.collection('site_stats').doc('traffic').set({
-    views: firebase.firestore.FieldValue.increment(1)
-  }, { merge: true });
 }
+
+// GET DATA
+async function refreshAll(){
+  toast('දත්ත Refresh කරමින්...');
+  try {
+    // 1. Get Users
+    const us = await db.collection('users').get();
+    usersCache = us.docs.map(d=>({id:d.id,...d.data()}));
+    
+    // 2. Get News
+    const ns = await db.collection('news').get();
+    newsCache = ns.docs.map(d=>({id:d.id,...d.data()})).sort((a,b)=>(b.createdAt?.seconds||0)-(a.createdAt?.seconds||0));
+
+    // 3. Get Stats (Traffic & Online)
+    const trafficDoc = await db.collection('site_stats').doc('traffic').get();
+    statsCache.views = trafficDoc.exists ? (trafficDoc.data().views || 0) : 0;
+    
+    // Check online users (last seen within 5 mins)
+    const fiveMinsAgo = new Date(Date.now() - 5 * 60000);
+    const onlineSnap = await db.collection('online_users').where('lastSeen', '>=', fiveMinsAgo).get();
+    statsCache.online = onlineSnap.size;
+
+    updateDashboard();
+    renderUsers();
+    renderNews();
+  } catch(e) { toast(friendly(e)); }
+}
+
+function updateDashboard(){
+  $('statUsers').textContent = usersCache.length;
+  $('statNews').textContent = newsCache.length;
+  $('statViews').textContent = statsCache.views.toLocaleString();
+  $('statOnline').textContent = statsCache.online;
+  
+  $('recentNews').innerHTML = newsCache.slice(0,5).map(newsCard).join('') || '<div class="empty">පුවත් නැත.</div>';
+  $('recentUsers').innerHTML = usersCache.slice(0,5).map(u=>`<div class="user-cell"><div class="user-pic">${esc((u.name||'U')[0].toUpperCase())}</div><div><b>${esc(u.name||'නමක් නැත')}</b><small>${esc(u.email)}</small></div></div>`).join('') || '<div class="empty">පරිශීලකයින් නැත.</div>';
+}
+
+// USERS CRUD
+function renderUsers(){
+  let q = $('userSearch').value.toLowerCase();
+  let arr = usersCache.filter(u => [u.name, u.email, u.uid].join(' ').toLowerCase().includes(q));
+  $('usersTable').innerHTML = arr.map(u=>`<tr>
+    <td><div class="user-cell"><div class="user-pic">${esc((u.name||'U')[0].toUpperCase())}</div><div><b>${esc(u.name||'නමක් නැත')}</b><small>${esc(u.email)}</small></div></div></td>
+    <td>${esc(u.phone||'—')}</td>
+    <td>${esc(u.location||'—')}</td>
+    <td><span class="pill">${esc(u.role||'Writer')}</span></td>
+    <td>${u.createdAt ? new Date(u.createdAt.seconds*1000).toLocaleDateString() : '—'}</td>
+    <td><button class="mini-btn" onclick="openUser('${u.id}')">Edit</button> <button class="mini-btn red" onclick="deleteUser('${u.id}')">Delete</button></td>
+  </tr>`).join('');
+}
+$('userSearch').addEventListener('input', renderUsers);
+function openUser(id){
+  let u = usersCache.find(x=>x.id===id);
+  $('editUserId').value = id; $('editUserName').value = u.name||''; $('editUserEmail').value = u.email||'';
+  $('userModal').classList.add('open');
+}
+$('userForm').addEventListener('submit', async (e)=>{
+  e.preventDefault();
+  await db.collection('users').doc($('editUserId').value).update({ name: $('editUserName').value });
+  $('userModal').classList.remove('open'); refreshAll(); toast('Profile Update විය.');
+});
+async function deleteUser(id){
+  if(!confirm('මෙම පරිශීලකයාගේ Profile දත්ත මකා දමන්නද?')) return;
+  await db.collection('users').doc(id).delete(); refreshAll(); toast('පරිශීලකයා මකා දැමුවා.');
+}
+
+// NEWS CRUD
+function newsCard(n){
+  let status = n.status || 'Pending';
+  return `<div class="news-item">
+    <div style="min-width:0;flex:1">
+      <h4>${esc(n.title)}</h4><p>${esc(n.category)} · ${new Date(n.createdAt?.seconds*1000 || Date.now()).toLocaleDateString()}</p>
+      <span class="pill ${status}">${status}</span>
+      <div class="row-actions">
+        <button class="mini-btn" onclick="openNews('${n.id}')">Edit</button>
+        ${status !== 'Approved' ? `<button class="mini-btn green" onclick="changeNewsStatus('${n.id}','Approved')">Publish</button>` : ''}
+        ${status !== 'Rejected' ? `<button class="mini-btn red" onclick="changeNewsStatus('${n.id}','Rejected')">Reject</button>` : ''}
+        <button class="mini-btn red" onclick="deleteNews('${n.id}')">Delete</button>
+      </div>
+    </div>
+  </div>`;
+}
+function renderNews(){
+  let q = $('newsSearch').value.toLowerCase();
+  let st = $('newsStatus').value;
+  let arr = newsCache.filter(n => (n.title||'').toLowerCase().includes(q) && (!st || n.status === st));
+  $('newsCards').innerHTML = arr.map(newsCard).join('') || '<div class="empty">පුවත් නැත.</div>';
+}
+$('newsSearch').addEventListener('input', renderNews); $('newsStatus').addEventListener('change', renderNews);
+
+function openNews(id){
+  let n = newsCache.find(x=>x.id===id);
+  $('editNewsId').value = id; $('editNewsTitle').value = n.title||'';
+  $('editNewsCategory').value = n.category||'දේශීය'; $('editNewsStatus').value = n.status||'Pending';
+  // Set Quill content (if old news uses 'body', if new uses HTML)
+  adminQuill.root.innerHTML = n.body || ''; 
+  $('newsModal').classList.add('open');
+}
+$('newsForm').addEventListener('submit', async (e)=>{
+  e.preventDefault();
+  const id = $('editNewsId').value;
+  await db.collection('news').doc(id).update({
+    title: $('editNewsTitle').value, category: $('editNewsCategory').value,
+    status: $('editNewsStatus').value, body: adminQuill.root.innerHTML
+  });
+  $('newsModal').classList.remove('open'); refreshAll(); toast('පුවත Update විය.');
+});
+async function changeNewsStatus(id, status){
+  await db.collection('news').doc(id).update({ status }); refreshAll(); toast('තත්ත්වය වෙනස් විය.');
+}
+async function deleteNews(id){
+  if(!confirm('මෙම පුවත සදහටම මකා දමන්නද?')) return;
+  await db.collection('news').doc(id).delete(); refreshAll(); toast('පුවත මකා දැමුවා.');
+}
+
+// MAKE ADMIN
+$('adminForm').addEventListener('submit', async (e)=>{
+  e.preventDefault();
+  const email = $('newAdminEmail').value;
+  const user = usersCache.find(u => u.email === email);
+  if(!user) return toast('මෙම Email එකෙන් රෙජිස්ටර් වුණු කෙනෙක් නැත. පළමුව ඔහුව වෙබ් එකෙන් රෙජිස්ටර් කරගන්න.');
+  
+  try {
+    $('makeAdminBtn').disabled = true;
+    // Call Cloud Function
+    const makeAdmin = firebase.functions().httpsCallable('makeAdmin');
+    await makeAdmin({ uid: user.id });
+    toast('සාර්ථකව Admin කරන ලදී! ඔහුට දැන් admin.html එකට ලොග් වෙන්න පුළුවන්.');
+    $('newAdminEmail').value = '';
+  } catch(e) {
+    toast('දෝෂයක්: ' + friendly(e));
+  } finally {
+    $('makeAdminBtn').disabled = false;
+  }
+});
 
 // NAVIGATION
-function showPage(name){
-  ['home','auth','profile','article'].forEach(p => $(p+'Page').classList.toggle('hidden', p !== name));
-  window.scrollTo(0,0);
-  if(name === 'home') loadPublicNews();
+function navigate(page){
+  document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
+  $('page-'+page).classList.add('active');
+  document.querySelectorAll('.nav-btn[data-page]').forEach(x=>x.classList.toggle('active', x.dataset.page===page));
+  $('sidebar').classList.remove('open');
 }
-
-loadPublicNews();
+document.querySelectorAll('.nav-btn[data-page]').forEach(b=>b.addEventListener('click', ()=>navigate(b.dataset.page)));
+document.querySelectorAll('[data-close]').forEach(b=>b.addEventListener('click', ()=>b.closest('.modal').classList.remove('open')));
+$('menuBtn').addEventListener('click', ()=>$('sidebar').classList.toggle('open'));
+$('refreshAll').addEventListener('click', refreshAll);
 </script>
 </body>
 </html>
