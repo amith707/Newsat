@@ -12,7 +12,13 @@
 </style>
 </head>
 <body>
-<section id="loginView" class="login-wrap"><div class="login-card"><div class="brand"><div class="brand-mark">N</div><div><b>Newsat<span style="color:#3867f4">.space</span></b><small>ADMIN CONTROL CENTER</small></div></div><h1>Admin Login</h1><p>Newsat.space පාලක පුවරුවට ආරක්ෂිතව පිවිසෙන්න.</p><form id="loginForm"><div class="field"><label>Email ලිපිනය</label><input id="loginEmail" type="email" autocomplete="username" required placeholder="admin@example.com"></div><div class="field"><label>Password</label><input id="loginPassword" type="password" autocomplete="current-password" required placeholder="ඔබේ මුරපදය"></div><button class="btn full" id="loginBtn" type="submit">ආරක්ෂිතව Login වන්න</button><div id="loginError" class="error" style="margin-top:12px"></div></form><div class="footnote">මෙම පැනලයට Firebase Admin Custom Claim <b>admin: true</b> සහ නියමිත Admin Email එක ඇති ගිණුමට පමණක් අවසර ඇත.</div></div></section>
+<section id="loginView" class="login-wrap"><div class="login-card"><div class="brand"><div class="brand-mark">N</div><div><b>Newsat<span style="color:#3867f4">.space</span></b><small>ADMIN CONTROL CENTER</small></div></div><h1>Admin Login</h1><p>Newsat.space පාලක පුවරුවට ආරක්ෂිතව පිවිසෙන්න.</p><form id="loginForm"><div class="field"><label>Email ලිපිනය</label><input id="loginEmail" type="email" value="kularathnashac@gmail.com" autocomplete="username" readonly required></div><div class="field"><label>Password</label><input id="loginPassword" type="password" autocomplete="current-password" required placeholder="ඔබේ මුරපදය"></div><button class="btn full" id="loginBtn" type="submit">ආරක්ෂිතව Login වන්න</button>
+<div class="row-actions" style="margin-top:10px;display:grid;grid-template-columns:1fr 1fr;gap:8px">
+<button class="btn soft" id="createAdminBtn" type="button">පළමු ගිණුම සාදන්න</button>
+<button class="btn ghost" id="resetAdminBtn" type="button">Password අමතකද?</button>
+</div>
+<button class="btn ghost full" id="resendVerifyBtn" type="button" style="margin-top:8px">Verification Email නැවත යවන්න</button>
+<div id="loginError" class="error" style="margin-top:12px"></div></form><div class="footnote">පළමු වරට ගිණුම සාදා Email Verification Link එක තහවුරු කරන්න. Admin අවසරය ආරක්ෂිත Cloud Function එකෙන් ලබාදේ.</div></div></section>
 <div id="appView" class="shell hidden">
 <aside class="sidebar" id="sidebar"><div class="side-brand"><div class="brand-mark">N</div><div><b>Newsat.space</b><small>ADMIN CONTROL CENTER</small></div></div><div class="side-label">WORKSPACE</div>
 <button class="nav-btn active" data-page="dashboard"><span class="ico">▦</span> Dashboard</button><button class="nav-btn" data-page="users"><span class="ico">♙</span> පරිශීලකයින්</button><button class="nav-btn" data-page="news"><span class="ico">▤</span> පුවත් කළමනාකරණය</button>
@@ -28,7 +34,7 @@
 <div class="modal" id="userModal"><div class="modal-card"><div class="modal-head"><h2>පරිශීලක Profile සංස්කරණය</h2><button class="close" data-close="userModal">×</button></div><form id="userForm"><input type="hidden" id="editUserId"><div class="form-grid"><div class="field"><label>සම්පූර්ණ නම</label><input id="editUserName" maxlength="100"></div><div class="field"><label>Email (වෙනස් කළ නොහැක)</label><input id="editUserEmail" disabled></div><div class="field"><label>දුරකථන අංකය</label><input id="editUserPhone" type="tel"></div><div class="field"><label>නගරය / ප්‍රදේශය</label><input id="editUserLocation"></div><div class="field"><label>රැකියාව</label><input id="editUserOccupation"></div><div class="field"><label>Website / Social Link</label><input id="editUserWebsite" type="url"></div><div class="field span2"><label>Profile ඡායාරූප URL</label><input id="editUserPhoto" type="url"></div><div class="field span2"><label>Bio / ඔබ ගැන</label><textarea id="editUserBio"></textarea></div></div><div class="notice">Role සහ Admin අවසර මෙතැනින් වෙනස් කළ නොහැක. Admin අවසර Firebase Custom Claims මගින් පමණක් ලබාදිය යුතුය.</div><div class="row-actions" style="justify-content:flex-end"><button type="button" class="btn soft" data-close="userModal">අවලංගු කරන්න</button><button class="btn" id="saveUserBtn" type="submit">වෙනස්කම් Save කරන්න</button></div><div id="userFormError" class="error"></div></form></div></div>
 <div class="modal" id="newsModal"><div class="modal-card"><div class="modal-head"><h2>පුවත සංස්කරණය</h2><button class="close" data-close="newsModal">×</button></div><form id="newsForm"><input type="hidden" id="editNewsId"><div class="field"><label>මාතෘකාව</label><input id="editNewsTitle" required maxlength="220"></div><div class="form-grid"><div class="field"><label>කාණ්ඩය</label><select id="editNewsCategory"><option>දේශීය</option><option>විදේශීය</option><option>ක්‍රීඩා</option><option>ව්‍යාපාර</option><option>තාක්ෂණය</option><option>විනෝදාස්වාදය</option></select></div><div class="field"><label>ප්‍රකාශන තත්ත්වය</label><select id="editNewsStatus"><option value="Approved">Published</option><option value="Pending">Pending</option><option value="Rejected">Rejected</option></select></div></div><div class="field"><label>පුවත් විස්තරය</label><textarea id="editNewsBody" required></textarea></div><div class="field"><label>ඡායාරූප URL</label><input id="editNewsImage" type="url" placeholder="https://..."></div><div class="field"><label>නව ඡායාරූපයක් Upload කරන්න (විකල්පයි)</label><input id="editNewsFile" type="file" accept="image/jpeg,image/png,image/webp"></div><div class="row-actions" style="justify-content:flex-end"><button type="button" class="btn soft" data-close="newsModal">අවලංගු කරන්න</button><button class="btn" id="saveNewsBtn" type="submit">Update කරන්න</button></div><div id="newsFormError" class="error"></div></form></div></div>
 <div class="toast" id="toast"></div>
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-functions-compat.js"></script>
 <script>
 // Newsat.space index.html එකේම Firebase project සහ collection schema භාවිතා කරයි.
 const firebaseConfig={apiKey:"AIzaSyBMmZuPV3XKlYkGqjQYd7aJpFb8MZc-P9k",authDomain:"newsat-209f8.firebaseapp.com",projectId:"newsat-209f8",appId:"1:529324718671:web:0f45e89bf317cbb0c9083a"};
@@ -47,7 +53,30 @@ function requireAdmin(){if(!currentUser||!isAdmin)throw new Error('Admin අව�
 async function retry(fn,tries=3){let err;for(let i=0;i<tries;i++){try{if(navigator.onLine)await db.enableNetwork();return await fn()}catch(e){err=e;let retryable=['unavailable','deadline-exceeded','aborted','cancelled'].some(x=>(e.code||'').includes(x));if(!retryable||i===tries-1)throw e;await new Promise(r=>setTimeout(r,450*(i+1)))}}throw err}
 function navigate(page){if(!isAdmin)return;document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));$('page-'+page).classList.add('active');document.querySelectorAll('.nav-btn[data-page]').forEach(x=>x.classList.toggle('active',x.dataset.page===page));const titles={dashboard:['Dashboard','ඔබේ වෙබ් අඩවියේ සම්පූර්ණ තත්ත්වය'],users:['පරිශීලක කළමනාකරණය','ලියාපදිංචි සාමාජිකයින්ගේ Profile'],news:['පුවත් කළමනාකරණය','සියලුම පුවත් පාලනය කරන්න']};$('pageTitle').textContent=titles[page][0];$('pageSubtitle').textContent=titles[page][1];$('sidebar').classList.remove('open');if(page==='users')renderUsers();if(page==='news')renderNews();}
 function setLoggedIn(user){$('loginView').classList.add('hidden');$('appView').classList.remove('hidden');$('adminEmailLabel').textContent=user.email;$('topAdminEmail').textContent=user.email;$('adminAvatar').textContent=(user.email||'A').slice(0,1).toUpperCase();}
-async function authChanged(user){currentUser=user;isAdmin=false;if(!user){$('appView').classList.add('hidden');$('loginView').classList.remove('hidden');return;}try{const token=await user.getIdTokenResult(true);isAdmin=(user.email||'').toLowerCase()===ADMIN_EMAIL.toLowerCase()&&token.claims.admin===true;if(!isAdmin){await auth.signOut();$('appView').classList.add('hidden');$('loginView').classList.remove('hidden');showLoginError('මෙම ගිණුමට Admin අවසරය නැහැ. නිවැරදි Admin ගිණුම භාවිතා කරන්න.');return;}setLoggedIn(user);await refreshAll();}catch(e){$('appView').classList.add('hidden');$('loginView').classList.remove('hidden');showLoginError(friendly(e));}}
+async function authChanged(user){
+ currentUser=user;isAdmin=false;
+ if(!user){$('appView').classList.add('hidden');$('loginView').classList.remove('hidden');return;}
+ try{
+  if((user.email||'').toLowerCase()!==ADMIN_EMAIL.toLowerCase()) throw new Error('මෙම Admin Email ලිපිනයට පමණක් අවසර ඇත.');
+  await user.reload();
+  if(!user.emailVerified){
+   showLoginError('ඔබගේ Email එක තවම තහවුරු කර නැහැ. “Verification Email නැවත යවන්න” ඔබා Email එක තහවුරු කරන්න.');
+   return;
+  }
+  // Refresh token so the callable receives email_verified=true.
+  await user.getIdToken(true);
+  // Verified owner of the fixed admin mailbox receives the claim from trusted Cloud Function.
+  const bootstrap= firebase.functions().httpsCallable('bootstrapNewsatAdmin');
+  await bootstrap({});
+  const token=await user.getIdTokenResult(true);
+  isAdmin=token.claims.admin===true;
+  if(!isAdmin) throw new Error('Admin අවසරය ලබාගත නොහැකි විය. Cloud Function deploy කර තිබේද බලන්න.');
+  setLoggedIn(user);await refreshAll();
+ }catch(e){
+  if(auth.currentUser) await auth.signOut().catch(()=>{});
+  $('appView').classList.add('hidden');$('loginView').classList.remove('hidden');showLoginError(friendly(e));
+ }
+}
 async function refreshAll(){requireAdmin();toast('දත්ත Refresh කරමින්...');try{const [us,ns]=await Promise.all([retry(()=>db.collection('users').get()),retry(()=>db.collection('news').get())]);usersCache=us.docs.map(d=>({id:d.id,...d.data()}));newsCache=ns.docs.map(d=>({id:d.id,...d.data()}));usersCache.sort((a,b)=>timeValue(b.createdAt)-timeValue(a.createdAt));newsCache.sort((a,b)=>timeValue(b.createdAt)-timeValue(a.createdAt));updateDashboard();renderUsers();renderNews();}catch(e){toast(friendly(e));console.error(e)}}
 function updateDashboard(){const approved=newsCache.filter(n=>(n.status||'Pending')==='Approved').length,pending=newsCache.filter(n=>(n.status||'Pending')==='Pending').length;$('statUsers').textContent=usersCache.length.toLocaleString();$('statNews').textContent=newsCache.length.toLocaleString();$('statPublished').textContent=approved.toLocaleString();$('statPending').textContent=pending.toLocaleString();$('recentNews').innerHTML=newsCache.slice(0,5).map(newsCard).join('')||'<div class="empty">තවම පුවත් නැත.</div>';$('recentUsers').innerHTML=usersCache.slice(0,5).map(userRowCompact).join('')||'<div class="empty">තවම පරිශීලකයින් නැත.</div>'}
 function userRowCompact(u){const name=u.name||u.displayName||'නම සඳහන් නැත',pic=safeImage(u.photoURL);return `<div class="user-cell" style="padding:9px 0"><div class="user-pic">${pic?`<img src="${esc(pic)}" style="width:100%;height:100%;object-fit:cover;border-radius:50%">`:esc(name.slice(0,1).toUpperCase())}</div><div><b>${esc(name)}</b><small>${esc(u.email||'')}</small></div></div>`}
@@ -67,11 +96,27 @@ function openModal(id){$(id).classList.add('open')}function closeModal(id){$(id)
 function csvDownload(name,rows){const csv='\ufeff'+rows.map(row=>row.map(v=>'"'+String(v??'').replace(/"/g,'""')+'"').join(',')).join('\r\n');const a=document.createElement('a'),url=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'}));a.href=url;a.download=name;a.click();URL.revokeObjectURL(url)}
 function exportUsers(){requireAdmin();csvDownload('newsat-users.csv',[['UID','Name','Email','Phone','Location','Occupation','Role','Created'],...usersCache.map(u=>[u.uid||u.id,u.name,u.email,u.phone,u.location,u.occupation,u.role,dateText(u.createdAt)])])}
 function exportNews(){requireAdmin();csvDownload('newsat-news.csv',[['ID','Title','Category','Author','Email','Status','Created'],...newsCache.map(n=>[n.id,n.title,n.category,n.author,n.authorEmail,n.status,dateText(n.createdAt)])])}
-$('loginForm').addEventListener('submit',async e=>{e.preventDefault();showLoginError('');$('loginBtn').disabled=true;try{await auth.signInWithEmailAndPassword($('loginEmail').value.trim(),$('loginPassword').value)}catch(e){showLoginError(friendly(e))}finally{$('loginBtn').disabled=false}});
+$('loginForm').addEventListener('submit',async e=>{e.preventDefault();showLoginError('');$('loginBtn').disabled=true;try{await auth.signInWithEmailAndPassword(ADMIN_EMAIL,$('loginPassword').value)}catch(e){showLoginError(friendly(e))}finally{$('loginBtn').disabled=false}});
+$('createAdminBtn').addEventListener('click',async()=>{
+ showLoginError('');const password=$('loginPassword').value;
+ if(password.length<6){showLoginError('අවම වශයෙන් අකුරු/අංක 6ක Password එකක් ඇතුළත් කරන්න.');return;}
+ const b=$('createAdminBtn');b.disabled=true;
+ try{
+  const cred=await auth.createUserWithEmailAndPassword(ADMIN_EMAIL,password);
+  await cred.user.sendEmailVerification({url:location.origin+location.pathname,handleCodeInApp:false});
+  await auth.signOut();
+  showLoginError('ගිණුම සෑදුවා. ඔබගේ Email Inbox එකට ගොස් Verification Link එක ඔබන්න. ඉන්පසු නැවත Login වන්න.');
+ }catch(e){
+  if(e.code==='auth/email-already-in-use')showLoginError('මෙම Email එකට Firebase ගිණුමක් දැනටමත් ඇත. Password අමතක නම් “Password අමතකද?” ඔබා අලුත් Password එකක් සකස් කරන්න.');
+  else showLoginError(friendly(e));
+ }finally{b.disabled=false;}
+});
+$('resetAdminBtn').addEventListener('click',async()=>{try{await auth.sendPasswordResetEmail(ADMIN_EMAIL);showLoginError('Password Reset Link එක ඔබගේ Email එකට යැව්වා. Inbox/Spam බලන්න.')}catch(e){showLoginError(friendly(e))}});
+$('resendVerifyBtn').addEventListener('click',async()=>{try{let user=auth.currentUser;if(!user){const cred=await auth.signInWithEmailAndPassword(ADMIN_EMAIL,$('loginPassword').value);user=cred.user;}await user.reload();if(user.emailVerified){showLoginError('Email එක දැනටමත් තහවුරු කර ඇත. Login කරන්න.');await auth.signOut();return;}await user.sendEmailVerification({url:location.origin+location.pathname});await auth.signOut();showLoginError('Verification Link එක නැවත යැව්වා. Email Inbox/Spam බලන්න.')}catch(e){showLoginError(friendly(e))}});
 $('logoutBtn').addEventListener('click',()=>auth.signOut());$('refreshAll').addEventListener('click',refreshAll);$('menuBtn').addEventListener('click',()=>$('sidebar').classList.toggle('open'));
 document.querySelectorAll('.nav-btn[data-page]').forEach(b=>b.addEventListener('click',()=>navigate(b.dataset.page)));document.querySelectorAll('[data-close]').forEach(b=>b.addEventListener('click',()=>closeModal(b.dataset.close)));document.querySelectorAll('.modal').forEach(m=>m.addEventListener('click',e=>{if(e.target===m)m.classList.remove('open')}));
 $('userForm').addEventListener('submit',saveUser);$('newsForm').addEventListener('submit',saveNews);['userSearch','userRoleFilter','userSort'].forEach(id=>$(id).addEventListener('input',renderUsers));['newsSearch','newsStatus','newsCategory'].forEach(id=>$(id).addEventListener('input',renderNews));$('exportUsers').addEventListener('click',exportUsers);$('exportNews').addEventListener('click',exportNews);
 document.addEventListener('keydown',e=>{if(e.key==='Escape')document.querySelectorAll('.modal.open').forEach(m=>m.classList.remove('open'))});window.addEventListener('online',()=>{if(isAdmin)refreshAll()});
-try{firebase.initializeApp(firebaseConfig);auth=firebase.auth();db=firebase.firestore();db.enableNetwork().catch(()=>{});auth.onAuthStateChanged(authChanged)}catch(e){showLoginError('Firebase ආරම්භ කිරීමේ දෝෂය: '+friendly(e))}
+try{firebase.initializeApp(firebaseConfig);auth=firebase.auth();db=firebase.firestore();firebase.app().functions('us-central1');db.enableNetwork().catch(()=>{});auth.onAuthStateChanged(authChanged)}catch(e){showLoginError('Firebase ආරම්භ කිරීමේ දෝෂය: '+friendly(e))}
 </script>
 </body></html>
