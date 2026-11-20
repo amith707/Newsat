@@ -7,32 +7,31 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f4f4; }
-        /* BBC Style Navbar */
         .bbc-nav { background-color: #000; color: #fff; border-bottom: 3px solid #bb1919; }
         .bbc-logo { background: #fff; color: #000; font-weight: 900; padding: 2px 8px; margin-right: 4px; letter-spacing: 1px; }
         .cat-bar { background-color: #bb1919; color: white; padding: 8px 0; font-weight: bold; }
         .cat-bar a { color: white; text-decoration: none; margin-right: 20px; font-size: 0.95rem; }
         .cat-bar a:hover { text-decoration: underline; }
-        /* BBC News Cards */
         .hero-card { background: #fff; border: none; border-bottom: 2px solid #ddd; margin-bottom: 20px; }
         .hero-img { width: 100%; height: 380px; object-fit: cover; }
         .news-card { background: #fff; border: none; height: 100%; transition: 0.2s; border-bottom: 2px solid #e0e0e0; }
         .news-card:hover { transform: translateY(-3px); box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
         .news-img { width: 100%; height: 180px; object-fit: cover; }
         .category-tag { color: #bb1919; font-weight: bold; font-size: 0.8rem; text-transform: uppercase; border-left: 3px solid #bb1919; padding-left: 6px; }
-        .guide-box { background: #fff3cd; border-left: 4px solid #ffc107; padding: 15px; font-size: 0.9rem; }
+        .guide-box { background: #fff3cd; border-left: 4px solid #ffc107; padding: 12px; font-size: 0.88rem; }
     </style>
 </head>
 <body>
 
-    <!-- Top Navigation -->
+    <!-- Top Navbar -->
     <nav class="navbar navbar-dark bbc-nav py-2">
         <div class="container d-flex justify-content-between align-items-center">
-            <a class="navbar-brand d-flex align-items-center" href="#">
+            <a class="navbar-brand d-flex align-items-center" href="index.html">
                 <span class="bbc-logo">N</span><span class="bbc-logo">E</span><span class="bbc-logo">W</span><span class="bbc-logo">S</span><span class="bbc-logo">A</span><span class="bbc-logo">T</span>
             </a>
-            <div id="authSection">
-                <button class="btn btn-outline-light btn-sm" data-bs-toggle="modal" data-bs-target="#authModal">Sign In / Register</button>
+            <div id="authSection" class="d-flex align-items-center gap-2">
+                <a href="admin.html" class="btn btn-warning btn-sm fw-bold">Admin Panel</a>
+                <button type="button" id="openLoginBtn" class="btn btn-outline-light btn-sm">Sign In / Register</button>
             </div>
         </div>
     </nav>
@@ -40,69 +39,77 @@
     <!-- Category Bar -->
     <div class="cat-bar">
         <div class="container">
-            <a href="#" onclick="filterNews('ALL')">මුල් පිටුව (Home)</a>
-            <a href="#" onclick="filterNews('දේශීය')">දේශීය (Local)</a>
-            <a href="#" onclick="filterNews('විදේශීය')">විදේශීය (World)</a>
-            <a href="#" onclick="filterNews('තාක්ෂණික')">තාක්ෂණික (Tech)</a>
-            <a href="#" onclick="filterNews('ක්‍රීඩා')">ක්‍රීඩා (Sport)</a>
+            <a href="#" onclick="filterNews('ALL'); return false;">මුල් පිටුව</a>
+            <a href="#" onclick="filterNews('දේශීය'); return false;">දේශීය</a>
+            <a href="#" onclick="filterNews('විදේශීය'); return false;">විදේශීය</a>
+            <a href="#" onclick="filterNews('තාක්ෂණික'); return false;">තාක්ෂණික</a>
+            <a href="#" onclick="filterNews('ක්‍රීඩා'); return false;">ක්‍රීඩා</a>
         </div>
     </div>
 
-    <!-- User Profile & Post News Dashboard (Visible only when logged in) -->
-    <div id="userDashboard" class="container mt-4 d-none">
+    <!-- Debug / System Banner (Shows if any issue occurs) -->
+    <div class="container mt-2">
+        <div id="systemAlert" class="alert alert-warning py-2 small d-none"></div>
+    </div>
+
+    <!-- User Profile & Post News Section (Shows ONLY after login) -->
+    <div id="userDashboard" class="container mt-3 d-none">
         <div class="card shadow-sm border-0">
             <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
-                <h5 class="mb-0">පරිශීලක ගිණුම සහ පුවත් පළ කිරීම (User Profile & News Studio)</h5>
-                <button class="btn btn-danger btn-sm" id="logoutBtn">Logout</button>
+                <div>
+                    <strong>පරිශීලක ගිණුම:</strong> <span id="loggedInUserEmail" class="text-warning"></span>
+                </div>
+                <div class="d-flex gap-2">
+                    <a href="admin.html" class="btn btn-warning btn-sm fw-bold">Admin Panel</a>
+                    <button type="button" id="logoutBtn" class="btn btn-danger btn-sm">Logout</button>
+                </div>
             </div>
             <div class="card-body">
-                <div class="row">
+                <div class="row g-4">
                     <!-- User Details Form -->
                     <div class="col-md-5 border-end">
-                        <h6 class="fw-bold text-danger">1. ඔබේ විස්තර සම්පූර්ණ කරන්න (Profile Details)</h6>
+                        <h6 class="fw-bold text-danger">1. පරිශීලක විස්තර (User Profile Form)</h6>
                         <form id="profileForm">
                             <div class="mb-2">
-                                <label class="form-label small">සම්පූර්ණ නම (Full Name)</label>
+                                <label class="form-label small">සම්පූර්ණ නම</label>
                                 <input type="text" id="profName" class="form-control form-control-sm" required>
                             </div>
                             <div class="mb-2">
-                                <label class="form-label small">දුරකථන අංකය (Phone)</label>
+                                <label class="form-label small">දුරකථන අංකය</label>
                                 <input type="text" id="profPhone" class="form-control form-control-sm" required>
                             </div>
                             <div class="mb-2">
-                                <label class="form-label small">නගරය / ප්‍රදේශය (City)</label>
+                                <label class="form-label small">ප්‍රදේශය / නගරය</label>
                                 <input type="text" id="profCity" class="form-control form-control-sm" required>
                             </div>
                             <div class="mb-3">
-                                <label class="form-label small">කෙටි හැඳින්වීමක් (Bio / Designation)</label>
-                                <input type="text" id="profBio" class="form-control form-control-sm" placeholder="උදා: ප්‍රාදේශීය වාර්තාකරු">
+                                <label class="form-label small">හැඳින්වීම / තනතුර</label>
+                                <input type="text" id="profBio" class="form-control form-control-sm">
                             </div>
-                            <button type="submit" class="btn btn-dark btn-sm w-100">විස්තර සුරකින්න (Save Profile)</button>
+                            <button type="submit" class="btn btn-dark btn-sm w-100">විස්තර සුරකින්න</button>
                         </form>
                     </div>
 
                     <!-- Post News Form -->
                     <div class="col-md-7">
-                        <h6 class="fw-bold text-danger">2. අලුත් පුවතක් පළ කරන්න (Publish News)</h6>
-                        
-                        <!-- Google Drive User Guide -->
+                        <h6 class="fw-bold text-danger">2. පුවත් පළ කිරීම (Publish News)</h6>
                         <div class="guide-box mb-3">
-                            <strong>📌 Google Drive හරහා පින්තූර එක් කරන ආකාරය (User Guide):</strong>
+                            <strong>📌 Google Drive පින්තූර User Guide:</strong>
                             <ol class="mb-0 ps-3 mt-1">
-                                <li>ඔබේ Google Drive වෙත අදාළ ඡායාරූපය Upload කරන්න.</li>
-                                <li>ඡායාරූපය මත <strong>Share</strong> ක්ලික් කර <em>General access</em> යටතේ <strong>"Anyone with the link"</strong> ලෙස වෙනස් කරන්න.</li>
-                                <li><strong>"Copy link"</strong> ක්ලික් කර ලබාගත් ලින්ක් එක පහත කොටුවට Paste කරන්න. (වෙබ් අඩවිය මගින් එය ස්වයංක්‍රීයව පින්තූරයක් ලෙස පරිවර්තනය කරනු ඇත).</li>
+                                <li>Google Drive වෙත Photo එක Upload කරන්න.</li>
+                                <li>Photo එකේ <strong>Share</strong> ගොස් <strong>Anyone with the link</strong> (Viewer) කරන්න.</li>
+                                <li><strong>Copy link</strong> කර ලින්ක් එක පහත කොටුවට Paste කරන්න.</li>
                             </ol>
                         </div>
 
                         <form id="newsForm">
                             <div class="row">
                                 <div class="col-md-8 mb-2">
-                                    <label class="form-label small">පුවත් සිරස්තලය (Headline)</label>
+                                    <label class="form-label small">පුවත් සිරස්තලය</label>
                                     <input type="text" id="newsTitle" class="form-control form-control-sm" required>
                                 </div>
                                 <div class="col-md-4 mb-2">
-                                    <label class="form-label small">අංශය (Category)</label>
+                                    <label class="form-label small">අංශය</label>
                                     <select id="newsCategory" class="form-select form-select-sm">
                                         <option value="දේශීය">දේශීය</option>
                                         <option value="විදේශීය">විදේශීය</option>
@@ -112,14 +119,14 @@
                                 </div>
                             </div>
                             <div class="mb-2">
-                                <label class="form-label small">Google Drive ඡායාරූප ලින්ක් එක (Drive Image Link)</label>
+                                <label class="form-label small">Google Drive Image Link</label>
                                 <input type="url" id="newsDriveLink" class="form-control form-control-sm" placeholder="https://drive.google.com/file/d/..." required>
                             </div>
                             <div class="mb-2">
-                                <label class="form-label small">පුවතේ සම්පූර්ණ විස්තරය (News Content)</label>
+                                <label class="form-label small">පුවතේ විස්තරය</label>
                                 <textarea id="newsContent" rows="3" class="form-control form-control-sm" required></textarea>
                             </div>
-                            <button type="submit" class="btn btn-danger btn-sm w-100 fw-bold">පුවත පළ කරන්න (Publish Now)</button>
+                            <button type="submit" class="btn btn-danger btn-sm w-100 fw-bold">පුවත පළ කරන්න</button>
                         </form>
                     </div>
                 </div>
@@ -127,18 +134,14 @@
         </div>
     </div>
 
-    <!-- Main BBC Style News Feed -->
+    <!-- BBC Style News Feed -->
     <div class="container my-4">
         <h4 class="fw-bold mb-3 border-bottom pb-2">ප්‍රධාන පුවත් (Top Stories)</h4>
-        
-        <!-- Hero News Container -->
         <div id="heroNewsContainer"></div>
-
-        <!-- Grid News Container -->
         <div class="row g-4" id="newsGridContainer"></div>
     </div>
 
-    <!-- Read Full News Modal -->
+    <!-- Read News Modal -->
     <div class="modal fade" id="readNewsModal" tabindex="-1">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
@@ -161,205 +164,324 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header bg-dark text-white">
-                    <h5 class="modal-title">Newsat ගිණුමට පිවිසෙන්න</h5>
+                    <h5 class="modal-title">ගිණුමට පිවිසෙන්න / ලියාපදිංචි වන්න</h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="authForm">
-                        <div class="mb-3">
-                            <label class="form-label">විද්‍යුත් තැපෑල (Email)</label>
-                            <input type="email" id="authEmail" class="form-control" required>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">මුරපදය (Password - අවම අකුරු 6ක්)</label>
-                            <input type="password" id="authPassword" class="form-control" required>
-                        </div>
-                        <div class="d-flex gap-2">
-                            <button type="submit" id="loginSubmitBtn" class="btn btn-dark w-50">Sign In (ඇතුළු වන්න)</button>
-                            <button type="button" id="registerSubmitBtn" class="btn btn-danger w-50">Register (ලියාපදිංචි වන්න)</button>
-                        </div>
-                    </form>
+                    <div id="authMsg" class="alert alert-info py-2 small d-none"></div>
+                    <div class="mb-3">
+                        <label class="form-label">Email</label>
+                        <input type="email" id="authEmail" class="form-control" placeholder="name@example.com">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Password (අවම අකුරු 6)</label>
+                        <input type="password" id="authPassword" class="form-control" placeholder="******">
+                    </div>
+                    <div class="d-flex gap-2">
+                        <button type="button" id="doLoginBtn" class="btn btn-dark w-50">Sign In</button>
+                        <button type="button" id="doRegisterBtn" class="btn btn-danger w-50">Register</button>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
     <script type="module">
-        import { auth, db } from './firebase-config.js';
-        import { signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-        import { collection, addDoc, getDocs, doc, setDoc, getDoc, updateDoc, increment, query, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+        import {
+            getAuth,
+            signInWithEmailAndPassword,
+            createUserWithEmailAndPassword,
+            onAuthStateChanged,
+            signOut
+        } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+        import {
+            getFirestore,
+            collection,
+            addDoc,
+            getDocs,
+            doc,
+            setDoc,
+            getDoc,
+            updateDoc,
+            increment,
+            query,
+            orderBy,
+            serverTimestamp
+        } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+        // Firebase Config (from screenshot)[span_1](start_span)[span_1](end_span)
+        const firebaseConfig = {
+            apiKey: "AIzaSyBWmZuFv3XKLYKGqjQYd7aJbFoBMZc-P9k",
+            authDomain: "newsat-209f8.firebaseapp.com",
+            projectId: "newsat-209f8",
+            storageBucket: "newsat-209f8.firebasestorage.app",
+            messagingSenderId: "529324718671",
+            appId: "1:529324718671:web:8f45a89bf317cbb0c9083a",
+            measurementId: "G-VQ1TYLV51P"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
 
         let allNews = [];
+        let currentUser = null;
 
-        // 1. Track Site Traffic (Page Views)
-        async function trackTraffic() {
-            try {
-                const statsRef = doc(db, "analytics", "siteStats");
-                await setDoc(statsRef, { totalTraffic: increment(1) }, { merge: true });
-            } catch (e) { console.error("Traffic error:", e); }
+        function showSystemAlert(msg) {
+            const el = document.getElementById('systemAlert');
+            el.innerText = msg;
+            el.classList.remove('d-none');
         }
-        trackTraffic();
 
-        // 2. Convert Google Drive Share Link to Direct Image URL
+        function showAuthMsg(msg, type = 'info') {
+            const el = document.getElementById('authMsg');
+            el.className = `alert alert-${type} py-2 small`;
+            el.innerText = msg;
+            el.classList.remove('d-none');
+        }
+
+        function getModalInstance(id) {
+            return bootstrap.Modal.getOrCreateInstance(document.getElementById(id));
+        }
+
+        // Open Login Modal
+        document.getElementById('openLoginBtn').addEventListener('click', () => {
+            document.getElementById('authMsg').classList.add('d-none');
+            getModalInstance('authModal').show();
+        });
+
+        // Track Traffic
+        (async function trackTraffic() {
+            try {
+                await setDoc(doc(db, "analytics", "siteStats"), {
+                    totalTraffic: increment(1)
+                }, { merge: true });
+            } catch (e) {
+                console.warn("Traffic error:", e);
+            }
+        })();
+
+        // Google Drive link -> Direct Image URL
         function convertDriveLink(url) {
-            const regex = /\/d\/([a-zA-Z0-9_-]+)/;
-            const match = url.match(regex);
+            const match = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
             if (match && match[1]) {
                 return `https://lh3.googleusercontent.com/d/${match[1]}`;
             }
-            return url; // Return original if not a standard drive link
+            return url;
         }
 
-        // 3. Authentication State Listener
+        // Auth State Listener
         onAuthStateChanged(auth, async (user) => {
+            currentUser = user;
             const authSection = document.getElementById('authSection');
             const userDashboard = document.getElementById('userDashboard');
 
             if (user) {
-                authSection.innerHTML = `<span class="me-2 small">${user.email}</span><a href="admin.html" class="btn btn-warning btn-sm me-1">Admin</a>`;
+                authSection.innerHTML = `
+                    <a href="admin.html" class="btn btn-warning btn-sm fw-bold">Admin Panel</a>
+                    <span class="small text-light d-none d-md-inline">${user.email}</span>
+                `;
+                document.getElementById('loggedInUserEmail').innerText = user.email;
                 userDashboard.classList.remove('d-none');
-                
-                // Load user profile details
-                const userDoc = await getDoc(doc(db, "users", user.uid));
-                if (userDoc.exists()) {
-                    const data = userDoc.data();
-                    document.getElementById('profName').value = data.name || '';
-                    document.getElementById('profPhone').value = data.phone || '';
-                    document.getElementById('profCity').value = data.city || '';
-                    document.getElementById('profBio').value = data.bio || '';
+
+                try {
+                    const snap = await getDoc(doc(db, "users", user.uid));
+                    if (snap.exists()) {
+                        const d = snap.data();
+                        document.getElementById('profName').value = d.name || '';
+                        document.getElementById('profPhone').value = d.phone || '';
+                        document.getElementById('profCity').value = d.city || '';
+                        document.getElementById('profBio').value = d.bio || '';
+                    }
+                } catch (e) {
+                    console.warn("Profile read error:", e);
                 }
             } else {
-                authSection.innerHTML = `<button class="btn btn-outline-light btn-sm" data-bs-toggle="modal" data-bs-target="#authModal">Sign In / Register</button>`;
+                authSection.innerHTML = `
+                    <a href="admin.html" class="btn btn-warning btn-sm fw-bold">Admin Panel</a>
+                    <button type="button" id="openLoginBtn" class="btn btn-outline-light btn-sm">Sign In / Register</button>
+                `;
+                document.getElementById('openLoginBtn').addEventListener('click', () => {
+                    document.getElementById('authMsg').classList.add('d-none');
+                    getModalInstance('authModal').show();
+                });
                 userDashboard.classList.add('d-none');
             }
         });
 
-        // Login
-        document.getElementById('authForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const email = document.getElementById('authEmail').value;
+        // Sign In
+        document.getElementById('doLoginBtn').addEventListener('click', async () => {
+            const email = document.getElementById('authEmail').value.trim();
             const pass = document.getElementById('authPassword').value;
-            try {
-                await signInWithEmailAndPassword(auth, email, pass);
-                bootstrap.Modal.getInstance(document.getElementById('authModal')).hide();
-            } catch (err) { alert("දෝෂයකි: " + err.message); }
-        });
 
-        // Register
-        document.getElementById('registerSubmitBtn').addEventListener('click', async () => {
-            const email = document.getElementById('authEmail').value;
-            const pass = document.getElementById('authPassword').value;
-            try {
-                const cred = await createUserWithEmailAndPassword(auth, email, pass);
-                await setDoc(doc(db, "users", cred.user.uid), {
-                    email: email,
-                    joinedAt: serverTimestamp()
-                });
-                bootstrap.Modal.getInstance(document.getElementById('authModal')).hide();
-                alert("ලියාපදිංචිය සාර්ථකයි! කරුණාකර ඔබේ Profile විස්තර පුරවන්න.");
-            } catch (err) { alert("දෝෂයකි: " + err.message); }
-        });
-
-        // Logout
-        document.getElementById('logoutBtn').addEventListener('click', () => signOut(auth));
-
-        // 4. Save Profile Details
-        document.getElementById('profileForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const user = auth.currentUser;
-            if (!user) return;
-            await setDoc(doc(db, "users", user.uid), {
-                name: document.getElementById('profName').value,
-                phone: document.getElementById('profPhone').value,
-                city: document.getElementById('profCity').value,
-                bio: document.getElementById('profBio').value,
-                email: user.email
-            }, { merge: true });
-            alert("ඔබේ විස්තර සාර්ථකව සුරැකුණි!");
-        });
-
-        // 5. Publish News
-        document.getElementById('newsForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const user = auth.currentUser;
-            if (!user) return;
-
-            const authorName = document.getElementById('profName').value || user.email;
-            const rawDriveLink = document.getElementById('newsDriveLink').value;
-            const directImgUrl = convertDriveLink(rawDriveLink);
-
-            await addDoc(collection(db, "news"), {
-                title: document.getElementById('newsTitle').value,
-                category: document.getElementById('newsCategory').value,
-                imageUrl: directImgUrl,
-                content: document.getElementById('newsContent').value,
-                author: authorName,
-                authorId: user.uid,
-                views: 0,
-                createdAt: serverTimestamp()
-            });
-
-            document.getElementById('newsForm').reset();
-            alert("පුවත සාර්ථකව පළ විය!");
-            loadNews();
-        });
-
-        // 6. Load and Render News (BBC Style)
-        async function loadNews() {
-            const q = query(collection(db, "news"), orderBy("createdAt", "desc"));
-            const snapshot = await getDocs(q);
-            allNews = [];
-            snapshot.forEach(doc => allNews.push({ id: doc.id, ...doc.data() }));
-            renderNews(allNews);
-        }
-
-        window.filterNews = function(category) {
-            if (category === 'ALL') renderNews(allNews);
-            else renderNews(allNews.filter(n => n.category === category));
-        }
-
-        function renderNews(newsList) {
-            const heroContainer = document.getElementById('heroNewsContainer');
-            const gridContainer = document.getElementById('newsGridContainer');
-            heroContainer.innerHTML = '';
-            gridContainer.innerHTML = '';
-
-            if (newsList.length === 0) {
-                gridContainer.innerHTML = '<p class="text-muted">තවමත් පුවත් පළ කර නොමැත.</p>';
+            if (!email || !pass) {
+                showAuthMsg("Email සහ Password දෙකම ඇතුළත් කරන්න.", "warning");
                 return;
             }
 
-            // First News as BBC Hero Story
-            const hero = newsList[0];
-            heroContainer.innerHTML = `
+            showAuthMsg("Login වෙමින් පවතී...", "info");
+            try {
+                await signInWithEmailAndPassword(auth, email, pass);
+                getModalInstance('authModal').hide();
+                document.getElementById('authEmail').value = '';
+                document.getElementById('authPassword').value = '';
+            } catch (err) {
+                showAuthMsg(`Login Error (${err.code}): ${err.message}`, "danger");
+            }
+        });
+
+        // Register
+        document.getElementById('doRegisterBtn').addEventListener('click', async () => {
+            const email = document.getElementById('authEmail').value.trim();
+            const pass = document.getElementById('authPassword').value;
+
+            if (!email || pass.length < 6) {
+                showAuthMsg("වලංගු Email එකක් සහ අවම අකුරු 6ක Password එකක් දෙන්න.", "warning");
+                return;
+            }
+
+            showAuthMsg("ගිණුම සාදමින් පවතී...", "info");
+            try {
+                const cred = await createUserWithEmailAndPassword(auth, email, pass);
+                try {
+                    await setDoc(doc(db, "users", cred.user.uid), {
+                        email: email,
+                        joinedAt: serverTimestamp()
+                    }, { merge: true });
+                } catch (e) {
+                    console.warn("User doc write error:", e);
+                }
+
+                getModalInstance('authModal').hide();
+                document.getElementById('authEmail').value = '';
+                document.getElementById('authPassword').value = '';
+                alert("ගිණුම සාර්ථකව සැදුවා! දැන් ඔබේ Profile විස්තර පුරවන්න.");
+            } catch (err) {
+                showAuthMsg(`Register Error (${err.code}): ${err.message}`, "danger");
+            }
+        });
+
+        // Logout
+        document.getElementById('logoutBtn').addEventListener('click', async () => {
+            await signOut(auth);
+        });
+
+        // Save Profile
+        document.getElementById('profileForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            if (!currentUser) {
+                alert("මුලින්ම Login වන්න.");
+                return;
+            }
+
+            try {
+                await setDoc(doc(db, "users", currentUser.uid), {
+                    name: document.getElementById('profName').value.trim(),
+                    phone: document.getElementById('profPhone').value.trim(),
+                    city: document.getElementById('profCity').value.trim(),
+                    bio: document.getElementById('profBio').value.trim(),
+                    email: currentUser.email,
+                    updatedAt: serverTimestamp()
+                }, { merge: true });
+                alert("Profile විස්තර සුරැකුණි!");
+            } catch (err) {
+                alert("Profile Save Error: " + err.message);
+            }
+        });
+
+        // Publish News
+        document.getElementById('newsForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            if (!currentUser) {
+                alert("පුවත් පළ කිරීමට Login වන්න.");
+                return;
+            }
+
+            const authorName = document.getElementById('profName').value.trim() || currentUser.email;
+            const driveLink = document.getElementById('newsDriveLink').value.trim();
+            const imageUrl = convertDriveLink(driveLink);
+
+            try {
+                await addDoc(collection(db, "news"), {
+                    title: document.getElementById('newsTitle').value.trim(),
+                    category: document.getElementById('newsCategory').value,
+                    imageUrl: imageUrl,
+                    content: document.getElementById('newsContent').value.trim(),
+                    author: authorName,
+                    authorId: currentUser.uid,
+                    views: 0,
+                    createdAt: serverTimestamp()
+                });
+
+                document.getElementById('newsForm').reset();
+                alert("පුවත සාර්ථකව පළ විය!");
+                await loadNews();
+            } catch (err) {
+                alert("Publish News Error: " + err.message);
+            }
+        });
+
+        // Load News
+        async function loadNews() {
+            try {
+                const q = query(collection(db, "news"), orderBy("createdAt", "desc"));
+                const snap = await getDocs(q);
+                allNews = [];
+                snap.forEach(docItem => allNews.push({ id: docItem.id, ...docItem.data() }));
+                renderNews(allNews);
+            } catch (err) {
+                showSystemAlert("Firestore News Load Error: " + err.message);
+                renderNews([]);
+            }
+        }
+
+        window.filterNews = function (cat) {
+            if (cat === 'ALL') renderNews(allNews);
+            else renderNews(allNews.filter(n => n.category === cat));
+        };
+
+        function renderNews(list) {
+            const heroEl = document.getElementById('heroNewsContainer');
+            const gridEl = document.getElementById('newsGridContainer');
+            heroEl.innerHTML = '';
+            gridEl.innerHTML = '';
+
+            if (!list || list.length === 0) {
+                gridEl.innerHTML = '<p class="text-muted">තවමත් පුවත් පළ කර නොමැත.</p>';
+                return;
+            }
+
+            const hero = list[0];
+            heroEl.innerHTML = `
                 <div class="card hero-card shadow-sm" style="cursor:pointer" onclick="openNews('${hero.id}')">
                     <div class="row g-0">
                         <div class="col-md-7">
-                            <img src="${hero.imageUrl}" class="hero-img" onerror="this.src='https://via.placeholder.com/800x400?text=Image+Not+Public'">
+                            <img src="${hero.imageUrl}" class="hero-img" onerror="this.src='https://via.placeholder.com/800x400?text=Check+Drive+Share+Permission'">
                         </div>
                         <div class="col-md-5 p-4 d-flex flex-column justify-content-center">
-                            <span class="category-tag mb-2">${hero.category}</span>
-                            <h2 class="fw-bold">${hero.title}</h2>
-                            <p class="text-muted">${hero.content.substring(0, 160)}...</p>
-                            <small class="text-secondary mt-auto">වාර්තාකරු: ${hero.author} | 👁️ ${hero.views || 0}</small>
+                            <span class="category-tag mb-2">${hero.category || 'පුවත්'}</span>
+                            <h2 class="fw-bold">${hero.title || ''}</h2>
+                            <p class="text-muted">${(hero.content || '').substring(0, 160)}...</p>
+                            <small class="text-secondary mt-auto">වාර්තාකරු: ${hero.author || ''} | 👁️ ${hero.views || 0}</small>
                         </div>
                     </div>
                 </div>
             `;
 
-            // Remaining News in 3-Column Grid
-            for (let i = 1; i < newsList.length; i++) {
-                const item = newsList[i];
-                gridContainer.innerHTML += `
+            for (let i = 1; i < list.length; i++) {
+                const n = list[i];
+                gridEl.innerHTML += `
                     <div class="col-md-4">
-                        <div class="card news-card" style="cursor:pointer" onclick="openNews('${item.id}')">
-                            <img src="${item.imageUrl}" class="news-img" onerror="this.src='https://via.placeholder.com/400x200?text=Image+Error'">
+                        <div class="card news-card" style="cursor:pointer" onclick="openNews('${n.id}')">
+                            <img src="${n.imageUrl}" class="news-img" onerror="this.src='https://via.placeholder.com/400x200?text=Check+Drive+Link'">
                             <div class="card-body d-flex flex-column">
-                                <span class="category-tag mb-2">${item.category}</span>
-                                <h5 class="fw-bold">${item.title}</h5>
-                                <p class="text-muted small">${item.content.substring(0, 90)}...</p>
-                                <small class="text-secondary mt-auto pt-2 border-top">✍️ ${item.author} • 👁️ ${item.views || 0}</small>
+                                <span class="category-tag mb-2">${n.category || 'පුවත්'}</span>
+                                <h5 class="fw-bold">${n.title || ''}</h5>
+                                <p class="text-muted small">${(n.content || '').substring(0, 90)}...</p>
+                                <small class="text-secondary mt-auto pt-2 border-top">✍️ ${n.author || ''} • 👁️ ${n.views || 0}</small>
                             </div>
                         </div>
                     </div>
@@ -367,23 +489,26 @@
             }
         }
 
-        // 7. Open Full News & Increment Views Count
-        window.openNews = async function(id) {
+        window.openNews = async function (id) {
             const item = allNews.find(n => n.id === id);
             if (!item) return;
 
-            document.getElementById('modalCategory').innerText = item.category;
-            document.getElementById('modalTitle').innerText = item.title;
-            document.getElementById('modalMeta').innerText = `වාර්තාකරු: ${item.author} | නැරඹුම් වාර: ${(item.views || 0) + 1}`;
-            document.getElementById('modalImg').src = item.imageUrl;
-            document.getElementById('modalContent').innerText = item.content;
+            const nextViews = (item.views || 0) + 1;
+            document.getElementById('modalCategory').innerText = item.category || '';
+            document.getElementById('modalTitle').innerText = item.title || '';
+            document.getElementById('modalMeta').innerText = `වාර්තාකරු: ${item.author || ''} | නැරඹුම් වාර: ${nextViews}`;
+            document.getElementById('modalImg').src = item.imageUrl || '';
+            document.getElementById('modalContent').innerText = item.content || '';
 
-            new bootstrap.Modal(document.getElementById('readNewsModal')).show();
+            getModalInstance('readNewsModal').show();
 
-            // Increment article view count in Firestore
-            await updateDoc(doc(db, "news", id), { views: increment(1) });
-            item.views = (item.views || 0) + 1;
-        }
+            try {
+                await updateDoc(doc(db, "news", id), { views: increment(1) });
+                item.views = nextViews;
+            } catch (e) {
+                console.warn("View increment error:", e);
+            }
+        };
 
         loadNews();
     </script>
