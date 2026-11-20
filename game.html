@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="si">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Play Game - Newsat.space</title>
+  <style>
+    .game-container {
+      max-width: 960px;
+      margin: 24px auto;
+      padding: 16px;
+      font-family: sans-serif;
+      background: #111827;
+      color: #f9fafb;
+      border-radius: 12px;
+    }
+    .game-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .game-frame-wrap {
+      position: relative;
+      width: 100%;
+      height: 540px;
+      background: #000;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    iframe#gameFrame {
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
+    .fallback-box {
+      display: none;
+      padding: 20px;
+      text-align: center;
+      background: #1f2937;
+      border-radius: 8px;
+      margin-top: 12px;
+    }
+    .btn {
+      display: inline-block;
+      padding: 10px 18px;
+      background: #2563eb;
+      color: #fff;
+      text-decoration: none;
+      border-radius: 6px;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+    }
+    .btn:hover {
+      background: #1d4ed8;
+    }
+  </style>
+</head>
+<body>
+
+<div class="game-container">
+  <div class="game-header">
+    <h2>Browser Game</h2>
+    <div>
+      <button class="btn" onclick="toggleFullscreen()">Fullscreen</button>
+      <a id="directLink" class="btn" href="https://playigi.com/" target="_blank" rel="noopener noreferrer">Open in New Tab</a>
+    </div>
+  </div>
+
+  <div class="game-frame-wrap" id="frameWrap">
+    <!-- ගේම් URL එක පහත src="" තුළට දමන්න -->
+    <iframe
+      id="gameFrame"
+      src="https://playigi.com/"
+      allow="fullscreen; gamepad; autoplay"
+      loading="lazy">
+    </iframe>
+  </div>
+
+  <div class="fallback-box" id="fallbackBox">
+    <p>මෙම ගේම් එක වෙනත් වෙබ් අඩවියක් තුළ Embed කිරීම සර්වරයෙන් සීමා කර තිබිය හැකියි. ගේම් එක නව Tab එකකින් Play කරන්න:</p>
+    <a id="fallbackLink" class="btn" href="https://playigi.com/" target="_blank" rel="noopener noreferrer">Play Game Now</a>
+  </div>
+</div>
+
+<script>
+  const targetUrl = "https://playigi.com/"; // අවශ්‍ය නිවැරදි URL එක මෙහි යොදන්න
+  const frame = document.getElementById("gameFrame");
+  const fallback = document.getElementById("fallbackBox");
+  document.getElementById("directLink").href = targetUrl;
+  document.getElementById("fallbackLink").href = targetUrl;
+  frame.src = targetUrl;
+
+  // තත්පර 6ක් ඇතුළත frame එකේ content load නොවන්නේ නම් fallback පෙන්වීම
+  setTimeout(() => {
+    try {
+      const doc = frame.contentDocument || frame.contentWindow.document;
+      if (!doc || doc.body.innerHTML.trim() === "") {
+        fallback.style.display = "block";
+      }
+    } catch (e) {
+      // Cross-origin frame එකකදී browser security නිසා exception එයි;
+      // එම සර්වරය X-Frame-Options block කර ඇත්නම් හිස්ව පෙනිය හැකි බැවින් පරිශීලකයාට විකල්පය පෙන්වයි
+      fallback.style.display = "block";
+    }
+  }, 6000);
+
+  function toggleFullscreen() {
+    const elem = document.getElementById("frameWrap");
+    if (!document.fullscreenElement) {
+      elem.requestFullscreen?.().catch(() => {});
+    } else {
+      document.exitFullscreen?.().catch(() => {});
+    }
+  }
+</script>
+
+</body>
+</html>
