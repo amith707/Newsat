@@ -1,261 +1,391 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="si">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Newsat.space</title>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Sinhala:wght@400;600;700&display=swap" rel="stylesheet">
-<style>
-  /* හරිම සරල පෙනුමක් */
-  body { font-family: 'Noto Sans Sinhala', sans-serif; background: #f4f6fb; margin: 0; padding: 20px; color: #333; }
-  .hidden { display: none !important; }
-  .card { background: #fff; padding: 20px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); margin-bottom: 20px; max-width: 600px; margin-left: auto; margin-right: auto; }
-  input, textarea, select, button { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ccc; border-radius: 8px; box-sizing: border-box; font-family: inherit; }
-  button { background: #2563eb; color: #fff; border: none; font-weight: bold; cursor: pointer; }
-  button:hover { background: #1d4ed8; }
-  .btn-red { background: #ef4444; }
-  .btn-green { background: #10b981; }
-  .header { text-align: center; margin-bottom: 20px; font-weight: bold; font-size: 24px; color: #2563eb; }
-  .error { color: #ef4444; font-size: 14px; margin-top: 10px; }
-  .success { color: #10b981; font-size: 14px; margin-top: 10px; }
-  .post-item { border-bottom: 1px solid #eee; padding: 10px 0; }
-  .post-item:last-child { border-bottom: none; }
-  .nav { display: flex; gap: 10px; justify-content: center; margin-bottom: 20px; flex-wrap: wrap; }
-  .nav button { width: auto; padding: 10px 20px; }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Newsat - ප්‍රධාන පුවත්</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f4f4; }
+        /* BBC Style Navbar */
+        .bbc-nav { background-color: #000; color: #fff; border-bottom: 3px solid #bb1919; }
+        .bbc-logo { background: #fff; color: #000; font-weight: 900; padding: 2px 8px; margin-right: 4px; letter-spacing: 1px; }
+        .cat-bar { background-color: #bb1919; color: white; padding: 8px 0; font-weight: bold; }
+        .cat-bar a { color: white; text-decoration: none; margin-right: 20px; font-size: 0.95rem; }
+        .cat-bar a:hover { text-decoration: underline; }
+        /* BBC News Cards */
+        .hero-card { background: #fff; border: none; border-bottom: 2px solid #ddd; margin-bottom: 20px; }
+        .hero-img { width: 100%; height: 380px; object-fit: cover; }
+        .news-card { background: #fff; border: none; height: 100%; transition: 0.2s; border-bottom: 2px solid #e0e0e0; }
+        .news-card:hover { transform: translateY(-3px); box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        .news-img { width: 100%; height: 180px; object-fit: cover; }
+        .category-tag { color: #bb1919; font-weight: bold; font-size: 0.8rem; text-transform: uppercase; border-left: 3px solid #bb1919; padding-left: 6px; }
+        .guide-box { background: #fff3cd; border-left: 4px solid #ffc107; padding: 15px; font-size: 0.9rem; }
+    </style>
 </head>
 <body>
 
-<!-- Navigation Menu -->
-<div class="nav">
-  <button onclick="showPage('home')" id="navHome">Home</button>
-  <button onclick="showPage('login')" id="navLogin">Login</button>
-  <button onclick="showPage('profile')" id="navProfile" class="hidden">Profile</button>
-  <button onclick="showPage('admin')" id="navAdmin" class="hidden">Admin Panel</button>
-  <button onclick="logout()" id="navLogout" class="hidden btn-red">Logout</button>
-</div>
+    <!-- Top Navigation -->
+    <nav class="navbar navbar-dark bbc-nav py-2">
+        <div class="container d-flex justify-content-between align-items-center">
+            <a class="navbar-brand d-flex align-items-center" href="#">
+                <span class="bbc-logo">N</span><span class="bbc-logo">E</span><span class="bbc-logo">W</span><span class="bbc-logo">S</span><span class="bbc-logo">A</span><span class="bbc-logo">T</span>
+            </a>
+            <div id="authSection">
+                <button class="btn btn-outline-light btn-sm" data-bs-toggle="modal" data-bs-target="#authModal">Sign In / Register</button>
+            </div>
+        </div>
+    </nav>
 
-<!-- Home View -->
-<div id="homeView" class="card">
-  <div class="header">Newsat.space පුවත්</div>
-  <div id="publicNewsList">පුවත් ලෝඩ් වෙමින්...</div>
-</div>
+    <!-- Category Bar -->
+    <div class="cat-bar">
+        <div class="container">
+            <a href="#" onclick="filterNews('ALL')">මුල් පිටුව (Home)</a>
+            <a href="#" onclick="filterNews('දේශීය')">දේශීය (Local)</a>
+            <a href="#" onclick="filterNews('විදේශීය')">විදේශීය (World)</a>
+            <a href="#" onclick="filterNews('තාක්ෂණික')">තාක්ෂණික (Tech)</a>
+            <a href="#" onclick="filterNews('ක්‍රීඩා')">ක්‍රීඩා (Sport)</a>
+        </div>
+    </div>
 
-<!-- Login View -->
-<div id="loginView" class="card hidden">
-  <div class="header">Login / Register</div>
-  <input type="email" id="loginEmail" placeholder="Email ලිපිනය">
-  <input type="password" id="loginPassword" placeholder="මුරපදය (Password)">
-  <input type="text" id="registerName" placeholder="ඔබේ නම (Register වෙනකොට විතරයි)" class="hidden">
-  <button onclick="doLogin()" id="btnLogin">Login වන්න</button>
-  <button onclick="doRegister()" id="btnRegister" class="hidden">Register වන්න</button>
-  <button onclick="toggleAuthMode()" style="background: #64748b; margin-top: 10px;">Register / Login මාරු කරන්න</button>
-  <div id="authMsg" class="error"></div>
-</div>
+    <!-- User Profile & Post News Dashboard (Visible only when logged in) -->
+    <div id="userDashboard" class="container mt-4 d-none">
+        <div class="card shadow-sm border-0">
+            <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">පරිශීලක ගිණුම සහ පුවත් පළ කිරීම (User Profile & News Studio)</h5>
+                <button class="btn btn-danger btn-sm" id="logoutBtn">Logout</button>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <!-- User Details Form -->
+                    <div class="col-md-5 border-end">
+                        <h6 class="fw-bold text-danger">1. ඔබේ විස්තර සම්පූර්ණ කරන්න (Profile Details)</h6>
+                        <form id="profileForm">
+                            <div class="mb-2">
+                                <label class="form-label small">සම්පූර්ණ නම (Full Name)</label>
+                                <input type="text" id="profName" class="form-control form-control-sm" required>
+                            </div>
+                            <div class="mb-2">
+                                <label class="form-label small">දුරකථන අංකය (Phone)</label>
+                                <input type="text" id="profPhone" class="form-control form-control-sm" required>
+                            </div>
+                            <div class="mb-2">
+                                <label class="form-label small">නගරය / ප්‍රදේශය (City)</label>
+                                <input type="text" id="profCity" class="form-control form-control-sm" required>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label small">කෙටි හැඳින්වීමක් (Bio / Designation)</label>
+                                <input type="text" id="profBio" class="form-control form-control-sm" placeholder="උදා: ප්‍රාදේශීය වාර්තාකරු">
+                            </div>
+                            <button type="submit" class="btn btn-dark btn-sm w-100">විස්තර සුරකින්න (Save Profile)</button>
+                        </form>
+                    </div>
 
-<!-- Profile View -->
-<div id="profileView" class="card hidden">
-  <div class="header">මගේ Profile සහ පුවත් දැමීම</div>
-  
-  <h3>Profile විස්තර</h3>
-  <input type="text" id="pName" placeholder="සම්පූර්ණ නම">
-  <input type="text" id="pPhone" placeholder="දුරකථන අංකය">
-  <button onclick="saveProfile()" class="btn-green">Profile Save කරන්න</button>
-  <div id="profileMsg" class="success"></div>
+                    <!-- Post News Form -->
+                    <div class="col-md-7">
+                        <h6 class="fw-bold text-danger">2. අලුත් පුවතක් පළ කරන්න (Publish News)</h6>
+                        
+                        <!-- Google Drive User Guide -->
+                        <div class="guide-box mb-3">
+                            <strong>📌 Google Drive හරහා පින්තූර එක් කරන ආකාරය (User Guide):</strong>
+                            <ol class="mb-0 ps-3 mt-1">
+                                <li>ඔබේ Google Drive වෙත අදාළ ඡායාරූපය Upload කරන්න.</li>
+                                <li>ඡායාරූපය මත <strong>Share</strong> ක්ලික් කර <em>General access</em> යටතේ <strong>"Anyone with the link"</strong> ලෙස වෙනස් කරන්න.</li>
+                                <li><strong>"Copy link"</strong> ක්ලික් කර ලබාගත් ලින්ක් එක පහත කොටුවට Paste කරන්න. (වෙබ් අඩවිය මගින් එය ස්වයංක්‍රීයව පින්තූරයක් ලෙස පරිවර්තනය කරනු ඇත).</li>
+                            </ol>
+                        </div>
 
-  <hr style="margin: 20px 0; border: none; border-top: 1px solid #eee;">
+                        <form id="newsForm">
+                            <div class="row">
+                                <div class="col-md-8 mb-2">
+                                    <label class="form-label small">පුවත් සිරස්තලය (Headline)</label>
+                                    <input type="text" id="newsTitle" class="form-control form-control-sm" required>
+                                </div>
+                                <div class="col-md-4 mb-2">
+                                    <label class="form-label small">අංශය (Category)</label>
+                                    <select id="newsCategory" class="form-select form-select-sm">
+                                        <option value="දේශීය">දේශීය</option>
+                                        <option value="විදේශීය">විදේශීය</option>
+                                        <option value="තාක්ෂණික">තාක්ෂණික</option>
+                                        <option value="ක්‍රීඩා">ක්‍රීඩා</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="mb-2">
+                                <label class="form-label small">Google Drive ඡායාරූප ලින්ක් එක (Drive Image Link)</label>
+                                <input type="url" id="newsDriveLink" class="form-control form-control-sm" placeholder="https://drive.google.com/file/d/..." required>
+                            </div>
+                            <div class="mb-2">
+                                <label class="form-label small">පුවතේ සම්පූර්ණ විස්තරය (News Content)</label>
+                                <textarea id="newsContent" rows="3" class="form-control form-control-sm" required></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-danger btn-sm w-100 fw-bold">පුවත පළ කරන්න (Publish Now)</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-  <h3>අලුත් පුවතක් දැමීම</h3>
-  <input type="text" id="newsTitle" placeholder="පුවතේ මාතෘකාව">
-  <textarea id="newsBody" placeholder="පුවතේ විස්තරය මෙතන ලියන්න..." rows="5"></textarea>
-  <button onclick="submitNews()" class="btn-green">පුවත යවන්න (Pending)</button>
-  <div id="newsMsg" class="success"></div>
+    <!-- Main BBC Style News Feed -->
+    <div class="container my-4">
+        <h4 class="fw-bold mb-3 border-bottom pb-2">ප්‍රධාන පුවත් (Top Stories)</h4>
+        
+        <!-- Hero News Container -->
+        <div id="heroNewsContainer"></div>
 
-  <h3>මගේ පුවත්</h3>
-  <div id="myNewsList"></div>
-</div>
+        <!-- Grid News Container -->
+        <div class="row g-4" id="newsGridContainer"></div>
+    </div>
 
-<!-- Admin View -->
-<div id="adminView" class="card hidden">
-  <div class="header">Admin Panel</div>
-  <div id="adminNewsList"></div>
-</div>
+    <!-- Read Full News Modal -->
+    <div class="modal fade" id="readNewsModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span id="modalCategory" class="category-tag"></span>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <h3 id="modalTitle" class="fw-bold mb-2"></h3>
+                    <p class="text-muted small" id="modalMeta"></p>
+                    <img id="modalImg" src="" class="img-fluid rounded mb-3 w-100" style="max-height: 400px; object-fit: cover;">
+                    <p id="modalContent" style="white-space: pre-line; line-height: 1.7;"></p>
+                </div>
+            </div>
+        </div>
+    </div>
 
-<!-- Firebase Scripts -->
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+    <!-- Login / Register Modal -->
+    <div class="modal fade" id="authModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-dark text-white">
+                    <h5 class="modal-title">Newsat ගිණුමට පිවිසෙන්න</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="authForm">
+                        <div class="mb-3">
+                            <label class="form-label">විද්‍යුත් තැපෑල (Email)</label>
+                            <input type="email" id="authEmail" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">මුරපදය (Password - අවම අකුරු 6ක්)</label>
+                            <input type="password" id="authPassword" class="form-control" required>
+                        </div>
+                        <div class="d-flex gap-2">
+                            <button type="submit" id="loginSubmitBtn" class="btn btn-dark w-50">Sign In (ඇතුළු වන්න)</button>
+                            <button type="button" id="registerSubmitBtn" class="btn btn-danger w-50">Register (ලියාපදිංචි වන්න)</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 
-<script>
-  // ඔයාගේ ෆොටෝ එකේ තියෙන හරියටම Config එක
-  const firebaseConfig = {
-    apiKey: "AIzaSyBMmZuPV3XKlYkGqjQYd7aJpFb8MZc-P9k",
-    authDomain: "newsat-209f8.firebaseapp.com",
-    projectId: "newsat-209f8",
-    storageBucket: "newsat-209f8.firebasestorage.app",
-    messagingSenderId: "529324718671",
-    appId: "1:529324718671:web:0f45e89bf317cbb0c9083a",
-    measurementId: "G-VQ1FYLv51P"
-  };
-  const ADMIN_EMAIL = "kularathnashac@gmail.com";
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script type="module">
+        import { auth, db } from './firebase-config.js';
+        import { signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+        import { collection, addDoc, getDocs, doc, setDoc, getDoc, updateDoc, increment, query, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-  firebase.initializeApp(firebaseConfig);
-  const auth = firebase.auth();
-  const db = firebase.firestore();
-  
-  // ලොග් වුනාම අයින් නොවී ඉන්න
-  auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL);
+        let allNews = [];
 
-  let isRegisterMode = false;
-  let currentUser = null;
+        // 1. Track Site Traffic (Page Views)
+        async function trackTraffic() {
+            try {
+                const statsRef = doc(db, "analytics", "siteStats");
+                await setDoc(statsRef, { totalTraffic: increment(1) }, { merge: true });
+            } catch (e) { console.error("Traffic error:", e); }
+        }
+        trackTraffic();
 
-  // පේජ් මාරු කරන ෆන්ක්ෂන් එක
-  function showPage(page) {
-    ['homeView', 'loginView', 'profileView', 'adminView'].forEach(id => document.getElementById(id).classList.add('hidden'));
-    document.getElementById(page + 'View').classList.remove('hidden');
-    if(page === 'home') loadPublicNews();
-    if(page === 'profile') loadProfileData();
-    if(page === 'admin') loadAdminNews();
-  }
+        // 2. Convert Google Drive Share Link to Direct Image URL
+        function convertDriveLink(url) {
+            const regex = /\/d\/([a-zA-Z0-9_-]+)/;
+            const match = url.match(regex);
+            if (match && match[1]) {
+                return `https://lh3.googleusercontent.com/d/${match[1]}`;
+            }
+            return url; // Return original if not a standard drive link
+        }
 
-  function toggleAuthMode() {
-    isRegisterMode = !isRegisterMode;
-    document.getElementById('btnLogin').classList.toggle('hidden', isRegisterMode);
-    document.getElementById('btnRegister').classList.toggle('hidden', !isRegisterMode);
-    document.getElementById('registerName').classList.toggle('hidden', !isRegisterMode);
-  }
+        // 3. Authentication State Listener
+        onAuthStateChanged(auth, async (user) => {
+            const authSection = document.getElementById('authSection');
+            const userDashboard = document.getElementById('userDashboard');
 
-  // ලොග් ඉන් / ලොග් අවුට්
-  auth.onAuthStateChanged(user => {
-    currentUser = user;
-    if(user) {
-      document.getElementById('navLogin').classList.add('hidden');
-      document.getElementById('navProfile').classList.remove('hidden');
-      document.getElementById('navLogout').classList.remove('hidden');
-      if(user.email === ADMIN_EMAIL) document.getElementById('navAdmin').classList.remove('hidden');
-      showPage('profile');
-    } else {
-      document.getElementById('navLogin').classList.remove('hidden');
-      document.getElementById('navProfile').classList.add('hidden');
-      document.getElementById('navAdmin').classList.add('hidden');
-      document.getElementById('navLogout').classList.add('hidden');
-      showPage('home');
-    }
-  });
-
-  function doLogin() {
-    const email = document.getElementById('loginEmail').value;
-    const pw = document.getElementById('loginPassword').value;
-    auth.signInWithEmailAndPassword(email, pw)
-      .then(() => { document.getElementById('authMsg').innerText = "සාර්ථකව ලොග් වුණා!"; })
-      .catch(e => { document.getElementById('authMsg').innerText = e.message; });
-  }
-
-  function doRegister() {
-    const email = document.getElementById('loginEmail').value;
-    const pw = document.getElementById('loginPassword').value;
-    const name = document.getElementById('registerName').value;
-    auth.createUserWithEmailAndPassword(email, pw)
-      .then(cred => {
-        return db.collection('users').doc(cred.user.uid).set({
-          uid: cred.user.uid, email: email, name: name, role: 'Writer', createdAt: firebase.firestore.FieldValue.serverTimestamp()
+            if (user) {
+                authSection.innerHTML = `<span class="me-2 small">${user.email}</span><a href="admin.html" class="btn btn-warning btn-sm me-1">Admin</a>`;
+                userDashboard.classList.remove('d-none');
+                
+                // Load user profile details
+                const userDoc = await getDoc(doc(db, "users", user.uid));
+                if (userDoc.exists()) {
+                    const data = userDoc.data();
+                    document.getElementById('profName').value = data.name || '';
+                    document.getElementById('profPhone').value = data.phone || '';
+                    document.getElementById('profCity').value = data.city || '';
+                    document.getElementById('profBio').value = data.bio || '';
+                }
+            } else {
+                authSection.innerHTML = `<button class="btn btn-outline-light btn-sm" data-bs-toggle="modal" data-bs-target="#authModal">Sign In / Register</button>`;
+                userDashboard.classList.add('d-none');
+            }
         });
-      })
-      .then(() => { document.getElementById('authMsg').innerText = "ගිණුම හැදුවා! ලොග් වුණා."; })
-      .catch(e => { document.getElementById('authMsg').innerText = e.message; });
-  }
 
-  function logout() { auth.signOut(); }
+        // Login
+        document.getElementById('authForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('authEmail').value;
+            const pass = document.getElementById('authPassword').value;
+            try {
+                await signInWithEmailAndPassword(auth, email, pass);
+                bootstrap.Modal.getInstance(document.getElementById('authModal')).hide();
+            } catch (err) { alert("දෝෂයකි: " + err.message); }
+        });
 
-  // Profile 
-  function loadProfileData() {
-    if(!currentUser) return;
-    db.collection('users').doc(currentUser.uid).get().then(doc => {
-      if(doc.exists) {
-        document.getElementById('pName').value = doc.data().name || '';
-        document.getElementById('pPhone').value = doc.data().phone || '';
-      }
-    });
-    loadMyNews();
-  }
+        // Register
+        document.getElementById('registerSubmitBtn').addEventListener('click', async () => {
+            const email = document.getElementById('authEmail').value;
+            const pass = document.getElementById('authPassword').value;
+            try {
+                const cred = await createUserWithEmailAndPassword(auth, email, pass);
+                await setDoc(doc(db, "users", cred.user.uid), {
+                    email: email,
+                    joinedAt: serverTimestamp()
+                });
+                bootstrap.Modal.getInstance(document.getElementById('authModal')).hide();
+                alert("ලියාපදිංචිය සාර්ථකයි! කරුණාකර ඔබේ Profile විස්තර පුරවන්න.");
+            } catch (err) { alert("දෝෂයකි: " + err.message); }
+        });
 
-  function saveProfile() {
-    if(!currentUser) return;
-    const name = document.getElementById('pName').value;
-    const phone = document.getElementById('pPhone').value;
-    db.collection('users').doc(currentUser.uid).set({ name: name, phone: phone }, { merge: true })
-      .then(() => { document.getElementById('profileMsg').innerText = "Profile Save වුණා!"; })
-      .catch(e => { alert("Error: " + e.message); });
-  }
+        // Logout
+        document.getElementById('logoutBtn').addEventListener('click', () => signOut(auth));
 
-  // පුවත් දැමීම
-  function submitNews() {
-    if(!currentUser) return;
-    const title = document.getElementById('newsTitle').value;
-    const body = document.getElementById('newsBody').value;
-    if(!title || !body) return alert("මාතෘකාව සහ විස්තරය දාන්න.");
+        // 4. Save Profile Details
+        document.getElementById('profileForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const user = auth.currentUser;
+            if (!user) return;
+            await setDoc(doc(db, "users", user.uid), {
+                name: document.getElementById('profName').value,
+                phone: document.getElementById('profPhone').value,
+                city: document.getElementById('profCity').value,
+                bio: document.getElementById('profBio').value,
+                email: user.email
+            }, { merge: true });
+            alert("ඔබේ විස්තර සාර්ථකව සුරැකුණි!");
+        });
 
-    db.collection('news').add({
-      title: title, body: body,
-      authorUid: currentUser.uid, authorEmail: currentUser.email,
-      status: 'Pending',
-      createdAt: firebase.firestore.FieldValue.serverTimestamp()
-    }).then(() => {
-      document.getElementById('newsMsg').innerText = "පුවත යැව්වා! Admin අනුමැතිය එනකම් ඉන්න.";
-      document.getElementById('newsTitle').value = '';
-      document.getElementById('newsBody').value = '';
-      loadMyNews();
-    }).catch(e => { alert("Error: " + e.message); });
-  }
+        // 5. Publish News
+        document.getElementById('newsForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const user = auth.currentUser;
+            if (!user) return;
 
-  function loadMyNews() {
-    if(!currentUser) return;
-    db.collection('news').where('authorUid', '==', currentUser.uid).get().then(snap => {
-      let html = '';
-      snap.forEach(doc => {
-        const n = doc.data();
-        html += `<div class="post-item"><strong>${n.title}</strong> - <span style="color:orange;">${n.status}</span></div>`;
-      });
-      document.getElementById('myNewsList').innerHTML = html || "<p>පුවත් නැත.</p>";
-    });
-  }
+            const authorName = document.getElementById('profName').value || user.email;
+            const rawDriveLink = document.getElementById('newsDriveLink').value;
+            const directImgUrl = convertDriveLink(rawDriveLink);
 
-  function loadPublicNews() {
-    db.collection('news').where('status', '==', 'Approved').get().then(snap => {
-      let html = '';
-      snap.forEach(doc => {
-        const n = doc.data();
-        html += `<div class="post-item"><h3>${n.title}</h3><p>${n.body}</p></div>`;
-      });
-      document.getElementById('publicNewsList').innerHTML = html || "<p>පුවත් නැත.</p>";
-    }).catch(e => {
-      document.getElementById('publicNewsList').innerHTML = `<p class="error">දෝෂයක්: ${e.message}</p>`;
-    });
-  }
+            await addDoc(collection(db, "news"), {
+                title: document.getElementById('newsTitle').value,
+                category: document.getElementById('newsCategory').value,
+                imageUrl: directImgUrl,
+                content: document.getElementById('newsContent').value,
+                author: authorName,
+                authorId: user.uid,
+                views: 0,
+                createdAt: serverTimestamp()
+            });
 
-  // Admin
-  function loadAdminNews() {
-    db.collection('news').get().then(snap => {
-      let html = '';
-      snap.forEach(doc => {
-        const n = doc.data();
-        html += `<div class="post-item">
-          <strong>${n.title}</strong> - <span>${n.status}</span><br>
-          <button onclick="approveNews('${doc.id}')" class="btn-green" style="width:auto; padding:5px 10px; font-size:12px;">Approve</button>
-          <button onclick="deleteNews('${doc.id}')" class="btn-red" style="width:auto; padding:5px 10px; font-size:12px;">Delete</button>
-        </div>`;
-      });
-      document.getElementById('adminNewsList').innerHTML = html || "<p>පුවත් නැත.</p>";
-    });
-  }
+            document.getElementById('newsForm').reset();
+            alert("පුවත සාර්ථකව පළ විය!");
+            loadNews();
+        });
 
-  window.approveNews = function(id) {
-    db.collection('news').doc(id).update({ status: 'Approved' }).then(() => loadAdminNews());
-  }
-  window.deleteNews = function(id) {
-    db.collection('news').doc(id).delete().then(() => loadAdminNews());
-  }
+        // 6. Load and Render News (BBC Style)
+        async function loadNews() {
+            const q = query(collection(db, "news"), orderBy("createdAt", "desc"));
+            const snapshot = await getDocs(q);
+            allNews = [];
+            snapshot.forEach(doc => allNews.push({ id: doc.id, ...doc.data() }));
+            renderNews(allNews);
+        }
 
-</script>
+        window.filterNews = function(category) {
+            if (category === 'ALL') renderNews(allNews);
+            else renderNews(allNews.filter(n => n.category === category));
+        }
+
+        function renderNews(newsList) {
+            const heroContainer = document.getElementById('heroNewsContainer');
+            const gridContainer = document.getElementById('newsGridContainer');
+            heroContainer.innerHTML = '';
+            gridContainer.innerHTML = '';
+
+            if (newsList.length === 0) {
+                gridContainer.innerHTML = '<p class="text-muted">තවමත් පුවත් පළ කර නොමැත.</p>';
+                return;
+            }
+
+            // First News as BBC Hero Story
+            const hero = newsList[0];
+            heroContainer.innerHTML = `
+                <div class="card hero-card shadow-sm" style="cursor:pointer" onclick="openNews('${hero.id}')">
+                    <div class="row g-0">
+                        <div class="col-md-7">
+                            <img src="${hero.imageUrl}" class="hero-img" onerror="this.src='https://via.placeholder.com/800x400?text=Image+Not+Public'">
+                        </div>
+                        <div class="col-md-5 p-4 d-flex flex-column justify-content-center">
+                            <span class="category-tag mb-2">${hero.category}</span>
+                            <h2 class="fw-bold">${hero.title}</h2>
+                            <p class="text-muted">${hero.content.substring(0, 160)}...</p>
+                            <small class="text-secondary mt-auto">වාර්තාකරු: ${hero.author} | 👁️ ${hero.views || 0}</small>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            // Remaining News in 3-Column Grid
+            for (let i = 1; i < newsList.length; i++) {
+                const item = newsList[i];
+                gridContainer.innerHTML += `
+                    <div class="col-md-4">
+                        <div class="card news-card" style="cursor:pointer" onclick="openNews('${item.id}')">
+                            <img src="${item.imageUrl}" class="news-img" onerror="this.src='https://via.placeholder.com/400x200?text=Image+Error'">
+                            <div class="card-body d-flex flex-column">
+                                <span class="category-tag mb-2">${item.category}</span>
+                                <h5 class="fw-bold">${item.title}</h5>
+                                <p class="text-muted small">${item.content.substring(0, 90)}...</p>
+                                <small class="text-secondary mt-auto pt-2 border-top">✍️ ${item.author} • 👁️ ${item.views || 0}</small>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        // 7. Open Full News & Increment Views Count
+        window.openNews = async function(id) {
+            const item = allNews.find(n => n.id === id);
+            if (!item) return;
+
+            document.getElementById('modalCategory').innerText = item.category;
+            document.getElementById('modalTitle').innerText = item.title;
+            document.getElementById('modalMeta').innerText = `වාර්තාකරු: ${item.author} | නැරඹුම් වාර: ${(item.views || 0) + 1}`;
+            document.getElementById('modalImg').src = item.imageUrl;
+            document.getElementById('modalContent').innerText = item.content;
+
+            new bootstrap.Modal(document.getElementById('readNewsModal')).show();
+
+            // Increment article view count in Firestore
+            await updateDoc(doc(db, "news", id), { views: increment(1) });
+            item.views = (item.views || 0) + 1;
+        }
+
+        loadNews();
+    </script>
 </body>
 </html>
