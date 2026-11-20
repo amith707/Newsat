@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="si">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>පින්තූරය</title>
+    <style>
+        /* වෙබ් පිටුවේ පසුබිම සහ සැකසුම් */
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center; /* පින්තූරය මැදට ගැනීමට */
+            align-items: center;
+            min-height: 100vh; /* තිරයේ උස පුරාම ගැනීමට */
+            background-color: #f0f2f5; /* ලා අළු පැහැති පසුබිමක් */
+            font-family: sans-serif;
+        }
+
+        /* පින්තූරය අඩංගු කන්ටේනරය */
+        .image-container {
+            width: 90%; /* තිරයේ පළලෙන් 90% ක් ගන්නවා */
+            max-width: 1200px; /* උපරිම පළල සීමා කිරීම (ලොකු තිරවලට) */
+            padding: 20px;
+            box-sizing: border-box;
+            text-align: center;
+        }
+
+        /* පින්තූරයේ සැකසුම් */
+        .image-container img {
+            width: 100%; /* කන්ටේනරයේ පළලට ගැලපෙන සේ විශාල වීම */
+            height: auto; /* පින්තූරයේ ස්වභාවික අනුපාතය රැක ගැනීම */
+            border-radius: 15px; /* මූලින් මෘදු (rounded) කොන් */
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2); /* ලස්සන සෙවනැල්ලක් (Shadow) */
+            display: block; /* අමතර හිස්තැන් ඉවත් කිරීමට */
+        }
+
+        /* ජංගම දුරකථන සඳහා විශේෂ සැකසුම් (Mobile Responsive) */
+        @media (max-width: 768px) {
+            .image-container {
+                width: 100%;
+                padding: 10px;
+            }
+            .image-container img {
+                border-radius: 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="image-container">
+        <!-- මෙතන "your-image-name.jpg" වෙනුවට ඔබේ පින්තූරයේ නම දාන්න -->
+        <img src="your-image-name.jpg" alt="ඡායාරූපය">
+    </div>
+
+</body>
+</html>
