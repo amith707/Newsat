@@ -3,505 +3,259 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#0a0e27">
-<title>Newsat.space | ඔබේ විශ්වාසනීය පුවත් අඩවිය</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Noto+Sans+Sinhala:wght@400;600;700&family=Noto+Sans+Tamil:wght@400;600;700&display=swap" rel="stylesheet">
-<link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+<title>Newsat.space</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Sinhala:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
-:root{
-  --bg:#f4f6fb; --surface:#ffffff; --surface-2:#f8fafc;
-  --ink:#0f172a; --ink-2:#334155; --muted:#64748b;
-  --primary:#2563eb; --success:#10b981; --danger:#ef4444; --warning:#f59e0b;
-  --line:#e2e8f0; --line-2:#cbd5e1;
-  --radius:14px; --radius-lg:20px;
-  --shadow-sm:0 1px 2px rgba(15,23,42,.05);
-  --shadow-lg:0 20px 50px rgba(15,23,42,.15);
-  --gradient:linear-gradient(135deg,#2563eb 0%,#8b5cf6 50%,#ec4899 100%);
-  --gradient-2:linear-gradient(135deg,#0f172a 0%,#1e293b 100%);
-  --font:'Inter','Noto Sans Sinhala','Noto Sans Tamil',system-ui,sans-serif;
-}
-[data-theme="dark"]{
-  --bg:#070b1a; --surface:#0f172a; --surface-2:#111c33;
-  --ink:#f1f5f9; --ink-2:#cbd5e1; --muted:#94a3b8;
-  --line:#1e293b; --line-2:#334155;
-}
-*{box-sizing:border-box;margin:0;padding:0}
-body{background:var(--bg);color:var(--ink);font-family:var(--font);line-height:1.6;transition:background .3s,color .3s;}
-img{max-width:100%;display:block}
-button,input,textarea,select{font:inherit}
-button{cursor:pointer;border:0;background:none;color:inherit}
-
-/* HEADER */
-header{position:sticky;top:0;z-index:100;background:rgba(10,14,39,.85);backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,.08);color:#fff;}
-.header-inner{max-width:1240px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 20px;flex-wrap:wrap;}
-.logo{display:flex;align-items:center;gap:10px;text-decoration:none;color:#fff}
-.logo-mark{width:38px;height:38px;border-radius:11px;background:var(--gradient);display:grid;place-items:center;font-weight:900;font-size:18px;}
-.nav{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
-.nav-btn{padding:9px 16px;border-radius:10px;font-weight:600;font-size:14px;color:#e2e8f0;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);transition:all .2s;text-decoration:none;}
-.nav-btn:hover{background:rgba(255,255,255,.12)}
-.nav-btn.primary{background:var(--gradient);border-color:transparent;}
-.icon-btn{width:40px;height:40px;border-radius:10px;display:grid;place-items:center;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);color:#e2e8f0;font-size:18px;}
-
-/* MAIN */
-main{max-width:1240px;margin:0 auto;padding:24px 20px 60px}
-.hero{position:relative;overflow:hidden;background:var(--gradient-2);border-radius:24px;padding:56px 40px;color:#fff;margin-bottom:28px;box-shadow:var(--shadow-lg);}
-.hero h1{font-size:clamp(28px,5vw,44px);font-weight:900;line-height:1.15;margin-bottom:12px}
-.hero p{color:#cbd5e1;font-size:17px}
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:11px 20px;border-radius:11px;font-weight:700;font-size:14px;transition:all .2s;background:var(--gradient);color:#fff;text-decoration:none;}
-.btn:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 8px 22px rgba(59,130,246,.45)}
-.btn:disabled{opacity:.5;cursor:not-allowed}
-.btn.secondary{background:var(--surface);color:var(--ink);border:1px solid var(--line-2);}
-.btn.ghost{background:transparent;color:var(--ink-2);border:1px solid var(--line);}
-.btn.block{width:100%}
-.panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-lg);padding:24px;margin-bottom:20px;box-shadow:var(--shadow-sm);}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px}
-.grid-2{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px}
-
-/* NEWS CARD */
-.news-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-lg);overflow:hidden;transition:all .35s;cursor:pointer;}
-.news-card:hover{transform:translateY(-6px);box-shadow:var(--shadow-lg);border-color:var(--primary)}
-.news-card-img{width:100%;aspect-ratio:16/10;overflow:hidden;background:#dbeafe;}
-.news-card-img img{width:100%;height:100%;object-fit:cover;transition:transform .5s}
-.news-card:hover .news-card-img img{transform:scale(1.06)}
-.news-card-body{padding:18px;}
-.news-card-body h3{font-size:18px;font-weight:700;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
-
-/* FORMS */
-input,textarea,select{width:100%;padding:12px 14px;border:1.5px solid var(--line-2);border-radius:11px;background:var(--surface);color:var(--ink);font-family:inherit;font-size:14px;}
-input:focus,textarea:focus,select:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 4px rgba(37,99,235,.12);}
-label{display:block;font-weight:600;font-size:14px;color:var(--ink-2);margin:14px 0 7px}
-.hidden{display:none!important}
-.muted{color:var(--muted);font-size:14px}
-.row{display:flex;gap:12px;align-items:center;flex-wrap:wrap} .row.between{justify-content:space-between}
-.divider{height:1px;background:var(--line);margin:20px 0}
-.badge{display:inline-flex;padding:5px 11px;border-radius:999px;font-size:12px;font-weight:700;}
-.badge.pending{color:#b45309;background:#fef3c7}
-.badge.approved{color:#059669;background:#d1fae5}
-.badge.rejected{color:#dc2626;background:#fee2e2}
-.tabs{display:flex;gap:4px;padding:4px;background:var(--surface-2);border-radius:12px;margin-bottom:22px}
-.tabs button{flex:1;padding:10px;border-radius:9px;font-weight:600;color:var(--muted);transition:all .2s}
-.tabs button.active{background:var(--surface);color:var(--ink);box-shadow:var(--shadow-sm)}
-.toast-container{position:fixed;top:88px;right:20px;z-index:9999;display:flex;flex-direction:column;gap:10px;}
-.toast{padding:14px 18px;border-radius:12px;background:var(--surface);border:1px solid var(--line);box-shadow:var(--shadow-lg);font-weight:600;font-size:14px;display:flex;align-items:center;gap:10px;border-left:4px solid var(--primary);}
-.toast.success{border-left-color:var(--success)} .toast.error{border-left-color:var(--danger)}
-.guide-box { background: #e0f2fe; border-left: 4px solid #0284c7; padding: 16px; border-radius: 8px; margin-bottom: 20px; color: #0c4a6e; font-size: 14px;}
-.ql-container{border-bottom-left-radius:11px;border-bottom-right-radius:11px;border-color:var(--line-2)!important;font-family:inherit;}
-.ql-toolbar{border-top-left-radius:11px;border-top-right-radius:11px;border-color:var(--line-2)!important;background:var(--surface-2);}
-.ql-editor{min-height:300px;font-size:16px;}
-.ql-editor img{max-width:100%;height:auto;border-radius:8px;margin:10px 0;display:block;}
-.article-body{font-size:17px;line-height:1.85;} .article-body img { max-width: 100%; border-radius: 8px; margin: 15px 0; display: block;}
-.progress{height:10px;background:var(--line);border-radius:999px;overflow:hidden;margin:10px 0}
-.progress span{display:block;height:100%;background:var(--gradient);width:0;transition:width .5s}
+  /* හරිම සරල පෙනුමක් */
+  body { font-family: 'Noto Sans Sinhala', sans-serif; background: #f4f6fb; margin: 0; padding: 20px; color: #333; }
+  .hidden { display: none !important; }
+  .card { background: #fff; padding: 20px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); margin-bottom: 20px; max-width: 600px; margin-left: auto; margin-right: auto; }
+  input, textarea, select, button { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ccc; border-radius: 8px; box-sizing: border-box; font-family: inherit; }
+  button { background: #2563eb; color: #fff; border: none; font-weight: bold; cursor: pointer; }
+  button:hover { background: #1d4ed8; }
+  .btn-red { background: #ef4444; }
+  .btn-green { background: #10b981; }
+  .header { text-align: center; margin-bottom: 20px; font-weight: bold; font-size: 24px; color: #2563eb; }
+  .error { color: #ef4444; font-size: 14px; margin-top: 10px; }
+  .success { color: #10b981; font-size: 14px; margin-top: 10px; }
+  .post-item { border-bottom: 1px solid #eee; padding: 10px 0; }
+  .post-item:last-child { border-bottom: none; }
+  .nav { display: flex; gap: 10px; justify-content: center; margin-bottom: 20px; flex-wrap: wrap; }
+  .nav button { width: auto; padding: 10px 20px; }
 </style>
 </head>
 <body>
 
-<header>
-  <div class="header-inner">
-    <a href="#" class="logo" onclick="showPage('home');return false">
-      <div class="logo-mark">N</div>
-      <div class="logo-text"><b>Newsat.space</b></div>
-    </a>
-    <nav class="nav">
-      <button class="nav-btn" onclick="showPage('home')">Home</button>
-      <button class="nav-btn hidden" onclick="showPage('auth')" id="loginNav">Login / Register</button>
-      <button class="nav-btn hidden" onclick="showPage('profile')" id="profileNav">Profile</button>
-      <a href="admin.html" class="nav-btn primary hidden" id="adminNav" target="_blank">Admin Panel</a>
-      <button class="icon-btn" onclick="toggleTheme()">🌗</button>
-    </nav>
-  </div>
-</header>
+<!-- Navigation Menu -->
+<div class="nav">
+  <button onclick="showPage('home')" id="navHome">Home</button>
+  <button onclick="showPage('login')" id="navLogin">Login</button>
+  <button onclick="showPage('profile')" id="navProfile" class="hidden">Profile</button>
+  <button onclick="showPage('admin')" id="navAdmin" class="hidden">Admin Panel</button>
+  <button onclick="logout()" id="navLogout" class="hidden btn-red">Logout</button>
+</div>
 
-<div id="toastContainer" class="toast-container"></div>
+<!-- Home View -->
+<div id="homeView" class="card">
+  <div class="header">Newsat.space පුවත්</div>
+  <div id="publicNewsList">පුවත් ලෝඩ් වෙමින්...</div>
+</div>
 
-<main>
-  <!-- HOME -->
-  <section id="homePage">
-    <div class="hero">
-      <h1>නවතම පුවත්<br><span style="color:#60a5fa">එකම තැනකින්</span></h1>
-      <p>දේශීය හා විදේශීය පුවත් — විශ්වාසනීය මූලාශ්‍රවලින් Newsat.space වෙතින්.</p>
-    </div>
-    <div class="row" style="margin-bottom:20px;">
-      <input id="searchInput" placeholder="පුවත් සොයන්න..." oninput="renderNews()" style="flex:1;">
-    </div>
-    <div id="newsList" class="grid"></div>
-  </section>
+<!-- Login View -->
+<div id="loginView" class="card hidden">
+  <div class="header">Login / Register</div>
+  <input type="email" id="loginEmail" placeholder="Email ලිපිනය">
+  <input type="password" id="loginPassword" placeholder="මුරපදය (Password)">
+  <input type="text" id="registerName" placeholder="ඔබේ නම (Register වෙනකොට විතරයි)" class="hidden">
+  <button onclick="doLogin()" id="btnLogin">Login වන්න</button>
+  <button onclick="doRegister()" id="btnRegister" class="hidden">Register වන්න</button>
+  <button onclick="toggleAuthMode()" style="background: #64748b; margin-top: 10px;">Register / Login මාරු කරන්න</button>
+  <div id="authMsg" class="error"></div>
+</div>
 
-  <!-- AUTH -->
-  <section id="authPage" class="hidden">
-    <div class="panel" style="max-width:480px;margin:auto">
-      <div class="tabs">
-        <button id="loginTab" class="active" onclick="setAuthMode('login')">Login</button>
-        <button id="registerTab" onclick="setAuthMode('register')">Register</button>
-      </div>
-      <h2 id="authTitle" style="margin-bottom:18px">Welcome back 👋</h2>
-      <label>Email</label><input id="authEmail" type="email" placeholder="name@example.com">
-      <div id="registerExtra" class="hidden"><label>සම්පූර්ණ නම</label><input id="registerName" placeholder="John Doe"></div>
-      <label>Password</label><input id="authPassword" type="password" placeholder="••••••••">
-      <button class="btn" style="margin-top:20px;width:100%" onclick="submitAuth()" id="authSubmit"><span id="authBtnText">Login</span></button>
-      <p style="text-align:center;margin-top:14px;font-size:14px"><a href="#" onclick="forgotPassword();return false" style="color:var(--primary);">Password අමතකද?</a></p>
-    </div>
-  </section>
+<!-- Profile View -->
+<div id="profileView" class="card hidden">
+  <div class="header">මගේ Profile සහ පුවත් දැමීම</div>
+  
+  <h3>Profile විස්තර</h3>
+  <input type="text" id="pName" placeholder="සම්පූර්ණ නම">
+  <input type="text" id="pPhone" placeholder="දුරකථන අංකය">
+  <button onclick="saveProfile()" class="btn-green">Profile Save කරන්න</button>
+  <div id="profileMsg" class="success"></div>
 
-  <!-- PROFILE & WRITER -->
-  <section id="profilePage" class="hidden">
-    <div class="panel">
-      <div class="row between" style="margin-bottom:20px">
-        <div><h2 style="font-size:22px">මගේ Profile</h2><p class="muted" id="profileEmail"></p></div>
-        <button class="btn ghost" onclick="logout()">Logout</button>
-      </div>
-      <div class="row between" style="margin-bottom:6px"><b>Profile සම්පූර්ණතාව</b><span id="progressText" class="muted">0%</span></div>
-      <div class="progress"><span id="profileProgress"></span></div>
+  <hr style="margin: 20px 0; border: none; border-top: 1px solid #eee;">
 
-      <form id="profileForm" onsubmit="saveProfile(event)" style="margin-top:24px">
-        <div class="grid-2">
-          <div><label>සම්පූර්ණ නම</label><input id="pName" required></div>
-          <div><label>දුරකථන අංකය</label><input id="pPhone" type="tel"></div>
-          <div><label>නගරය / ප්‍රදේශය</label><input id="pLocation"></div>
-          <div><label>රැකියාව</label><input id="pOccupation"></div>
-        </div>
-        <label>ඔබ ගැන කෙටි විස්තරයක්</label><textarea id="pBio"></textarea>
-        <button type="submit" class="btn" style="margin-top:16px" id="saveProfileBtn">Profile Save කරන්න</button>
-      </form>
-    </div>
+  <h3>අලුත් පුවතක් දැමීම</h3>
+  <input type="text" id="newsTitle" placeholder="පුවතේ මාතෘකාව">
+  <textarea id="newsBody" placeholder="පුවතේ විස්තරය මෙතන ලියන්න..." rows="5"></textarea>
+  <button onclick="submitNews()" class="btn-green">පුවත යවන්න (Pending)</button>
+  <div id="newsMsg" class="success"></div>
 
-    <div class="panel">
-      <h3 style="font-size:20px;margin-bottom:10px">පුවතක් ඉදිරිපත් කරන්න</h3>
-      <div class="guide-box">
-        <b>📸 පින්තූර එකතු කරන ආකාරය:</b><br>
-        1. පින්තූරය Google Drive එකට Upload කරන්න.<br>
-        2. Right-Click කර "Share" ක්ලික් කරන්න.<br>
-        3. Access එක "Anyone with the link" කරන්න.<br>
-        4. ලින්ක් එක Copy කරගන්න.<br>
-        5. පහත Editor එකේ අවශ්‍ය තැනට කර්සරය තබා, ලින්ක් එක Paste කර Add කරන්න.
-      </div>
+  <h3>මගේ පුවත්</h3>
+  <div id="myNewsList"></div>
+</div>
 
-      <form id="writerForm" onsubmit="submitNews(event)">
-        <label>පුවත් මාතෘකාව</label><input id="newsTitle" required maxlength="200">
-        <label>කාණ්ඩය</label>
-        <select id="newsCategory"><option>දේශීය</option><option>විදේශීය</option><option>ක්‍රීඩා</option><option>ව්‍යාපාර</option><option>තාක්ෂණය</option><option>විනෝදාස්වාදය</option></select>
-        
-        <div style="background:var(--surface-2);padding:16px;border-radius:12px;border:1px solid var(--line);margin-top:16px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
-          <input type="url" id="gdriveImageUrl" placeholder="Google Drive Image Link එක මෙතනට Paste කරන්න..." style="flex:1;">
-          <button type="button" class="btn secondary" onclick="addGDriveImageToEditor()">🖼️ Add Image</button>
-        </div>
+<!-- Admin View -->
+<div id="adminView" class="card hidden">
+  <div class="header">Admin Panel</div>
+  <div id="adminNewsList"></div>
+</div>
 
-        <label style="margin-top:16px;">පුවත් විස්තරය</label>
-        <div id="newsBodyEditor"></div>
-        
-        <button id="newsSubmitBtn" type="submit" class="btn" style="margin-top:16px;width:100%;"><span id="newsBtnText">පුවත Submit කරන්න</span></button>
-      </form>
-    </div>
-    
-    <div class="panel">
-      <h3 style="font-size:20px;margin-bottom:10px">මගේ ඉදිරිපත් කළ පුවත්</h3>
-      <div id="mySubmissions"></div>
-    </div>
-  </section>
-
-  <!-- ADMIN REDIRECT -->
-  <section id="adminPage" class="hidden">
-    <div class="panel" style="text-align:center;padding:40px;">
-      <h2 style="font-size:22px;margin-bottom:10px">Admin Dashboard</h2>
-      <p class="muted" style="margin-bottom:20px">ඔබට සම්පූර්ණ Admin පැනලය භාවිතා කිරීමට පහත බටන් එක ඔබන්න.</p>
-      <a href="admin.html" class="btn">Admin Panel එකට යන්න</a>
-    </div>
-  </section>
-
-  <!-- ARTICLE VIEW -->
-  <section id="articlePage" class="hidden">
-    <button class="btn ghost" onclick="showPage('home')" style="margin-bottom:20px">← ආපසු</button>
-    <article id="articleContent" class="panel"></article>
-  </section>
-</main>
-
+<!-- Firebase Scripts -->
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-<script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+
 <script>
-// ෆොටෝ එකේ තියෙන හරි Config එක
-const firebaseConfig={
-  apiKey: "AIzaSyBMmZuPV3XKlYkGqjQYd7aJpFb8MZc-P9k",
-  authDomain: "newsat-209f8.firebaseapp.com",
-  projectId: "newsat-209f8",
-  storageBucket: "newsat-209f8.firebasestorage.app",
-  messagingSenderId: "529324718671",
-  appId: "1:529324718671:web:0f45e89bf317cbb0c9083a",
-  measurementId: "G-VQ1FYLv51P"
-};
-const ADMIN_EMAIL = "kularathnashac@gmail.com";
+  // ඔයාගේ ෆොටෝ එකේ තියෙන හරියටම Config එක
+  const firebaseConfig = {
+    apiKey: "AIzaSyBMmZuPV3XKlYkGqjQYd7aJpFb8MZc-P9k",
+    authDomain: "newsat-209f8.firebaseapp.com",
+    projectId: "newsat-209f8",
+    storageBucket: "newsat-209f8.firebasestorage.app",
+    messagingSenderId: "529324718671",
+    appId: "1:529324718671:web:0f45e89bf317cbb0c9083a",
+    measurementId: "G-VQ1FYLv51P"
+  };
+  const ADMIN_EMAIL = "kularathnashac@gmail.com";
 
-let auth, db, currentUser=null, isAdmin=false, allNews=[], quillEditor, authMode='login';
-
-firebase.initializeApp(firebaseConfig);
-auth = firebase.auth();
-db = firebase.firestore();
-
-db.collection('site_stats').doc('traffic').set({ views: firebase.firestore.FieldValue.increment(1) }, { merge: true }).catch(()=>{});
-
-auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL).then(() => {
-  quillEditor = new Quill('#newsBodyEditor', {
-    theme: 'snow',
-    placeholder: 'ඔබේ පුවත මෙහි ලියන්න...',
-    modules: { toolbar: [[{ 'header': [1, 2, 3, false] }], ['bold', 'italic', 'underline'], [{ 'list': 'ordered'}, { 'list': 'bullet' }], ['link', 'blockquote'], ['clean']] }
-  });
-  auth.onAuthStateChanged(handleUser);
-  loadPublicNews();
-});
-
-const $ = id => document.getElementById(id);
-const esc = s => String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-
-function toast(text, type='info'){
-  const el = document.createElement('div');
-  el.className = `toast ${type}`;
-  el.innerHTML = `<span>${type==='success'?'✅':type==='error'?'❌':'ℹ️'}</span><span>${esc(text)}</span>`;
-  $('toastContainer').appendChild(el);
-  setTimeout(()=>el.remove(), 4000);
-}
-
-function friendlyError(e){ return e?.message || 'දෝෂයක් සිදුවිය.'; }
-
-function toggleTheme(){ document.documentElement.dataset.theme = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark'; }
-
-// Auth
-function setAuthMode(mode){
-  authMode = mode;
-  $('loginTab').className = mode === 'login' ? 'active' : '';
-  $('registerTab').className = mode === 'register' ? 'active' : '';
-  $('registerExtra').classList.toggle('hidden', mode === 'login');
-  $('authTitle').textContent = mode === 'register' ? 'Create account 🚀' : 'Welcome back 👋';
-  $('authBtnText').textContent = mode === 'register' ? 'Create Account' : 'Login';
-}
-
-async function submitAuth(){
-  const email = $('authEmail').value.trim(), pw = $('authPassword').value;
-  if(!email || !pw) return toast('Email සහ Password ඇතුළත් කරන්න.', 'error');
+  firebase.initializeApp(firebaseConfig);
+  const auth = firebase.auth();
+  const db = firebase.firestore();
   
-  const btn = $('authSubmit'); btn.disabled = true;
-  try{
-    if(authMode === 'register'){
-      const cred = await auth.createUserWithEmailAndPassword(email, pw);
-      await cred.user.updateProfile({displayName: $('registerName').value.trim()});
-      
-      await db.collection('users').doc(cred.user.uid).set({
-        uid: cred.user.uid, email, name: $('registerName').value.trim(), role: 'Writer', createdAt: firebase.firestore.FieldValue.serverTimestamp()
-      }, {merge: true});
-      
-      toast('ගිණුම සාර්ථකව සාදන ලදී!', 'success');
+  // ලොග් වුනාම අයින් නොවී ඉන්න
+  auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL);
+
+  let isRegisterMode = false;
+  let currentUser = null;
+
+  // පේජ් මාරු කරන ෆන්ක්ෂන් එක
+  function showPage(page) {
+    ['homeView', 'loginView', 'profileView', 'adminView'].forEach(id => document.getElementById(id).classList.add('hidden'));
+    document.getElementById(page + 'View').classList.remove('hidden');
+    if(page === 'home') loadPublicNews();
+    if(page === 'profile') loadProfileData();
+    if(page === 'admin') loadAdminNews();
+  }
+
+  function toggleAuthMode() {
+    isRegisterMode = !isRegisterMode;
+    document.getElementById('btnLogin').classList.toggle('hidden', isRegisterMode);
+    document.getElementById('btnRegister').classList.toggle('hidden', !isRegisterMode);
+    document.getElementById('registerName').classList.toggle('hidden', !isRegisterMode);
+  }
+
+  // ලොග් ඉන් / ලොග් අවුට්
+  auth.onAuthStateChanged(user => {
+    currentUser = user;
+    if(user) {
+      document.getElementById('navLogin').classList.add('hidden');
+      document.getElementById('navProfile').classList.remove('hidden');
+      document.getElementById('navLogout').classList.remove('hidden');
+      if(user.email === ADMIN_EMAIL) document.getElementById('navAdmin').classList.remove('hidden');
+      showPage('profile');
     } else {
-      await auth.signInWithEmailAndPassword(email, pw);
-      toast('සාර්ථකව පිවිසුණි!', 'success');
+      document.getElementById('navLogin').classList.remove('hidden');
+      document.getElementById('navProfile').classList.add('hidden');
+      document.getElementById('navAdmin').classList.add('hidden');
+      document.getElementById('navLogout').classList.add('hidden');
+      showPage('home');
     }
-  } catch(e) {
-    toast(friendlyError(e), 'error');
-  } finally { btn.disabled = false; }
-}
+  });
 
-async function forgotPassword(){
-  const email = $('authEmail').value.trim();
-  if(!email) return toast('කරුණාකර Email එක ඇතුළත් කරන්න.', 'warning');
-  try { await auth.sendPasswordResetEmail(email); toast('Reset link Email එකට යවන ලදී.', 'success'); }
-  catch(e) { toast(friendlyError(e), 'error'); }
-}
-
-async function logout(){ await auth.signOut(); toast('Logout විය.', 'success'); }
-
-async function handleUser(user){
-  currentUser = user;
-  if(!user){
-    isAdmin = false; updateNav(); showPage('home'); return;
+  function doLogin() {
+    const email = document.getElementById('loginEmail').value;
+    const pw = document.getElementById('loginPassword').value;
+    auth.signInWithEmailAndPassword(email, pw)
+      .then(() => { document.getElementById('authMsg').innerText = "සාර්ථකව ලොග් වුණා!"; })
+      .catch(e => { document.getElementById('authMsg').innerText = e.message; });
   }
-  
-  isAdmin = (user.email === ADMIN_EMAIL);
-  updateNav();
-  trackOnlineUser(user.uid);
-  showPage('profile');
-}
 
-function updateNav(){
-  const signed = !!currentUser;
-  $('loginNav').classList.toggle('hidden', signed);
-  $('profileNav').classList.toggle('hidden', !signed);
-  $('adminNav').classList.toggle('hidden', !isAdmin);
-}
-
-async function trackOnlineUser(uid) {
-  const userRef = db.collection('online_users').doc(uid);
-  await userRef.set({ lastSeen: firebase.firestore.FieldValue.serverTimestamp() }).catch(()=>{});
-  setInterval(() => { if(navigator.onLine) userRef.update({ lastSeen: firebase.firestore.FieldValue.serverTimestamp() }).catch(()=>{}); }, 60000);
-}
-
-// Profile
-async function loadProfile(){
-  if(!currentUser) return;
-  $('profileEmail').textContent = currentUser.email;
-  try {
-    const s = await db.collection('users').doc(currentUser.uid).get();
-    const p = s.data() || {};
-    $('pName').value = p.name || currentUser.displayName || '';
-    $('pPhone').value = p.phone || '';
-    $('pLocation').value = p.location || '';
-    $('pOccupation').value = p.occupation || '';
-    $('pBio').value = p.bio || '';
-    updateProgress(p);
-  } catch(e) { console.error("Load Error:", e); }
-}
-
-function updateProgress(p){
-  const fields = ['name','phone','location','occupation','bio'];
-  const count = fields.filter(k => (p[k] || '').toString().trim()).length;
-  const percent = Math.round(count / fields.length * 100);
-  $('profileProgress').style.width = percent + '%';
-  $('progressText').textContent = `${percent}% (${count}/${fields.length})`;
-}
-
-async function saveProfile(e){
-  e.preventDefault();
-  if(!currentUser) return toast('පළමුව Login වන්න.', 'error');
-  
-  const btn = $('saveProfileBtn'); btn.disabled = true; btn.textContent = 'Save වෙමින්...';
-  try{
-    const p = {
-      uid: currentUser.uid, email: currentUser.email, name: $('pName').value.trim(), phone: $('pPhone').value.trim(),
-      location: $('pLocation').value.trim(), occupation: $('pOccupation').value.trim(), bio: $('pBio').value.trim(),
-      updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-    };
-    await db.collection('users').doc(currentUser.uid).set(p, {merge: true});
-    updateProgress(p);
-    toast('Profile සාර්ථකව Save කළා!', 'success');
-  } catch(err) { 
-    console.error("Profile Error:", err);
-    alert("Profile Error: " + friendlyError(err)); 
-  } finally { 
-    btn.disabled = false; btn.textContent = 'Profile Save කරන්න'; 
+  function doRegister() {
+    const email = document.getElementById('loginEmail').value;
+    const pw = document.getElementById('loginPassword').value;
+    const name = document.getElementById('registerName').value;
+    auth.createUserWithEmailAndPassword(email, pw)
+      .then(cred => {
+        return db.collection('users').doc(cred.user.uid).set({
+          uid: cred.user.uid, email: email, name: name, role: 'Writer', createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        });
+      })
+      .then(() => { document.getElementById('authMsg').innerText = "ගිණුම හැදුවා! ලොග් වුණා."; })
+      .catch(e => { document.getElementById('authMsg').innerText = e.message; });
   }
-}
 
-// Submit News
-async function submitNews(e){
-  e.preventDefault();
-  if(!currentUser) return toast('පළමුව Login වන්න.', 'error');
-  
-  const btn = $('newsSubmitBtn'), txt = $('newsBtnText');
-  btn.disabled = true; txt.textContent = 'Submit වෙමින්...';
+  function logout() { auth.signOut(); }
 
-  try{
-    const title = $('newsTitle').value.trim(), category = $('newsCategory').value, bodyHTML = quillEditor.root.innerHTML;
-    
-    if(!title || bodyHTML === '<p><br></p>' || bodyHTML === '') {
-      throw new Error('මාතෘකාව සහ විස්තරය අවශ්‍යයි.');
-    }
+  // Profile 
+  function loadProfileData() {
+    if(!currentUser) return;
+    db.collection('users').doc(currentUser.uid).get().then(doc => {
+      if(doc.exists) {
+        document.getElementById('pName').value = doc.data().name || '';
+        document.getElementById('pPhone').value = doc.data().phone || '';
+      }
+    });
+    loadMyNews();
+  }
 
-    const imgMatch = bodyHTML.match(/<img[^>]+src="([^">]+)"/);
-    const thumbnail = imgMatch ? imgMatch[1] : '';
+  function saveProfile() {
+    if(!currentUser) return;
+    const name = document.getElementById('pName').value;
+    const phone = document.getElementById('pPhone').value;
+    db.collection('users').doc(currentUser.uid).set({ name: name, phone: phone }, { merge: true })
+      .then(() => { document.getElementById('profileMsg').innerText = "Profile Save වුණා!"; })
+      .catch(e => { alert("Error: " + e.message); });
+  }
 
-    await db.collection('news').add({
-      title, category, body: bodyHTML, image: thumbnail,
-      authorUid: currentUser.uid, authorEmail: currentUser.email || '',
+  // පුවත් දැමීම
+  function submitNews() {
+    if(!currentUser) return;
+    const title = document.getElementById('newsTitle').value;
+    const body = document.getElementById('newsBody').value;
+    if(!title || !body) return alert("මාතෘකාව සහ විස්තරය දාන්න.");
+
+    db.collection('news').add({
+      title: title, body: body,
+      authorUid: currentUser.uid, authorEmail: currentUser.email,
       status: 'Pending',
       createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    }).then(() => {
+      document.getElementById('newsMsg').innerText = "පුවත යැව්වා! Admin අනුමැතිය එනකම් ඉන්න.";
+      document.getElementById('newsTitle').value = '';
+      document.getElementById('newsBody').value = '';
+      loadMyNews();
+    }).catch(e => { alert("Error: " + e.message); });
+  }
+
+  function loadMyNews() {
+    if(!currentUser) return;
+    db.collection('news').where('authorUid', '==', currentUser.uid).get().then(snap => {
+      let html = '';
+      snap.forEach(doc => {
+        const n = doc.data();
+        html += `<div class="post-item"><strong>${n.title}</strong> - <span style="color:orange;">${n.status}</span></div>`;
+      });
+      document.getElementById('myNewsList').innerHTML = html || "<p>පුවත් නැත.</p>";
     });
-
-    $('writerForm').reset(); 
-    quillEditor.root.innerHTML = '';
-    toast('පුවත සාර්ථකව ඉදිරිපත් කළා!', 'success');
-    loadMySubmissions();
-  } catch(err) {
-    console.error("Submit Error:", err); 
-    alert("News Error: " + friendlyError(err)); 
-  } finally { 
-    btn.disabled = false; txt.textContent = 'පුවත Submit කරන්න'; 
-  }
-}
-
-async function loadMySubmissions(){
-  if(!currentUser) return;
-  const wrap = $('mySubmissions');
-  wrap.innerHTML = '<p class="muted">Loading...</p>';
-  try{
-    const snap = await db.collection('news').where('authorUid', '==', currentUser.uid).get();
-    const arr = snap.docs.map(d => ({id: d.id, ...d.data()})).sort((a,b) => (b.createdAt?.seconds||0) - (a.createdAt?.seconds||0));
-    
-    if(arr.length === 0) {
-      wrap.innerHTML = '<p class="muted">තවම පුවත් ඉදිරිපත් කර නැත.</p>';
-      return;
-    }
-    
-    wrap.innerHTML = arr.map(n => `
-      <div style="padding:16px;border:1px solid var(--line);border-radius:12px;margin-bottom:10px">
-        <div class="row between"><b>${esc(n.title)}</b><span class="badge ${(n.status||'Pending').toLowerCase()}">${esc(n.status||'Pending')}</span></div>
-      </div>
-    `).join('');
-  } catch(err) { 
-    console.error("Load Subs Error:", err);
-    wrap.innerHTML = `<p style="color:var(--danger);">දත්ත ලබාගැනීමේ දෝෂයක්: ${err.message}</p>`; 
-  }
-}
-
-// Public News
-async function loadPublicNews(){
-  try{
-    const snap = await db.collection('news').where('status', '==', 'Approved').get();
-    allNews = snap.docs.map(d => ({id: d.id, ...d.data()})).sort((a,b) => (b.createdAt?.seconds||0) - (a.createdAt?.seconds||0));
-    renderNews();
-  } catch(e) { 
-    $('newsList').innerHTML = `<p style="color:var(--danger)">${esc(friendlyError(e))}</p>`; 
-  }
-}
-
-function renderNews(){
-  const q = $('searchInput').value.toLowerCase();
-  const arr = allNews.filter(n => (n.title||'').toLowerCase().includes(q));
-  
-  if(arr.length === 0){
-    $('newsList').innerHTML = '<p class="muted">පුවත් නොමැත.</p>';
-    return;
   }
 
-  $('newsList').innerHTML = arr.map(n => `
-    <article class="news-card" onclick="openArticle('${n.id}')">
-      <div class="news-card-img">
-        ${n.image ? `<img src="${esc(n.image)}">` : '<div style="display:grid;place-items:center;height:100%;color:#94a3b8">No Image</div>'}
-      </div>
-      <div class="news-card-body"><h3>${esc(n.title)}</h3></div>
-    </article>
-  `).join('');
-}
+  function loadPublicNews() {
+    db.collection('news').where('status', '==', 'Approved').get().then(snap => {
+      let html = '';
+      snap.forEach(doc => {
+        const n = doc.data();
+        html += `<div class="post-item"><h3>${n.title}</h3><p>${n.body}</p></div>`;
+      });
+      document.getElementById('publicNewsList').innerHTML = html || "<p>පුවත් නැත.</p>";
+    }).catch(e => {
+      document.getElementById('publicNewsList').innerHTML = `<p class="error">දෝෂයක්: ${e.message}</p>`;
+    });
+  }
 
-function openArticle(id){
-  const n = allNews.find(x => x.id === id);
-  if(!n) return;
-  $('articleContent').innerHTML = `<h1 style="font-size:28px;margin-bottom:10px;">${esc(n.title)}</h1><div class="article-body">${n.body}</div>`;
-  showPage('article');
-}
+  // Admin
+  function loadAdminNews() {
+    db.collection('news').get().then(snap => {
+      let html = '';
+      snap.forEach(doc => {
+        const n = doc.data();
+        html += `<div class="post-item">
+          <strong>${n.title}</strong> - <span>${n.status}</span><br>
+          <button onclick="approveNews('${doc.id}')" class="btn-green" style="width:auto; padding:5px 10px; font-size:12px;">Approve</button>
+          <button onclick="deleteNews('${doc.id}')" class="btn-red" style="width:auto; padding:5px 10px; font-size:12px;">Delete</button>
+        </div>`;
+      });
+      document.getElementById('adminNewsList').innerHTML = html || "<p>පුවත් නැත.</p>";
+    });
+  }
 
-// Google Drive Image
-function addGDriveImageToEditor() {
-  const input = $('gdriveImageUrl'); const rawUrl = input.value.trim();
-  if (!rawUrl) return toast('කරුණාකර ලින්ක් එකක් ඇතුළත් කරන්න.', 'warning');
-  
-  const match = rawUrl.match(/\/d\/([a-zA-Z0-9_-]+)/) || rawUrl.match(/id=([a-zA-Z0-9_-]+)/);
-  const directUrl = match ? `https://lh3.googleusercontent.com/d/${match[1]}` : rawUrl;
-  
-  const range = quillEditor.getSelection(true);
-  const index = range ? range.index : quillEditor.getLength();
-  quillEditor.insertEmbed(index, 'image', directUrl, 'user');
-  quillEditor.setSelection(index + 1, 0);
-  input.value = '';
-  toast('පින්තූරය එකතු කරන ලදී!', 'success');
-}
+  window.approveNews = function(id) {
+    db.collection('news').doc(id).update({ status: 'Approved' }).then(() => loadAdminNews());
+  }
+  window.deleteNews = function(id) {
+    db.collection('news').doc(id).delete().then(() => loadAdminNews());
+  }
 
-// Navigation
-function showPage(name){
-  ['home','auth','profile','admin','article'].forEach(p => $(p+'Page').classList.toggle('hidden', p !== name));
-  window.scrollTo(0,0);
-  if(name === 'profile' && currentUser) { loadProfile(); loadMySubmissions(); }
-  if(name === 'home') renderNews();
-}
 </script>
 </body>
 </html>
