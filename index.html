@@ -5,103 +5,119 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Newsat - ඔබේ විශ්වාසනීය පුවත් මූලාශ්‍රය</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Sinhala:wght@400;600;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
-  /* ===== විචල්‍යයන් (Variables) ===== */
   :root {
-    --primary: #6C2BD9; --primary-dark: #4C1D95; --accent: #FF3D71;
-    --accent2: #00D9A6; --accent3: #FFB020; --bg: #F7F5FF;
-    --card: #FFFFFF; --text: #1A1033; --muted: #6B6580;
-    --radius: 18px; --shadow: 0 10px 30px rgba(108, 43, 217, 0.12);
+    --primary: #6366f1; --secondary: #ec4899; --bg: #f8fafc;
+    --card-bg: rgba(255, 255, 255, 0.85); --text-dark: #1e293b;
+    --text-light: #64748b; --radius: 20px; --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
   }
-
-  /* ===== සාමාන්‍ය සැකසුම් ===== */
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { font-family: 'Noto Sans Sinhala', sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; }
+  body { font-family: 'Noto Sans Sinhala', sans-serif; background: linear-gradient(135deg, #e0e7ff 0%, #fdf2f8 100%); background-attachment: fixed; color: var(--text-dark); line-height: 1.6; min-height: 100vh; }
 
-  /* ===== ඉහළ තීරුව (Top Bar) ===== */
-  .topbar { background: linear-gradient(90deg, var(--primary-dark), var(--primary), var(--accent)); color: #fff; padding: 8px 20px; font-size: 13px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; }
-  .topbar nav a { color: #fff; text-decoration: none; margin-left: 16px; cursor: pointer; }
-  .live-dot { display: inline-block; width: 9px; height: 9px; background: #4CFF8F; border-radius: 50%; margin-right: 6px; animation: pulse 1.4s infinite; }
-  @keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: .4; transform: scale(1.4); } }
+  /* Top Bar & Header */
+  .topbar { background: linear-gradient(90deg, var(--primary), var(--secondary)); color: white; padding: 8px 20px; font-size: 13px; display: flex; justify-content: space-between; align-items: center; font-weight: 600; }
+  .live-dot { display: inline-block; width: 8px; height: 8px; background: #4ade80; border-radius: 50%; margin-right: 8px; box-shadow: 0 0 8px #4ade80; animation: pulse 1.5s infinite; }
+  @keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: .6; transform: scale(1.3); } }
+  .topbar-links a { color: white; text-decoration: none; margin-left: 15px; cursor: pointer; }
 
-  /* ===== ශීර්ෂය (Header) ===== */
-  header { background: var(--card); box-shadow: var(--shadow); position: sticky; top: 0; z-index: 100; padding: 14px 20px; }
-  .header-inner { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
-  .logo { font-size: 30px; font-weight: 900; background: linear-gradient(90deg, var(--primary), var(--accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; cursor: pointer; }
-  
-  /* සෙවුම් පෙට්ටිය */
-  .search-box { flex: 1; min-width: 200px; max-width: 420px; position: relative; }
-  .search-box input { width: 100%; padding: 12px 18px 12px 44px; border: 2px solid #E5DDF9; border-radius: 50px; font-size: 14px; outline: none; }
-  .search-box::before { content: "🔍"; position: absolute; left: 16px; top: 50%; transform: translateY(-50%); }
+  header { background: var(--card-bg); backdrop-filter: blur(12px); box-shadow: var(--shadow); position: sticky; top: 0; z-index: 100; padding: 15px 20px; border-bottom: 1px solid rgba(255,255,255,0.5); }
+  .header-inner { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 15px; flex-wrap: wrap; }
+  .logo { font-size: 28px; font-weight: 900; background: linear-gradient(45deg, var(--primary), var(--secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; display: flex; align-items: center; gap: 8px; cursor: pointer; }
+  .logo i { -webkit-text-fill-color: var(--primary); }
 
-  /* බොත්තම් (Buttons) */
-  .btn { font-weight: 700; padding: 11px 22px; border-radius: 50px; border: none; cursor: pointer; transition: .2s; }
-  .btn-primary { background: linear-gradient(90deg, var(--primary), var(--accent)); color: #fff; box-shadow: 0 6px 18px rgba(255, 61, 113, .35); }
-  .btn-admin { background: var(--text); color: #fff; margin-right: 10px; display: none; }
+  .search-container { flex: 1; min-width: 200px; max-width: 400px; position: relative; }
+  .search-container input { width: 100%; padding: 12px 20px 12px 45px; border: 2px solid transparent; border-radius: 30px; background: rgba(255,255,255,0.7); font-size: 14px; outline: none; font-family: inherit; }
+  .search-container input:focus { background: white; border-color: var(--primary); box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.15); }
+  .search-container i { position: absolute; left: 18px; top: 50%; transform: translateY(-50%); color: var(--text-light); }
 
-  /* ===== කාණ්ඩ ටැබ් (Tabs) ===== */
-  .tabs-wrap { background: var(--card); border-bottom: 1px solid #EDE8FA; position: sticky; top: 68px; z-index: 90; overflow-x: auto; }
-  .tabs { max-width: 1200px; margin: 0 auto; display: flex; gap: 4px; padding: 0 20px; }
-  .tab { padding: 14px 18px; font-weight: 600; color: var(--muted); cursor: pointer; border: none; background: none; border-bottom: 3px solid transparent; }
-  .tab.active { color: var(--primary); border-bottom-color: var(--primary); }
+  .header-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+  .btn { padding: 10px 20px; border-radius: 30px; border: none; font-weight: 700; font-size: 14px; cursor: pointer; transition: all 0.3s; display: flex; align-items: center; gap: 8px; font-family: inherit; text-decoration: none; }
+  .btn-primary { background: linear-gradient(45deg, var(--primary), var(--secondary)); color: white; box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4); }
+  .btn-music { background: linear-gradient(45deg, #f59e0b, #ef4444); color: white; box-shadow: 0 4px 15px rgba(239, 68, 68, 0.4); }
+  .btn-admin { background: var(--text-dark); color: white; display: none; }
 
-  /* ===== ප්‍රධාන පුවත් සහ පැති පුවත් (Hero) ===== */
-  .hero { max-width: 1200px; margin: 26px auto 0; padding: 0 20px; display: grid; grid-template-columns: 1.6fr 1fr; gap: 18px; }
-  .breaking-card { position: relative; border-radius: var(--radius); overflow: hidden; min-height: 340px; display: flex; align-items: flex-end; background: linear-gradient(135deg, #6C2BD9, #FF3D71); color: #fff; padding: 26px; }
-  .side-stack { display: flex; flex-direction: column; gap: 18px; }
-  .side-mini { background: var(--card); border-radius: var(--radius); padding: 18px; display: flex; gap: 14px; box-shadow: var(--shadow); border-left: 4px solid var(--accent2); }
+  /* Tabs */
+  .tabs-container { background: rgba(255,255,255,0.6); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(0,0,0,0.05); position: sticky; top: 75px; z-index: 90; overflow-x: auto; white-space: nowrap; padding: 0 20px; }
+  .tabs { max-width: 1200px; margin: 0 auto; display: flex; gap: 10px; padding: 10px 0; }
+  .tab { padding: 10px 20px; border-radius: 20px; border: none; background: transparent; font-weight: 600; color: var(--text-light); cursor: pointer; transition: all 0.3s; font-family: inherit; }
+  .tab:hover { background: rgba(99, 102, 241, 0.1); color: var(--primary); }
+  .tab.active { background: var(--primary); color: white; box-shadow: 0 4px 10px rgba(99, 102, 241, 0.3); }
 
-  /* ===== පුවත් ජාලය (News Grid) ===== */
-  .section { max-width: 1200px; margin: 40px auto 0; padding: 0 20px; }
-  .section-head h2 { font-size: 22px; font-weight: 900; border-left: 6px solid var(--primary); padding-left: 10px; margin-bottom: 20px; }
-  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
-  .card { background: var(--card); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); display: flex; flex-direction: column; }
-  .card .img { height: 170px; background: linear-gradient(135deg, var(--primary), var(--accent)); display: flex; align-items: center; justify-content: center; font-size: 46px; color: #fff; position: relative; }
-  .card .img .cat-tag { position: absolute; top: 12px; left: 12px; background: #fff; color: var(--primary); font-size: 11px; font-weight: 800; padding: 4px 12px; border-radius: 50px; }
-  .card .body { padding: 18px; flex: 1; display: flex; flex-direction: column; }
-  .card h3 { font-size: 16px; margin-bottom: 8px; }
-  .card p { font-size: 13px; color: var(--muted); flex: 1; }
+  /* Main Container */
+  .container { max-width: 1200px; margin: 30px auto; padding: 0 20px; }
+  .section-title { font-size: 24px; font-weight: 900; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
+  .section-title i { color: var(--secondary); font-size: 20px; }
 
-  /* ===== පොප්-අප් කවුළු (Modals) ===== */
-  .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); display: none; justify-content: center; align-items: center; z-index: 1000; }
-  .modal-box { background: var(--card); padding: 30px; border-radius: 20px; width: 90%; max-width: 450px; position: relative; }
-  .close-btn { position: absolute; top: 15px; right: 20px; font-size: 24px; cursor: pointer; background: none; border: none; }
-  .modal-box h3 { margin-bottom: 20px; color: var(--primary); }
+  /* News Grid */
+  .news-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 25px; }
+  .news-card { background: white; border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); transition: all 0.4s ease; display: flex; flex-direction: column; }
+  .news-card:hover { transform: translateY(-8px); box-shadow: 0 20px 40px -10px rgba(0,0,0,0.15); }
+  .card-image { height: 180px; background: linear-gradient(135deg, #a78bfa, #f472b6); display: flex; align-items: center; justify-content: center; font-size: 50px; color: rgba(255,255,255,0.8); position: relative; }
+  .card-category { position: absolute; top: 15px; left: 15px; background: rgba(255,255,255,0.9); backdrop-filter: blur(5px); color: var(--primary); padding: 5px 12px; border-radius: 20px; font-size: 11px; font-weight: 800; }
+  .card-content { padding: 20px; flex: 1; display: flex; flex-direction: column; }
+  .card-content h3 { font-size: 18px; margin-bottom: 10px; line-height: 1.4; }
+  .card-content p { color: var(--text-light); font-size: 14px; margin-bottom: 20px; flex: 1; }
+  .card-footer { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #f1f5f9; padding-top: 15px; font-size: 12px; color: var(--text-light); font-weight: 600; }
+
+  /* Modals */
+  .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(5px); display: none; justify-content: center; align-items: center; z-index: 1000; padding: 20px; }
+  .modal-box { background: white; padding: 30px; border-radius: 24px; width: 100%; max-width: 450px; position: relative; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25); }
+  .close-btn { position: absolute; top: 20px; right: 20px; background: #f1f5f9; border: none; width: 32px; height: 32px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+  .modal-box h3 { font-size: 22px; margin-bottom: 20px; color: var(--text-dark); }
   .form-group { margin-bottom: 15px; }
-  .form-group label { display: block; font-size: 14px; font-weight: 600; margin-bottom: 5px; }
-  .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 10px; font-family: inherit; }
+  .form-group label { display: block; font-size: 13px; font-weight: 700; margin-bottom: 5px; color: var(--text-light); }
+  .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 12px 15px; border: 2px solid #e2e8f0; border-radius: 12px; font-family: inherit; font-size: 14px; outline: none; background: #f8fafc; }
   .form-group textarea { resize: vertical; height: 100px; }
+  .modal-btn { width: 100%; justify-content: center; padding: 14px; font-size: 16px; margin-top: 10px; }
 
-  /* ===== ජංගම දුරකථන සඳහා (Responsive) ===== */
-  @media (max-width: 860px) { .hero { grid-template-columns: 1fr; } }
+  @media (max-width: 600px) {
+    .header-inner { flex-direction: column; align-items: stretch; }
+    .tabs-container { top: 120px; }
+  }
 </style>
 </head>
 <body>
 
-<!-- ඉහළ තීරුව -->
+<!-- Top Bar -->
 <div class="topbar">
   <div><span class="live-dot"></span> සජීවී පුවත් යාවත්කාලීන</div>
-  <nav>
-    <a href="#" id="loginBtn">ඇතුළු වන්න</a>
-    <a href="#" id="logoutBtn" style="display:none;">පිටවන්න</a>
-  </nav>
+  <div class="topbar-links">
+    <a href="#" id="loginBtn"><i class="fa-solid fa-user"></i> ඇතුළු වන්න</a>
+    <a href="#" id="logoutBtn" style="display:none;"><i class="fa-solid fa-right-from-bracket"></i> පිටවන්න</a>
+  </div>
 </div>
 
-<!-- ශීර්ෂය -->
+<!-- Header -->
 <header>
   <div class="header-inner">
-    <div class="logo">📰 Newsat</div>
-    <div class="search-box"><input type="text" id="searchInput" placeholder="පුවත් සොයන්න..."></div>
-    <div style="display:flex;">
+    <div class="logo"><i class="fa-solid fa-bolt"></i> Newsat</div>
+    
+    <div class="search-container">
+      <i class="fa-solid fa-magnifying-glass"></i>
+      <input type="text" id="searchInput" placeholder="පුවත් සොයන්න...">
+    </div>
+
+    <div class="header-actions">
       <!-- Admin Panel බොත්තම -->
-      <button class="btn btn-admin" id="adminPanelBtn" onclick="window.location.href='admin.html'">පාලන පුවරුව</button>
-      <button class="btn btn-primary" id="postNewsBtn">+ පුවතක් පළ කරන්න</button>
+      <button class="btn btn-admin" id="adminPanelBtn" onclick="window.location.href='admin.html'">
+        <i class="fa-solid fa-gauge"></i> Admin
+      </button>
+      
+      <!-- Songs පිටුවට යන බොත්තම (Shortcut) -->
+      <a href="songs.html" class="btn btn-music">
+        <i class="fa-solid fa-music"></i> Songs
+      </a>
+
+      <button class="btn btn-primary" id="postNewsBtn">
+        <i class="fa-solid fa-plus"></i> පුවතක් පළ කරන්න
+      </button>
     </div>
   </div>
 </header>
 
-<!-- කාණ්ඩ ටැබ් -->
-<div class="tabs-wrap">
+<!-- Tabs -->
+<div class="tabs-container">
   <div class="tabs" id="tabs">
     <button class="tab active" data-cat="all">සියල්ල</button>
     <button class="tab" data-cat="දේශපාලන">දේශපාලන</button>
@@ -112,52 +128,40 @@
   </div>
 </div>
 
-<!-- ප්‍රධාන පුවත් -->
-<section class="hero">
-  <div class="breaking-card">
-    <div>
-      <span class="badge" style="background:#FF3D71; padding:4px 10px; border-radius:20px; font-size:12px; font-weight:bold;">🔥 ප්‍රධාන පුවත</span>
-      <h2 style="margin-top:10px; font-size:24px;">Newsat වෙත සාදරයෙන් පිළිගනිමු</h2>
-      <p>ඔබේ ප්‍රදේශයේ සහ ලෝකයේ නවතම පුවත් දැන් ඔබ අතටම.</p>
-    </div>
-  </div>
-  <div class="side-stack">
-    <div class="side-mini"><h4>ලංකාවේ ප්‍රථම වරට නව තාක්ෂණයක්</h4></div>
-    <div class="side-mini"><h4>ක්‍රිකට් තරගාවලියේ නවතම තොරතුරු</h4></div>
-    <div class="side-mini"><h4>අද දින විනිමය අනුපාතික යාවත්කාලීන</h4></div>
-  </div>
-</section>
-
-<!-- පුවත් ජාලය -->
-<section class="section">
-  <div class="section-head"><h2>නවතම පුවත්</h2></div>
-  <div class="grid" id="newsGrid">
-    <p style="text-align:center; grid-column:1/-1; padding:20px;">පුවත් පූරණය වෙමින් පවතී...</p>
-  </div>
-</section>
-
-<!-- ලොග් වීමේ පොප්-අප් කවුළුව -->
-<div class="modal-overlay" id="loginModal">
-  <div class="modal-box">
-    <button class="close-btn" onclick="toggleModal('loginModal', false)">×</button>
-    <h3>පද්ධතියට ඇතුළු වන්න</h3>
-    <form id="loginForm">
-      <div class="form-group"><label>ඊමේල්</label><input type="email" id="email" required></div>
-      <div class="form-group"><label>මුරපදය</label><input type="password" id="password" required></div>
-      <button type="submit" class="btn btn-primary" style="width:100%;">ඇතුළු වන්න</button>
-    </form>
-    <p style="margin-top:15px; font-size:13px; text-align:center;">ගිණුමක් නැද්ද? <a href="#" id="signupLink" style="color:var(--primary);">ලියාපදිංචි වන්න</a></p>
+<!-- Main Content -->
+<div class="container">
+  <h2 class="section-title"><i class="fa-solid fa-newspaper"></i> නවතම පුවත්</h2>
+  <div class="news-grid" id="newsGrid">
+    <p style="grid-column: 1/-1; text-align: center; padding: 30px; color: var(--text-light);">
+      <i class="fa-solid fa-spinner fa-spin"></i> පුවත් පූරණය වෙමින් පවතී...
+    </p>
   </div>
 </div>
 
-<!-- පුවත් පළ කිරීමේ පොප්-අප් කවුළුව -->
+<!-- Modals -->
+<div class="modal-overlay" id="loginModal">
+  <div class="modal-box">
+    <button class="close-btn" onclick="toggleModal('loginModal', false)"><i class="fa-solid fa-xmark"></i></button>
+    <h3><i class="fa-solid fa-lock" style="color: var(--primary);"></i> පද්ධතියට ඇතුළු වන්න</h3>
+    <form id="loginForm">
+      <div class="form-group"><label>ඊමේල් ලිපිනය</label><input type="email" id="email" required></div>
+      <div class="form-group"><label>මුරපදය</label><input type="password" id="password" required></div>
+      <button type="submit" class="btn btn-primary modal-btn">ඇතුළු වන්න</button>
+    </form>
+    <p style="margin-top:20px; font-size:13px; text-align:center; color: var(--text-light);">
+      ගිණුමක් නැද්ද? <a href="#" id="signupLink" style="color:var(--primary); font-weight:bold; text-decoration:none;">ලියාපදිංචි වන්න</a>
+    </p>
+  </div>
+</div>
+
 <div class="modal-overlay" id="postModal">
   <div class="modal-box">
-    <button class="close-btn" onclick="toggleModal('postModal', false)">×</button>
-    <h3>නව පුවතක් පළ කරන්න</h3>
+    <button class="close-btn" onclick="toggleModal('postModal', false)"><i class="fa-solid fa-xmark"></i></button>
+    <h3><i class="fa-solid fa-pen-to-square" style="color: var(--primary);"></i> නව පුවතක් පළ කරන්න</h3>
     <form id="postForm">
       <div class="form-group"><label>මාතෘකාව</label><input type="text" id="newsTitle" required></div>
-      <div class="form-group"><label>කාණ්ඩය</label>
+      <div class="form-group">
+        <label>කාණ්ඩය</label>
         <select id="newsCat">
           <option value="දේශපාලන">දේශපාලන</option>
           <option value="ක්‍රීඩා">ක්‍රීඩා</option>
@@ -167,21 +171,20 @@
         </select>
       </div>
       <div class="form-group"><label>විස්තරය</label><textarea id="newsDesc" required></textarea></div>
-      <button type="submit" class="btn btn-primary" style="width:100%;">පළ කරන්න</button>
+      <button type="submit" class="btn btn-primary modal-btn">පළ කරන්න</button>
     </form>
   </div>
 </div>
 
-<!-- Firebase SDKs සහ JavaScript කේතය -->
+<!-- Firebase SDK -->
 <script type="module">
-  // Firebase මොඩියුල ආයාත කිරීම
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
   import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
   import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
-  // ඔබගේ Firebase Config
+  // ඔබගේ අලුත් Firebase Config එක
   const firebaseConfig = {
-    apiKey: "AIzaSyBMmZuPV3XKlYKGgjjYd7aJpFb8MZc-P9k",
+    apiKey: "AIzaSyBMmZuPV3XKlYkGqjQYd7aJpFb8MZc-P9k",
     authDomain: "newsat-209f8.firebaseapp.com",
     projectId: "newsat-209f8",
     storageBucket: "newsat-209f8.firebasestorage.app",
@@ -190,12 +193,10 @@
     measurementId: "G-VQ1FYLV51P"
   };
 
-  // Firebase ආරම්භ කිරීම
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
   const db = getFirestore(app);
 
-  // HTML මූලද්‍රව්‍ය ලබා ගැනීම
   const newsGrid = document.getElementById('newsGrid');
   const loginModal = document.getElementById('loginModal');
   const postModal = document.getElementById('postModal');
@@ -208,34 +209,29 @@
   let currentSearch = '';
   let allNews = [];
 
-  // පොප්-අප් විවෘත/වසා දැමීමේ ශ්‍රිතය
   window.toggleModal = (id, show) => {
     document.getElementById(id).style.display = show ? 'flex' : 'none';
   };
 
-  // පරිශීලක පිවිසුම් තත්ත්වය නිරීක්ෂණය කිරීම
   onAuthStateChanged(auth, (user) => {
     if (user) {
       loginBtn.style.display = 'none';
       logoutBtn.style.display = 'inline';
-      adminPanelBtn.style.display = 'inline-block'; // Admin බොත්තම පෙන්වන්න
+      adminPanelBtn.style.display = 'inline-flex';
     } else {
       loginBtn.style.display = 'inline';
       logoutBtn.style.display = 'none';
-      adminPanelBtn.style.display = 'none'; // Admin බොත්තම සඟවන්න
+      adminPanelBtn.style.display = 'none';
     }
   });
 
-  // ලොග් වීම සහ ලියාපදිංචි වීම
   loginBtn.addEventListener('click', (e) => { e.preventDefault(); toggleModal('loginModal', true); });
   logoutBtn.addEventListener('click', (e) => { e.preventDefault(); signOut(auth); });
 
   document.getElementById('loginForm').addEventListener('submit', (e) => {
     e.preventDefault();
-    const email = document.getElementById('email').value;
-    const pass = document.getElementById('password').value;
-    signInWithEmailAndPassword(auth, email, pass)
-      .then(() => { toggleModal('loginModal', false); alert('සාර්ථකව ඇතුළු විය!'); })
+    signInWithEmailAndPassword(auth, document.getElementById('email').value, document.getElementById('password').value)
+      .then(() => { toggleModal('loginModal', false); })
       .catch(err => alert('දෝෂයකි: ' + err.message));
   });
 
@@ -249,7 +245,6 @@
       .catch(err => alert('දෝෂයකි: ' + err.message));
   });
 
-  // පුවත් පළ කිරීම
   postNewsBtn.addEventListener('click', () => {
     if (!auth.currentUser) {
       alert('පුවත් පළ කිරීමට පළමුව ලොග් වන්න.');
@@ -261,15 +256,11 @@
 
   document.getElementById('postForm').addEventListener('submit', async (e) => {
     e.preventDefault();
-    const title = document.getElementById('newsTitle').value;
-    const cat = document.getElementById('newsCat').value;
-    const desc = document.getElementById('newsDesc').value;
-    
     try {
       await addDoc(collection(db, "news"), {
-        title: title,
-        category: cat,
-        desc: desc,
+        title: document.getElementById('newsTitle').value,
+        category: document.getElementById('newsCat').value,
+        desc: document.getElementById('newsDesc').value,
         author: auth.currentUser.email,
         time: serverTimestamp(),
         views: "0"
@@ -277,51 +268,43 @@
       toggleModal('postModal', false);
       document.getElementById('postForm').reset();
       alert('පුවත සාර්ථකව පළ කරන ලදී!');
-    } catch (err) {
-      alert('දෝෂයකි: ' + err.message);
-    }
+    } catch (err) { alert('දෝෂයකි: ' + err.message); }
   });
 
-  // Firestore වලින් පුවත් ලබා ගැනීම (සජීවීව)
   const q = query(collection(db, "news"), orderBy("time", "desc"));
   onSnapshot(q, (snapshot) => {
     allNews = [];
-    snapshot.forEach((doc) => {
-      allNews.push({ id: doc.id, ...doc.data() });
-    });
+    snapshot.forEach((doc) => allNews.push({ id: doc.id, ...doc.data() }));
     renderNews();
   });
 
-  // පුවත් පෙන්වීමේ ශ්‍රිතය
   function renderNews() {
     let filtered = allNews;
     if (currentCategory !== 'all') filtered = filtered.filter(n => n.category === currentCategory);
     if (currentSearch) filtered = filtered.filter(n => n.title.includes(currentSearch) || n.desc.includes(currentSearch));
 
     if (filtered.length === 0) {
-      newsGrid.innerHTML = `<p style="text-align:center; grid-column:1/-1; padding:20px; color:var(--muted);">පුවත් හමු නොවීය.</p>`;
+      newsGrid.innerHTML = `<p style="grid-column: 1/-1; text-align: center; padding: 30px; color: var(--text-light);">පුවත් හමු නොවීය.</p>`;
       return;
     }
 
     newsGrid.innerHTML = filtered.map(n => `
-      <article class="card">
-        <div class="img">
-          <span class="cat-tag">${n.category}</span>
-          📰
+      <article class="news-card">
+        <div class="card-image">
+          <span class="card-category">${n.category}</span>
+          <i class="fa-regular fa-newspaper"></i>
         </div>
-        <div class="body">
+        <div class="card-content">
           <h3>${n.title}</h3>
           <p>${n.desc}</p>
-          <div style="margin-top:auto; font-size:12px; color:var(--muted); display:flex; justify-content:space-between;">
-            <span>✍️ ${n.author ? n.author.split('@')[0] : 'Admin'}</span>
-            <span>👁️ ${n.views || '0'}</span>
+          <div class="card-footer">
+            <span class="author"><i class="fa-solid fa-user-pen"></i> ${n.author ? n.author.split('@')[0] : 'Admin'}</span>
           </div>
         </div>
       </article>
     `).join('');
   }
 
-  // සෙවුම් කිරීම සහ ටැබ් මාරු කිරීම
   document.getElementById('searchInput').addEventListener('input', (e) => {
     currentSearch = e.target.value.trim();
     renderNews();
